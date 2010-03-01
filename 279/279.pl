@@ -17,22 +17,25 @@ sub geron {
 sub all {
     my $p = shift;
     my $s = $p/2;
-    my $count = 0;
+    my $total = 0;
     my $valid = 0;
     my $general = "";
     foreach my $a (1..$p - 1) {
         my $bc = $p - $a;
         foreach my $b (1..$bc - 1) {
             my $c = $bc - $b;
-            print $a, $b, $c, "\n"; 
+            $total++;
+            #print $a, $b, $c, "\n"; 
         }
     }
     print "\n";
-    #print "$p:\n\t total => $count\n\t valid => $valid\n ==============\n";
+    print "$p:\n\t total => $total\n\t valid => $valid\n ==============\n";
 }
 
 sub main  {
-    foreach my $p (3..7) {
+    my $a = 0;
+    my $b = 1000;
+    foreach my $p ($a..$b) {
         all($p);
     }
 }
