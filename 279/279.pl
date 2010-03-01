@@ -25,13 +25,20 @@ sub all {
         my ($p, $limit) = @_;
         map {[$_, $p - $_]} (1..$limit);     
     };
+    map {
+        my $a = $_->[0];
+        map {
+            $total++;
+            [$a, $_->[0], $_->[1]];
+        } &$bi($_->[1], floor($_->[1]/2));
+    } &$bi($p, floor(($p-1)/2));
     print "\n";
     print "$p:\n\t total => $total\n\t valid => $valid\n ==============\n";
 }
 
 sub main  {
     my $a = 3;
-    my $b = 10;
+    my $b = 1000;
     foreach my $p ($a..$b) {
         all($p);
     }
