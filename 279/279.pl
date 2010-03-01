@@ -18,14 +18,13 @@ sub geron {
 
 sub all {
     my $p = shift;
-    my $s = $p/2;
     my $total = 0;
     my $valid = 0;
     my $general = "";
-    my @res = map {[$_, $p - $_]} (1..floor(($p - 1)/2));
-    foreach (@res) {
-        print $_->[0], $_->[1], "\n";
-    }
+    my $bi  = sub {
+        my ($p, $limit) = @_;
+        map {[$_, $p - $_]} (1..$limit);     
+    };
     print "\n";
     print "$p:\n\t total => $total\n\t valid => $valid\n ==============\n";
 }
