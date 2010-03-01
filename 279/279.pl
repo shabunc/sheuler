@@ -2,6 +2,8 @@
 use strict;
 use warnings;
 
+use POSIX;
+
 sub triangle_test {
     my ($a, $b, $c) = @_;
     return $a + $b > $c and $a + $c > $b and $b + $c > $a;
@@ -20,21 +22,17 @@ sub all {
     my $total = 0;
     my $valid = 0;
     my $general = "";
-    foreach my $a (1..$p - 1) {
-        my $bc = $p - $a;
-        foreach my $b (1..$bc - 1) {
-            my $c = $bc - $b;
-            $total++;
-            #print $a, $b, $c, "\n"; 
-        }
+    my @res = map {[$_, $p - $_]} (1..floor(($p - 1)/2));
+    foreach (@res) {
+        print $_->[0], $_->[1], "\n";
     }
     print "\n";
     print "$p:\n\t total => $total\n\t valid => $valid\n ==============\n";
 }
 
 sub main  {
-    my $a = 0;
-    my $b = 1000;
+    my $a = 3;
+    my $b = 10;
     foreach my $p ($a..$b) {
         all($p);
     }
