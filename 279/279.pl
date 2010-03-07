@@ -4,6 +4,9 @@ use warnings;
 
 use POSIX;
 
+use Data::Dumper qw( Dumper );
+use List::Util qw( max );
+
 sub triangle_test {
     my ($a, $b, $c) = @_;
     return $a + $b > $c and $a + $c > $b and $b + $c > $a;
@@ -16,23 +19,26 @@ sub geron {
     return $res;
 }
 
+sub tri  {
+    my $p = shift;
+    my $lima = floor(($p - 1)/2);
+    my @res = ();
+    foreach (1 .. $lima) {
+        my $a = $_;
+        foreach (max($a, $lima - $a + 1) .. $lima) {
+            print $a, "..", $_, "\n";
+            push @res, [$a, $_];
+        }
+    }
+    @res;
+}
+
 sub all {
     my $p = shift;
     my $total = 0;
     my $valid = 0;
-    my $general = "";
-    my $bi  = sub {
-        my ($p, $start, $limit) = @_;
-        map {[$_, $p - $_]} ($start..$limit);     
-    };
-    map {
-        my $a = $_->[0];
-        map {
-            $total++;
-            print ($a, $_->[0], $_->[1], "\n");
-            [$a, $_->[1], $_->[0]];
-        } &$bi($_->[1], 1, floor($a/2));
-    } &$bi($p, 1, floor(($p-1)/2));
+    tri($p);
+    #print Dumper tri($p);
     print "\n";
     print "$p:\n\t total => $total\n\t valid => $valid\n ==============\n";
 }
@@ -40,6 +46,8 @@ sub all {
 sub main  {
     my $a = 3;
     my $b = 10;
+    all(9);
+    return;
     foreach my $p ($a..$b) {
         all($p);
     }
