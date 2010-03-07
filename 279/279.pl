@@ -26,8 +26,8 @@ sub tri  {
     foreach (1 .. $lima) {
         my $a = $_;
         foreach (max($a, $lima - $a + 1) .. $lima) {
-            print $a, "..", $_, "\n";
-            push @res, [$a, $_];
+            my $c = $p - $a - $_;
+            push @res, [$a, $_, $c] unless ($c < $_);
         }
     }
     @res;
@@ -36,20 +36,17 @@ sub tri  {
 sub all {
     my $p = shift;
     my $total = 0;
-    my $valid = 0;
-    tri($p);
-    #print Dumper tri($p);
+    my @res = tri($p);
+    $total = $#res;
     print "\n";
-    print "$p:\n\t total => $total\n\t valid => $valid\n ==============\n";
+    print "$p => $total";
 }
 
 sub main  {
     my $a = 3;
-    my $b = 10;
-    all(9);
-    return;
-    foreach my $p ($a..$b) {
-        all($p);
+    my $b = 1000;
+    foreach ($a..$b) {
+         all($_);
     }
 }
 
