@@ -5,7 +5,6 @@ use warnings;
 use POSIX;
 
 use Data::Dumper qw( Dumper );
-use List::Util qw( max );
 
 use Euler::279;
 
@@ -23,12 +22,15 @@ sub geron {
 
 sub tri  {
     my $p = shift;
-    my $lima = floor(($p - 1)/2);
+    my $max = floor(($p - 1)/2);
+    my $min = ceil(($max + 1)/2);
     my @res = ();
-    foreach my $a (1 .. $lima) {
-        foreach (max($a, $lima - $a + 1) .. $lima) {
-            my $c = $p - $a - $_;
-            push @res, [$a, $_, $c] unless ($c < $_);
+    foreach my $b ($min .. $max) {
+        foreach (($max - $b + 1) .. $b) {
+            my $c = $p - $_ - $b;
+            unless ($c < $b) {
+                push @res, [$_, $b, $c];
+            }
         }
     }
     @res;
