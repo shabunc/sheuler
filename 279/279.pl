@@ -26,8 +26,14 @@ sub tri  {
     my $max = floor(($p - 1)/2);
     my $min = ceil(($max + 1)/2);
     my @res = ();
-    foreach my $b ($min .. $max) {
-        foreach (($max - $b + 1) .. min($b, $p - 2*$b)) {
+    my $maxmin = floor($p/3);
+    foreach my $b ($min .. $maxmin) {
+        foreach (($max - $b + 1) .. $b) {
+            push @res, [$_, $b, $p - $_ - $b];
+        }
+    };
+    foreach my $b ($maxmin + 1 .. $max) {
+        foreach (($max - $b + 1) .. $p - 2*$b) {
             push @res, [$_, $b, $p - $_ - $b];
         }
     }
@@ -44,7 +50,7 @@ sub all {
 }
 
 sub main  {
-    my $a = 0;
+    my $a = 3;
     my $b = $ARGV[0];
     foreach ($a..$b) {
          all($_);
