@@ -37,13 +37,14 @@ sub all {
     my $total = 0;
     my @res = tri($p);
     $total = $#res;
+    return;
     print "\n";
     print "$p => $total";
 }
 
 sub main  {
     my $a = 3;
-    my $b = 1000;
+    my $b = $ARGV[0];
     foreach ($a..$b) {
          all($_);
     }
