@@ -23,8 +23,7 @@ sub tri  {
     my $p = shift;
     my $lima = floor(($p - 1)/2);
     my @res = ();
-    foreach (1 .. $lima) {
-        my $a = $_;
+    foreach my $a (1 .. $lima) {
         foreach (max($a, $lima - $a + 1) .. $lima) {
             my $c = $p - $a - $_;
             push @res, [$a, $_, $c] unless ($c < $_);
