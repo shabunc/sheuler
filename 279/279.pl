@@ -7,6 +7,8 @@ use POSIX;
 use Data::Dumper qw( Dumper );
 use List::Util qw( max );
 
+use Euler::279;
+
 sub triangle_test {
     my ($a, $b, $c) = @_;
     return $a + $b > $c and $a + $c > $b and $b + $c > $a;
@@ -34,16 +36,15 @@ sub tri  {
 
 sub all {
     my $p = shift;
-    my $total = 0;
     my @res = tri($p);
-    $total = $#res;
-    return;
-    print "\n";
-    print "$p => $total";
+    my $total = $#res;
+    if ($Euler::279::TRI->[$p] != $total) {
+        print 'Error!!!', "\n";
+    }
 }
 
 sub main  {
-    my $a = 3;
+    my $a = 0;
     my $b = $ARGV[0];
     foreach ($a..$b) {
          all($_);
