@@ -5,6 +5,7 @@ use warnings;
 use POSIX;
 
 use Data::Dumper qw( Dumper );
+use List::Util qw( min );
 
 use Euler::279;
 
@@ -26,11 +27,8 @@ sub tri  {
     my $min = ceil(($max + 1)/2);
     my @res = ();
     foreach my $b ($min .. $max) {
-        foreach (($max - $b + 1) .. $b) {
-            my $c = $p - $_ - $b;
-            unless ($c < $b) {
-                push @res, [$_, $b, $c];
-            }
+        foreach (($max - $b + 1) .. min($b, $p - 2*$b)) {
+            push @res, [$_, $b, $p - $_ - $b];
         }
     }
     @res;
