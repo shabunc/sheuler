@@ -5,7 +5,7 @@ use warnings;
 use POSIX;
 
 use Data::Dumper qw( Dumper );
-use List::Util qw( min );
+use List::Util qw( min max );
 
 use Euler::279;
 
@@ -24,37 +24,33 @@ sub geron {
 sub tri  {
     my $p = shift;
     my $max = floor(($p - 1)/2);
-    my $min = ceil(($max + 1)/2);
     my @res = ();
-    my $maxmin = floor($p/3);
-    foreach my $b ($min .. $maxmin) {
-        foreach (($max - $b + 1) .. $b) {
-            push @res, [$_, $b, $p - $_ - $b];
+    for my $a (1 .. floor($p/3)) {
+        for my $b (max((ceil($p/2) - $a), $a) .. floor (($p - $a)/2)) {
+            #print "$a $b ", ($p - $a - $b), "\n";
+            push @res, [$a, $b, $p - $a - $b];
         }
-    };
-    foreach my $b ($maxmin + 1 .. $max) {
-        foreach (($max - $b + 1) .. $p - 2*$b) {
-            push @res, [$_, $b, $p - $_ - $b];
-        }
-    }
+    }   
+    #print "\n";
     @res;
 }
 
 sub all {
     my $p = shift;
     my @res = tri($p);
-    my $total = $#res;
+    my $total = $#res + 1;
+    print "$total ";
+    return;
     if ($Euler::279::TRI->[$p] != $total) {
-        print 'Error!!!', "\n";
+        #print 'Error!!!', "\n";
     }
 }
 
 sub main  {
     my $a = 3;
     my $b = $ARGV[0];
-    foreach ($a..$b) {
-         all($_);
-    }
+         all($_) for (3..30);
+    print "\n";
 }
 
 main();
