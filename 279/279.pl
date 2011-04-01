@@ -23,11 +23,16 @@ sub geron {
 
 sub tri  {
     my $p = shift;
-    my $max = floor(($p - 1)/2);
     my @res = ();
-    for my $a (1 .. floor($p/3)) {
-        for my $b (max((ceil($p/2) - $a), $a) .. floor (($p - $a)/2)) {
-            #print "$a $b ", ($p - $a - $b), "\n";
+    for my $a (1 .. floor($p/4)) {
+        for my $b (ceil(($p - 2*$a)/2) .. floor($p/2)) {
+            print "$a $b ", $p - $a - $b, "\n";
+            push @res, [$a, $b, $p - $a - $b];
+        }
+    }   
+    for my $a (floor($p/4) + 1 .. floor($p/2)) {
+        for my $b ($a .. floor($p/2)) {
+            print "$a $b ", $p - $a - $b, "\n";
             push @res, [$a, $b, $p - $a - $b];
         }
     }   
@@ -39,7 +44,7 @@ sub all {
     my $p = shift;
     my @res = tri($p);
     my $total = $#res + 1;
-    print "$total ";
+    print "$total \n";
     return;
     if ($Euler::279::TRI->[$p] != $total) {
         #print 'Error!!!', "\n";
@@ -47,10 +52,9 @@ sub all {
 }
 
 sub main  {
-    my $a = 3;
-    my $b = $ARGV[0];
-         all($_) for (3..30);
-    print "\n";
+    my $b = $ARGV[$#ARGV];
+    my $a = $#ARGV ? $ARGV[0] : $b;
+    all($_) for ($a..$b);
 }
 
 main();
