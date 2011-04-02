@@ -36,5 +36,15 @@ function total(t)
     return reduce(t, function(a,b) return a+b end)
 end
 
+function factorby(n, p) 
+    degree = 0
+    iterator = n
+    while iterator % p == 0 do
+        degree = degree + 1
+        iterator = iterator / p
+    end
+    return degree , iterator
+end
+
 num = tonumber(arg[1])
-factsum(num)
+print(factorby(arg[1], arg[2]))
