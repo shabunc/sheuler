@@ -13,18 +13,15 @@ end
 function getdigits(num)
     local iterator = num
     local res = {}
-    while iterator > 9 do
-        local degree = 10 ^ (math.ceil(math.log10(iterator)-1))
-        local digit = math.floor(iterator/degree)
+    for i = math.ceil(math.log10(num+1)) - 1,0,-1 do
+        local digit =  math.floor(iterator/(10^i))
         table.insert(res, digit)
-        iterator = iterator - degree * digit
+        iterator = iterator - digit * 10^i
     end
-    table.insert(res,iterator)
     return res
 end
 
-num = 10000
+num = tonumber(arg[1])
 print(num)
 res = getdigits(num)
-for i,v in pairs(res) do print(i,v) end
-
+print(table.concat(res," "))
