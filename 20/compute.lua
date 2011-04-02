@@ -6,6 +6,9 @@ function factsum(n)
         local prevfact = fact
         fact = fact*i
         print(i, total(getdigits(fact)))
+        if (i == 20) then
+             assert(total(getdigits(fact)), total(getdigits(fact/10)))
+        end
         --assert(i == fact/prevfact)
     end
 end
@@ -21,12 +24,16 @@ function getdigits(num)
     return res
 end
 
-function total(t) 
-    local total = 0
-    for i=1,#t do
-        total = total + t[i]
+function reduce(t, func)
+    local res = t[1]
+    for i=2,#t do
+        res = func(res, t[i])
     end
-    return total
+    return res
+end
+
+function total(t)
+    return reduce(t, function(a,b) return a+b end)
 end
 
 num = tonumber(arg[1])
