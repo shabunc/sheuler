@@ -5,8 +5,8 @@ function factsum(n)
     for i=1,n do
         local prevfact = fact
         fact = fact*i
-        print(i, fact/prevfact, fact)
-        assert(i == fact/prevfact)
+        print(i, total(getdigits(fact)))
+        --assert(i == fact/prevfact)
     end
 end
 
@@ -21,7 +21,13 @@ function getdigits(num)
     return res
 end
 
+function total(t) 
+    local total = 0
+    for i=1,#t do
+        total = total + t[i]
+    end
+    return total
+end
+
 num = tonumber(arg[1])
-print(num)
-res = getdigits(num)
-print(table.concat(res," "))
+factsum(num)
