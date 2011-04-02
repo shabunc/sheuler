@@ -1,13 +1,18 @@
 #!/usr/bin/env lua
 
 function factsum(n) 
+    local fact_ = 1
     local fact = 1
-    for i=1,n do
-        local prevfact = fact
+    local twos, fives = 0
+    local factors = {}
+    local factors_equivalent = {}
+    for i=2,n do
         fact = fact*i
-        print(i, total(getdigits(fact)), total(getdigits(problem_equivalent(fact))))
-        --assert(i == fact/prevfact)
+        fact_ = problem_equivalent(fact_) * problem_equivalent(i)
+        fact_ = problem_equivalent(fact_)
+        print(i, problem_func(fact_), problem_func(fact))
     end
+    return factors
 end
 
 function getdigits(num)
@@ -34,8 +39,8 @@ function total(t)
 end
 
 function factorby(n, p) 
-    degree = 0
-    iterator = n
+    local degree = 0
+    local iterator = n
     while iterator % p == 0 do
         degree = degree + 1
         iterator = iterator / p
@@ -46,12 +51,19 @@ end
 function problem_equivalent(n) 
     local fives, remainder = factorby(n, 5)
     local twos, remainder = factorby(remainder, 2)
+    local degree
     if fives > twos then
-        remainder = (5^(fives - twos)) * remainder
+        degree = fives - twos
+        remainder = (5^degree) * remainder
     else
-        remainder = (2^(twos - fives)) * remainder
+        degree = twos - fives
+        remainder = (2^degree) * remainder
     end
-    return remainder, twos, fives
+    return remainder, degree
+end
+
+function problem_func(n) 
+    return total(getdigits(n))
 end
 
 function fact(n) 
