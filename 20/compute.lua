@@ -5,10 +5,7 @@ function factsum(n)
     for i=1,n do
         local prevfact = fact
         fact = fact*i
-        print(i, total(getdigits(fact)))
-        if (i == 20) then
-             assert(total(getdigits(fact)), total(getdigits(fact/10)))
-        end
+        print(i, total(getdigits(fact)), total(getdigits(problem_equivalent(fact))))
         --assert(i == fact/prevfact)
     end
 end
@@ -36,19 +33,34 @@ function total(t)
     return reduce(t, function(a,b) return a+b end)
 end
 
-function factorby(n, p, max_degree) 
+function factorby(n, p) 
     degree = 0
     iterator = n
     while iterator % p == 0 do
         degree = degree + 1
         iterator = iterator / p
-        print(max_degree, degree, max_degree == degree)
-        if degree == max_degree then
-            break
-        end
     end
     return degree , iterator
 end
 
+function problem_equivalent(n) 
+    local fives, remainder = factorby(n, 5)
+    local twos, remainder = factorby(remainder, 2)
+    if fives > twos then
+        remainder = (5^(fives - twos)) * remainder
+    else
+        remainder = (2^(twos - fives)) * remainder
+    end
+    return remainder, twos, fives
+end
+
+function fact(n) 
+    if (n==1) then 
+        return 1
+    else
+        return n * fact(n-1)
+    end
+end
+
 num = tonumber(arg[1])
-print(factorby(arg[1], arg[2], tonumber(arg[3])))
+factsum(num)
