@@ -36,15 +36,19 @@ function total(t)
     return reduce(t, function(a,b) return a+b end)
 end
 
-function factorby(n, p) 
+function factorby(n, p, max_degree) 
     degree = 0
     iterator = n
     while iterator % p == 0 do
         degree = degree + 1
         iterator = iterator / p
+        print(max_degree, degree, max_degree == degree)
+        if degree == max_degree then
+            break
+        end
     end
     return degree , iterator
 end
 
 num = tonumber(arg[1])
-print(factorby(arg[1], arg[2]))
+print(factorby(arg[1], arg[2], tonumber(arg[3])))
