@@ -1,5 +1,6 @@
 #!/usr/bin/env lua
 
+require("pascal")
 
 function getdigits(num)
     local iterator = num
@@ -92,7 +93,13 @@ function problem_log(n)
 end
 
 num = tonumber(arg[1])
+--print(table.concat(pascal.divisibility_rule(num), " "))
+print(pascal.divisible({3,8,2,2,0},13))
+print(pascal.divisible({1,7,4,4,2},51))
+print(pascal.divisible({1,7,4,4,2},19))
+--[[
 for j=1,num do
     local sum = problem_effective(j)
     print(j, problem_bruteforce(j), sum, fact(j))
 end
+]]
