@@ -71,8 +71,6 @@ function problem_effective(n)
         fives = fives + p5
         factor = factor * remainder
     end
-    print(fives, twos, "degrees")
-    print("2^", (twos - fives), 2^15, factor)
     if fives > twos then
         factor = factor * (5^(fives - twos))
     else
@@ -89,7 +87,12 @@ function problem_bruteforce(n)
     return problem_func(fact)
 end
 
+function problem_log(n) 
+    
+end
+
 num = tonumber(arg[1])
-for j = num,num do
-    print(j, problem_bruteforce(j), problem_effective(j))
+for j=1,num do
+    local sum = problem_effective(j)
+    print(j, problem_bruteforce(j), sum, fact(j))
 end
