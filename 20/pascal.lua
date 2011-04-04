@@ -6,11 +6,7 @@ function pascal.divisibility_rule(m, len)
     len = len or m
     for j = 1,len do
         iterator = (10*r[#r]) % m
-        if iterator == r[1] or iterator == r[#r]  then
-            break
-        else
-            table.insert(r, iterator)
-        end
+        table.insert(r, iterator)
     end
     return r 
 end
