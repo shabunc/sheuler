@@ -14,10 +14,18 @@ function bignum.add(a, b)
     if #b > #a then
         a, b = b, a
     end
+    res = {}
+    for j = #b,1,-1 do
+       local sum =  bignum.adddigits(b[j],a[#a - j + 1])
+       table.insert(res, sum)
+    end
+    return res
 end
 
 function bignum.multiply(a, b)
 
 end
+
+bignum.add({1,2},{1,2})
 
 return bignum
