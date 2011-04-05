@@ -74,6 +74,35 @@ function recursive(t)
     return all
 end
 
+function next_permutation(permutation) 
+    local k, l
+    for j = 1, #permutation - 1 do 
+        if permutation[j] < permutation[j+1] then
+            k = j
+        end
+    end
+    if not k then
+        return false
+    end
+    for j = k + 1, #permutation do
+        if permutation[j] > permutation[k] then
+            l = j
+        end
+    end
+    local swap = permutation[k]
+    permutation[k] = permutation[l]
+    permutation[l] = swap
+    couroutine.yield(permutation)
+    local reverted_tail = {}
+    for j = k + 1, #permutation do
+        reverted_tail[#reverted_tail + 1] = table.remove(permutation)
+    end
+    for j = 1, #reverted_tail do
+        table.insert(reverted_tail[j])
+    end
+    couroutine.yield(permutation)
+end
+
 
 --dumb()
 perms = recursive({0,1,2,3,4,5,6,7,8,9})
