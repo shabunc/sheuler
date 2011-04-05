@@ -49,5 +49,33 @@ function dumb()
     end
 end
 
+function copy(t) 
+    local res = {}
+    for j in ipairs(t) do
+        res[j] = t[j]
+    end
+    return res
+end
 
-dumb()
+function recursive(t)
+    local all = {}
+    if #t == 1 then
+        return {t}
+    end 
+    for j in ipairs(t) do
+        local tail = copy(t)
+        local head = table.remove(tail, j)
+        local perms = recursive(tail)
+        for i in ipairs(perms) do
+            table.insert(perms[i], 1, head)
+            table.insert(all, perms[i])
+        end
+    end
+    return all
+end
+
+
+--dumb()
+perms = recursive({0,1,2,3,4,5,6,7,8,9})
+print(#perms)
+print(table.concat(perms[1000000]))
