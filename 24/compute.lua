@@ -128,5 +128,30 @@ function get_nth(initial, n)
     end
 end
 
+
+function factoradic(n)
+    local facts = {1}
+    local radix  = 1
+    while true do
+        radix = radix + 1
+        local next_fact = facts[#facts] * radix
+        if next_fact > n  then
+            break
+        end
+        facts[#facts + 1] = next_fact
+    end
+    local res = {}
+    for j=#facts, 1, -1 do
+       local digit = (n - n % facts[j]) / facts[j]
+       n = n % facts[j]
+       res[#res + 1] = digit
+    end
+    res[#res + 1] = 0
+    return res
+end
+
 --dumb()
-print(table.concat(get_nth({0,1,2,3,4,5,6,7,8,9}, 1000000)))
+print(table.concat(get_nth({0,1,2,3,4}, 100)))
+for j=0,120 do
+    --print(j, " ", table.concat(factoradic(j)," "))
+end
