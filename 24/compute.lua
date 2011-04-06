@@ -150,8 +150,15 @@ function factoradic(n)
     return res
 end
 
---dumb()
-print(table.concat(get_nth({0,1,2,3,4}, 100)))
-for j=0,120 do
-    --print(j, " ", table.concat(factoradic(j)," "))
+function lehrner(num_factoradic, t) 
+    local res = {}
+    local current_table = copy(t)
+    for j = 1, #num_factoradic do
+        res[#res + 1] = table.remove(current_table,num_factoradic[j] + 1)
+    end
+    return res
 end
+
+--dumb()
+--print(table.concat(get_nth({0,1,2,3,4}, 100)))
+print(table.concat(lehrner(factoradic(999999), {0,1,2,3,4,5,6,7,8,9})))
