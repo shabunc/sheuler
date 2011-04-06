@@ -104,20 +104,27 @@ function next_permutation(permutation)
         end
     end
     permutation[k], permutation[l] = permutation[l], permutation[k]
-    for j = k + 2, #permutation do
-        table.insert(permutation, k + 1, table.remove(permutation))
+    local reverted = {}
+    for j = #permutation, k + 1, -1  do
+        reverted[#reverted + 1] = table.remove(permutation)
+    end
+    for j = 1, #reverted do
+        table.insert(permutation, reverted[j])
     end
     coroutine.yield(permutation)
     return next_permutation(permutation)
 end
 
 --dumb()
-co = coroutine.wrap(function() return next_permutation({0,1,2,3}) end)
+co = coroutine.wrap(function() return next_permutation({0,1,2,3,4,5,6,7,8,9}) end)
 local permutation = co()
-local counter = 1
+counter = 1
 while permutation do
     counter = counter + 1
-    print(table.concat(permutation))
+    if counter == 1000000 then
+        print(table.concat(permutation), counter)
+        break
+    end
     permutation = co()
 end
 print(counter)
