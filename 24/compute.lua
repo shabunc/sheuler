@@ -74,6 +74,27 @@ function recursive(t)
     return all
 end
 
+function recursive2(t, from)
+    local all = {}
+    if from == #t then
+        --print(table.concat(t))
+        return t
+    end 
+    for j = from, #t do
+        local head = table.remove(t, j)
+        table.insert(t, 1, head)
+        local perms = recursive2(t, from + 1)
+        table.insert(t, j, table.remove(t, 1))
+        --[[
+        local head = table.remove(t, j)
+        table.insert(t, 0, head)
+        local perms = recursive2(t, from + 1)
+        table.insert(t, j, table.remove(t,0))
+        ]]
+    end
+    return {}
+end
+
 function next_permutation(permutation) 
     local k, l
     for j = 1, #permutation - 1 do 
@@ -84,27 +105,40 @@ function next_permutation(permutation)
     if not k then
         return false
     end
+    print("k is ", k, "a[k] is", permutation[k])
     for j = k + 1, #permutation do
         if permutation[j] > permutation[k] then
             l = j
         end
     end
-    local swap = permutation[k]
-    permutation[k] = permutation[l]
-    permutation[l] = swap
-    couroutine.yield(permutation)
+    l = k + 1
+    print("l is ", l, "a[l] is", permutation[l])
+    permutation[k], permutation[l] = permutation[l], permutation[k]
     local reverted_tail = {}
-    for j = k + 1, #permutation do
-        reverted_tail[#reverted_tail + 1] = table.remove(permutation)
+    if (k + 1) < #permutation then
+        for j = k + 1, #permutation do
+            reverted_tail[#reverted_tail + 1] = table.remove(permutation)
+        end
+        for j = #reverted_tail, 1, -1 do
+            table.insert(permutation, reverted_tail[j])
+        end
+        print("should yield ", table.concat(permutation))
     end
-    for j = 1, #reverted_tail do
-        table.insert(reverted_tail[j])
-    end
-    couroutine.yield(permutation)
+    coroutine.yield(permutation)
+    return next_permutation(permutation)
 end
 
-
 --dumb()
-perms = recursive({0,1,2,3,4,5,6,7,8,9})
+perms = recursive2({0,1,2,3,4,5,6,7,8,9}, 1)
 print(#perms)
-print(table.concat(perms[1000000]))
+--[[
+]]
+--[[
+co = coroutine.wrap(function() return next_permutation({1,2,3}) end)
+print("RESULT ", table.concat(co()," "))
+print("RESULT ", table.concat(co()," "))
+print("RESULT ", table.concat(co()," "))
+print("RESULT ", table.concat(co()," "))
+print("RESULT ", table.concat(co()," "))
+print("RESULT ", table.concat(co()," "))
+]]
