@@ -115,16 +115,18 @@ function next_permutation(permutation)
     return next_permutation(permutation)
 end
 
---dumb()
-co = coroutine.wrap(next_permutation)
-local permutation = co({0,1,2,3,4,5,6,7,8,9})
-counter = 1
-while permutation do
-    counter = counter + 1
-    if counter == 1000000 then
-        print(table.concat(permutation), counter)
-        break
+function get_nth(initial, n)
+    co = coroutine.wrap(next_permutation)
+    local permutation = co(initial)
+    counter = 1
+    while permutation do
+        counter = counter + 1
+        if counter == n then
+            return permutation
+        end
+        permutation = co()
     end
-    permutation = co()
 end
-print(counter)
+
+--dumb()
+print(table.concat(get_nth({0,1,2,3,4,5,6,7,8,9}, 1000000)))
