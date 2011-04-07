@@ -131,10 +131,8 @@ end
 
 function factoradic(n)
     local facts = {1}
-    local radix  = 1
     while true do
-        radix = radix + 1
-        local next_fact = facts[#facts] * radix
+        local next_fact = facts[#facts] * (#facts + 1)
         if next_fact > n  then
             break
         end
@@ -142,9 +140,9 @@ function factoradic(n)
     end
     local res = {}
     for j=#facts, 1, -1 do
-       local digit = (n - n % facts[j]) / facts[j]
-       n = n % facts[j]
-       res[#res + 1] = digit
+       local remainder = n % facts[j]
+       res[#res + 1] = (n - remainder) / facts[j]
+       n = remainder
     end
     res[#res + 1] = 0
     return res
