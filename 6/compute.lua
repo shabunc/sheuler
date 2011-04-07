@@ -7,14 +7,12 @@ function square_sums(n)
 end
 
 function sum_squares(n)
-    res = n * (n + 1) * (n +1) * 0.5
-    for j= 1, n do
-        res = res - (n + 1 - j) * j
-    end
+    res = n * (2*n + 1) * (n + 1) 
+    res = res / 6
     return res
 end
 
-function brute_force(n) 
+function diff(n) 
     return square_sums(n) - sum_squares(n)
 end
 
