@@ -29,14 +29,20 @@ end
 function shift(n)
     local len = math.floor(math.log10(n + 1))
     local deg = 10^len
-    local biggest = math.floor(n / deg) 
-    return (n - deg * math.floor(n / deg)) * 10 + biggest, biggest
+    local first_digit = math.floor(n / deg) 
+    local res = (n - deg * math.floor(n / deg)) * 10 + first_digit
+    if math.floor(math.log10(res + 1)) < len then
+        first_digit = 0
+    end
+    return res, first_digit
 end
 
 function shift_iterator(n) 
     return coroutine.wrap(function() 
         local turtle, hair = n, n
+        local counter = 1
         while true do
+            counter = counter + 1
             local first_digit
             turtle, first_digit  = shift(turtle)
             hair = shift(shift(hair))
@@ -79,10 +85,16 @@ function problem(n)
            if (p > n) then
                 break
            end
-           total = total + prime_is_cycle(p)
+           --print(p)
+           local res = prime_is_cycle(p)
+           if res > 0 then
+                print(p, res)
+           end
+           total = total + res
        end
     end
     print(total)
+    return total
 end
 
-problem(100)
+problem(1000000)
