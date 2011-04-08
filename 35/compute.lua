@@ -17,18 +17,6 @@ function is_prime(n)
     return true
 end
 
-function getdigits(num)
-    local iterator = num
-    local res = {}
-    for i = math.ceil(math.log10(num+1)) - 1,0,-1 do
-        local digit =  math.floor(iterator/(10^i))
-        table.insert(res, digit)
-        iterator = iterator - digit * 10^i
-    end
-    return res
-end
-
-
 function allprimes()
     local num = 3
     while true do
@@ -37,21 +25,47 @@ function allprimes()
     end
 end
 
-
 function problem(n)
     co = coroutine.wrap(allprimes)
     while true do
-       local num, is_prime  = co()
+       local p, is_prime  = co()
        if is_prime then
-            if (num < n) then
-                local digits = getdigits(num)
-                table.sort(digits)
-                print(table.concat(digits, " "))
-            else
+           if (p > n) then
                 break
-            end
+           end
        end
     end
 end
 
-problem(100)
+function shift(n)
+    local len = math.floor(math.log10(n + 1))
+    local deg = 10^len
+    local biggest = math.floor(n / deg) 
+    return (n - deg * math.floor(n / deg)) * 10 + biggest
+end
+
+function shift_iterator(n) 
+    return coroutine.wrap(function() 
+        local turtle, hair = n, n
+        local count = 0
+        while true do
+            count = count + 1
+            turtle = shift(turtle)
+            hair = shift(shift(hair))
+            coroutine.yield(turtle)
+            if turtle == hair then
+                break
+            end
+        end
+    end)
+end
+
+
+local next_shift  = shift_iterator(123123)
+while true do
+    local n = next_shift()
+    print(n)
+    if not n then
+        break
+    end
+end
