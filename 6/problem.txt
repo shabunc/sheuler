@@ -10,3 +10,7 @@ Find the difference between the sum of the squares of the first one hundred natu
 
 
 answer: 25164150
+
+
+An interesting fact related to this problem is that the difference between the square of the sum and the sum of the cubes is always 0, for any n: 
+(1+2+3+...+n)^2=(1^3)+(2^3)+(3^3)+...+(n^3)
