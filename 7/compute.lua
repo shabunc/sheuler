@@ -6,6 +6,7 @@ local primes = {
 }
 
 function is_prime(n) 
+    local sqr_n = math.sqrt(n)
     for p, v in pairs(primes.primes) do
         if (n % p == 0) then
             return false
@@ -17,8 +18,6 @@ function is_prime(n)
 end
 
 function problem(n)
-    --[[
-    ]]
     local num = 3
     while true do
         is_prime(num)
@@ -29,5 +28,5 @@ function problem(n)
     end
 end
 
-num = problem(10001)
-print(num)
+num, card = problem(3)
+print(num, card)
