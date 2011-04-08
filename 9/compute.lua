@@ -18,5 +18,5 @@ function problem(n)
 end
 
 
-a, b, c = problem(10000)
+a, b, c = problem(1000)
 print(a,b,c, a*b*c)
