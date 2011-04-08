@@ -28,17 +28,18 @@ end
 function problem(from, to) 
     local a,b
     local pal
+    local res = 0
     for j = from, to do
         for i = j, to do
             local is_pal
             is_pal, pal  = test_ab(j, i)
-            if is_pal then
+            if is_pal and pal > res then
                 a, b = j, i
+                res = pal
             end
         end
     end
-    print(pal)
-    return a, b, pal
+    return a, b, res
 end
 
 a, b, palindrome = problem(100, 999)
