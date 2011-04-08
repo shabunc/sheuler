@@ -29,17 +29,29 @@ function getdigits(num)
 end
 
 
-function problem(n)
+function allprimes()
     local num = 3
     while true do
-        if is_prime(num) then
-            if num > n then
-                return num
-            end
-        end
+        coroutine.yield(num, is_prime(num))
         num = num + 2
     end
 end
 
-result = problem(20)
-print(result)
+
+function problem(n)
+    co = coroutine.wrap(allprimes)
+    while true do
+       local num, is_prime  = co()
+       if is_prime then
+            if (num < n) then
+                local digits = getdigits(num)
+                table.sort(digits)
+                print(table.concat(digits, " "))
+            else
+                break
+            end
+       end
+    end
+end
+
+problem(100)
