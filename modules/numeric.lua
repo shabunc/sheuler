@@ -4,7 +4,7 @@ local primes = {
 
 }
 
-function divisors(n) 
+local function divisors(n) 
     local res = {}
     for j = 2, math.sqrt(n) do
         local skip = false
@@ -25,5 +25,14 @@ function divisors(n)
     return res
 end
 
+local function digits2num(t) 
+    local res = 0
+    for j = 1, #t do
+        res = res + 10^(#t - j) * t[j]
+    end
+    return res
+end
+
 numeric.divisors = divisors
+numeric.digits2num = digits2num 
 return numeric
