@@ -89,6 +89,7 @@ function recursive2(t, from)
 end
 
 function next_permutation(permutation) 
+    coroutine.yield(permutation)
     local k, l
     for j = 1, #permutation - 1 do 
         if permutation[j] < permutation[j+1] then
@@ -111,23 +112,8 @@ function next_permutation(permutation)
     for j = 1, #reverted do
         table.insert(permutation, reverted[j])
     end
-    coroutine.yield(permutation)
     return next_permutation(permutation)
 end
-
-function get_nth(initial, n)
-    co = coroutine.wrap(next_permutation)
-    local permutation = co(initial)
-    counter = 1
-    while permutation do
-        counter = counter + 1
-        if counter == n then
-            return permutation
-        end
-        permutation = co()
-    end
-end
-
 
 function factoradic(n)
     local facts = {1}
@@ -157,6 +143,13 @@ function lehrner(num_factoradic, t)
     return res
 end
 
---dumb()
---print(table.concat(get_nth({0,1,2,3,4}, 100)))
-print(table.concat(lehrner(factoradic(999999), {0,1,2,3,4,5,6,7,8,9})))
+function problem24(t)
+    local iterator = coroutine.wrap(function()return next_permutation(t) end)
+    while true do
+        local permutation = iterator()
+        if not permutation then break end
+        print(table.concat(permutation))
+    end
+end
+
+problem24({1,2,3,4})
