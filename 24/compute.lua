@@ -1,5 +1,9 @@
 #!/usr/bin/env lua
 
+package.path = package.path .. ";/Users/shabunc/mine/euler/modules/?.lua"
+
+require("permutations")
+
 function dumb()
     local a, b = 0, 9
     local NTH = 1000000
@@ -88,33 +92,6 @@ function recursive2(t, from)
     return {}
 end
 
-function next_permutation(permutation) 
-    coroutine.yield(permutation)
-    local k, l
-    for j = 1, #permutation - 1 do 
-        if permutation[j] < permutation[j+1] then
-            k = j
-        end
-    end
-    if not k then
-        return false
-    end
-    for j = k + 1, #permutation do
-        if permutation[j] > permutation[k] then
-            l = j
-        end
-    end
-    permutation[k], permutation[l] = permutation[l], permutation[k]
-    local reverted = {}
-    for j = #permutation, k + 1, -1  do
-        reverted[#reverted + 1] = table.remove(permutation)
-    end
-    for j = 1, #reverted do
-        table.insert(permutation, reverted[j])
-    end
-    return next_permutation(permutation)
-end
-
 function factoradic(n)
     local facts = {1}
     while true do
@@ -144,7 +121,8 @@ function lehrner(num_factoradic, t)
 end
 
 function problem24(t)
-    local iterator = coroutine.wrap(function()return next_permutation(t) end)
+    --local iterator = coroutine.wrap(function()return perm.next_lexicographic(t) end)
+    local iterator = perm.lexicographic_iterator(t)
     while true do
         local permutation = iterator()
         if not permutation then break end
