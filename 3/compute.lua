@@ -1,36 +1,31 @@
 #!/usr/bin/env lua
 
 local primes = {
- ["primes"] = {[2] = 1},
- ["sorted"] = {2}
- ["card"] = 1
+
 }
 
-function is_prime(n) 
-    local sqr_n = math.sqrt(n)
-    for p, v in pairs(primes.primes) do
-        if (n % p == 0) then
-            return false
+function divisors(n) 
+    local res = {}
+    for j = 2, math.sqrt(n) do
+        local skip = false
+        for p in pairs(primes) do
+            if j % p == 0 then
+                skip = true
+                res[p] = res[p] + 1
+                break
+            end
+        end
+        if not skip then
+            if n % j == 0 then
+                res[j] = 1
+                primes[j] = 1
+            end
         end
     end
-    primes.primes[n] = 1
-    table.insert(primes.sorted, 1, )
-    primes.card = primes.card + 1
-    return true
+    return res
 end
 
-function problem(n)
-    --[[
-    ]]
-    local num = 3
-    while true do
-        is_prime(num)
-        if primes.card == n then
-            return num, primes.card
-        end
-        num = num + 2
-    end
+d = divisors(600851475143)
+for k,v in pairs(d) do
+    print(k,v)
 end
-
-num, card = problem(3)
-print(num, card)
