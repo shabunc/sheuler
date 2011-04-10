@@ -36,6 +36,18 @@ local function digits2num(t)
     return res
 end
 
+local function num2digits(n)
+    local res = {}
+    local len = math.floor(math.log10(n+1))
+    for j = len - 1, 0, -1  do
+        local digit =  math.floor(n/(10^j))
+        table.insert(res, digit)
+        n = n - digit * 10^j
+    end
+    return res
+end
+
 numeric.divisors = divisors
 numeric.digits2num = digits2num 
+numeric.num2digits = num2digits
 return numeric
