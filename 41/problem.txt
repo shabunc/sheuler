@@ -4,3 +4,14 @@ Problem 41
 We shall say that an n-digit number is pandigital if it makes use of all the digits 1 to n exactly once. For example, 2143 is a 4-digit pandigital and is also prime.
 
 What is the largest n-digit pandigital prime that exists?
+
+
+Тут нас спасает снова самое простое и любимое мной из признаков деления -
+если число делится на 3, то и сумма его цифр тоже делится.
+
+Соответственно, нам нужно проверить n=7.
+Для красоты эксперимента будем итерироваться с конца.
+
+
+7652413 true
+
