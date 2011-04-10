@@ -121,7 +121,6 @@ function lehrner(num_factoradic, t)
 end
 
 function problem24(t)
-    --local iterator = coroutine.wrap(function()return perm.next_lexicographic(t) end)
     local iterator = perm.lexicographic_iterator(t)
     while true do
         local permutation = iterator()
