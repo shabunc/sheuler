@@ -27,6 +27,14 @@ local function reduce(a, reduce_func, initial_value)
     return res
 end
 
+local function map(a, map_func) 
+    local res = {}
+    for i, v in ipairs(a) do
+        table.insert(res, map_func(v, i))
+    end
+    return res
+end
+
 local function are_equal(a, b)
     if #a ~= #b then
         return false
@@ -41,6 +49,7 @@ end
 
 array.join = join
 array.copy = copy
+array.map = map
 array.reduce = reduce
 array.are_equal = are_equal
 return array
