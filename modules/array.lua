@@ -11,7 +11,7 @@ local function join(a, b)
     return a
 end
 
-local function copy(a) 
+local function copy(t) 
     local res = {}
     for j in ipairs(t) do
         res[j] = t[j]
@@ -27,7 +27,20 @@ local function reduce(a, reduce_func, initial_value)
     return res
 end
 
+local function are_equal(a, b)
+    if #a ~= #b then
+        return false
+    end
+    for i in ipairs(a) do
+       if a[i] ~= b[i] then
+            return false
+       end
+    end
+    return true
+end
+
 array.join = join
 array.copy = copy
 array.reduce = reduce
+array.are_equal = are_equal
 return array
