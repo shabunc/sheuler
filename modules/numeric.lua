@@ -47,7 +47,34 @@ local function num2digits(n)
     return res
 end
 
+local function combinations(k, t, k_caller) 
+    if k == 0 then
+        return {{}}
+    end
+    local res = {}
+    for i, head in ipairs(t) do
+        local tail = copy(t)
+        table.remove(tail, i)
+        local combs = combinations(k - 1, tail, k)
+        for j, comb in ipairs(combs) do
+            table.insert(comb, 1, head)
+            table.insert(res, comb)
+            if k == k_caller then
+                coroutine.yield(comb)
+            end
+        end
+    end
+    if k ~= k_caller then
+        return res
+    end
+end
+
+local function combinations_iterator(k,t) 
+    return coroutine.wrap(function() return combinations(k, t, k) end)
+end
+
 numeric.divisors = divisors
 numeric.digits2num = digits2num 
 numeric.num2digits = num2digits
+numeric.combinations_iterator = combinations_iterator
 return numeric

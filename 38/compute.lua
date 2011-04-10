@@ -1,5 +1,10 @@
 #!/usr/bin/env lua
 
+package.path = package.path .. ";/Users/shabunc/mine/euler/modules/?.lua"
+
+require("numeric")
+require("array")
+
 function copy(t) 
     local res = {}
     for j in ipairs(t) do
@@ -8,21 +13,37 @@ function copy(t)
     return res
 end
 
-function combinations(k, t) 
-    if k == 0 then
-        return {{}}
+co = numeric.combinations_iterator(4, {1,2,3,4,5,6,7,8,9})
+while true do
+    local comb = co()
+    if not comb then
+        break
     end
-    local res = {}
-    for i, head in ipairs(t) do
-        local tail = copy(t)
-        table.remove(tail, i)
-        local combs = combinations(k - 1, tail)
-        for j, comb in ipairs(combs) do
-            table.insert(comb, 1, head)
-            table.insert(res, comb)
+    local res = copy(comb)
+    local n = numeric.digits2num(comb)
+    local iterator = n
+    local found = false
+    times = 1
+    while true do
+        times = times + 1
+        iterator = times * n
+        local digs  = numeric.num2digits(iterator)
+        array.join(res, numeric.num2digits(iterator))
+        if #res > 9 then
+            break
+        end
+        if #res == 9 then
+            found = true
+            break
         end
     end
-    return res
+    if found then
+        local sorted = copy(res)
+        table.sort(sorted)
+        if sorted[1] ~= 0 then
+            if numeric.digits2num(sorted) == 123456789 then
+                print(table.concat(res))
+            end
+        end
+    end
 end
-
-combs = combinations(3,{1,2,3,4,5,6,7,8,9})
