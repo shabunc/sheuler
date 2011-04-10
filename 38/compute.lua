@@ -5,21 +5,13 @@ package.path = package.path .. ";/Users/shabunc/mine/euler/modules/?.lua"
 require("numeric")
 require("array")
 
-function copy(t) 
-    local res = {}
-    for j in ipairs(t) do
-        res[j] = t[j]
-    end
-    return res
-end
-
 co = numeric.combinations_iterator(4, {1,2,3,4,5,6,7,8,9})
 while true do
     local comb = co()
     if not comb then
         break
     end
-    local res = copy(comb)
+    local res = array.copy(comb)
     local n = numeric.digits2num(comb)
     local iterator = n
     local found = false
@@ -38,7 +30,7 @@ while true do
         end
     end
     if found then
-        local sorted = copy(res)
+        local sorted = array.copy(res)
         table.sort(sorted)
         if sorted[1] ~= 0 then
             if numeric.digits2num(sorted) == 123456789 then

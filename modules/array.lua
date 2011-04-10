@@ -19,6 +19,15 @@ local function copy(a)
     return res
 end
 
+local function reduce(a, reduce_func, initial_value)
+    local res = initial_value or 0
+    for i, v in ipairs(a) do
+        res = reduce_func(res, v)
+    end
+    return res
+end
+
 array.join = join
 array.copy = copy
+array.reduce = reduce
 return array
