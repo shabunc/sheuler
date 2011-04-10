@@ -38,7 +38,7 @@ end
 
 local function num2digits(n)
     local res = {}
-    local len = math.floor(math.log10(n+1))
+    local len = math.floor(math.log10(n))
     for j = len, 0, -1  do
         local digit =  math.floor(n/(10^j))
         table.insert(res, digit)
