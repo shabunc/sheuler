@@ -73,6 +73,7 @@ end
 
 local function next_integer(t) 
     local res = array.copy(t)
+    coroutine.yield(res)
     local i = #res - 1
     if res[#res] ~= 9 then
         res[#res] = res[#res] + 1
@@ -88,7 +89,11 @@ local function next_integer(t)
             res[i] = res[i] + 1
         end
     end
-    return res
+    next_integer(res)
+end
+
+local function integer_iterator(t)
+    return coroutine.wrap(function() return next_integer(t) end)
 end
 
 local function combinations_iterator(k,t) 
@@ -100,4 +105,5 @@ numeric.digits2num = digits2num
 numeric.num2digits = num2digits
 numeric.combinations_iterator = combinations_iterator
 numeric.next_integer = next_integer
+numeric.integer_iterator = integer_iterator
 return numeric
