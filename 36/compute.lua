@@ -10,7 +10,7 @@ function bin_palindroms(n, n_caller)
     end
     local res = {}
     for j = 1, n-1 do
-        pals = bin_palindroms(n - j)
+        pals = bin_palindroms(n - j, n_caller)
         for _,p in ipairs(pals) do
             table.insert(p, 1, 1)
             table.insert(p, 1)
@@ -35,11 +35,22 @@ function bin_pal_iterator(n)
     end)
 end
 
-local pals = bin_pal_iterator(3)
+function is_pal(t) 
+    for j = 1, math.floor(#t/2) do
+        if t[j] ~= t[#t - j + 1] then
+            return false
+        end
+    end
+    return true
+end
+
+---[[
+local pals = bin_pal_iterator(4)
 while true do
     p = pals()
     if not p then
         break
     end
-    print(table.concat(p), numeric.digits2num(p,2))
+    print(table.concat(p), numeric.digits2num(p,2), is_pal(p))
 end
+--]]
