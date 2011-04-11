@@ -4,7 +4,7 @@ package.path = package.path .. ";/Users/shabunc/mine/euler/modules/?.lua"
 require("numeric")
 require("array")
 
-function bin_palindroms(n) 
+function bin_palindroms(n, n_caller) 
     if n == 1 then
         return {{0}, {1}}
     end
@@ -19,12 +19,27 @@ function bin_palindroms(n)
                 table.insert(p, #p, 0)
             end
             table.insert(res, p)
+            if n_caller == n then
+                coroutine.yield(p)
+            end
         end
     end
-    return res
+    if n_caller ~= n then
+        return res
+    end
 end
 
-local p = bin_palindroms(21) 
-for i, v in pairs(p) do
-    print(table.concat(v))
+function bin_pal_iterator(n) 
+    return coroutine.wrap(function() 
+        return bin_palindroms(n,n)
+    end)
+end
+
+local pals = bin_pal_iterator(3)
+while true do
+    p = pals()
+    if not p then
+        break
+    end
+    print(table.concat(p), numeric.digits2num(p,2))
 end

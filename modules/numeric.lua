@@ -30,10 +30,11 @@ local function divisors(n)
     return res, is_prime
 end
 
-local function digits2num(t) 
+local function digits2num(t, base) 
+    base = base or 10
     local res = 0
     for j = 1, #t do
-        res = res + 10^(#t - j) * t[j]
+        res = res + base^(#t - j) * t[j]
     end
     return res
 end
