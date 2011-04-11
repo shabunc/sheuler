@@ -1,3 +1,5 @@
+require("array")
+
 numeric = {}
 
 local primes = {
@@ -69,6 +71,26 @@ local function combinations(k, t, k_caller)
     end
 end
 
+local function next_integer(t) 
+    local res = array.copy(t)
+    local i = #res - 1
+    if res[#res] ~= 9 then
+        res[#res] = res[#res] + 1
+    else
+        res[#res] = 0
+        while res[i] == 9 do
+            res[i] = 0
+            i = i - 1
+        end
+        if i == 0 then
+            table.insert(res, 1, 1)
+        else
+            res[i] = res[i] + 1
+        end
+    end
+    return res
+end
+
 local function combinations_iterator(k,t) 
     return coroutine.wrap(function() return combinations(k, t, k) end)
 end
@@ -77,4 +99,5 @@ numeric.divisors = divisors
 numeric.digits2num = digits2num 
 numeric.num2digits = num2digits
 numeric.combinations_iterator = combinations_iterator
+numeric.next_integer = next_integer
 return numeric
