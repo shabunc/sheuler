@@ -71,7 +71,7 @@ local function combinations(k, t, k_caller)
     end
 end
 
-local function next_integer(t) 
+local function next_integer(t, n) 
     local res = array.copy(t)
     coroutine.yield(res)
     local i = #res - 1
@@ -89,11 +89,22 @@ local function next_integer(t)
             res[i] = res[i] + 1
         end
     end
-    next_integer(res)
+    return res
 end
 
-local function integer_iterator(t)
-    return coroutine.wrap(function() return next_integer(t) end)
+local function integer_iterator(t, n)
+    return coroutine.wrap(function() 
+        local iterator = t
+        while true do
+             iterator = next_integer(iterator)
+             if n then
+                 n = n - 1
+                 if n == -1 then
+                    break
+                 end
+             end
+        end
+    end)
 end
 
 local function combinations_iterator(k,t) 
