@@ -8,3 +8,18 @@ The product 7254 is unusual, as the identity, 39*186 = 7254, containing multipli
 Find the sum of all products whose multiplicand/multiplier/product identity can be written as a 1 through 9 pandigital.
 
 HINT: Some products can be obtained in more than one way so be sure to only include it once in your sum.
+
+
+Плохо, но ничего изящней практически брутфорса пока не придумалось
+
+localhost:32(master) shabunc$ time ./compute.lua 
+7632
+7852
+6952
+7254
+5346
+5796
+4396
+===
+45228
+
