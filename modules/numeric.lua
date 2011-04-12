@@ -72,15 +72,17 @@ local function combinations(k, t, k_caller)
     end
 end
 
-local function next_integer(t, n) 
+local function next_integer(t, base) 
+    base = base or 10
+    local max_digit = base - 1
     local res = array.copy(t)
     coroutine.yield(res)
     local i = #res - 1
-    if res[#res] ~= 9 then
+    if res[#res] ~= max_digit then
         res[#res] = res[#res] + 1
     else
         res[#res] = 0
-        while res[i] == 9 do
+        while res[i] == max_digit do
             res[i] = 0
             i = i - 1
         end
@@ -93,17 +95,11 @@ local function next_integer(t, n)
     return res
 end
 
-local function integer_iterator(t, n)
+local function integer_iterator(t, base)
     return coroutine.wrap(function() 
         local iterator = t
         while true do
-             iterator = next_integer(iterator)
-             if n then
-                 n = n - 1
-                 if n == -1 then
-                    break
-                 end
-             end
+             iterator = next_integer(iterator, base)
         end
     end)
 end
