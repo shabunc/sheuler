@@ -4,6 +4,7 @@ package.path = package.path .. ";/Users/shabunc/mine/euler/modules/?.lua"
 require("numeric")
 require("array")
 
+--нечётные палиндромы, но вообще фиг с ними
 function bin_palindroms(n, n_caller) 
     if n == 1 then
         return {{0}, {1}}
@@ -44,13 +45,45 @@ function is_pal(t)
     return true
 end
 
----[[
-local pals = bin_pal_iterator(4)
+function palindrom_generator(n) 
+    if n == 0 then
+        return {{}}
+    end
+    if n == 1 then
+        return {{0},{1}}
+    end
+    if n % 2 == 0 then
+        local seq_iterator = numeric.integer_iterator({0}, 2) 
+        local len =  (n - 2) / 2
+        while true do
+            local seq = seq_iterator()
+            if #seq > len then
+                break
+            end
+            local res = {1, 1}
+            for j = 1, #seq do
+                table.insert(res, j + 1, seq[j]) 
+                table.insert(res, #res - j, seq[j]) 
+            end
+            if #seq == len then
+                print(table.concat(res))
+            end
+        end
+    else
+    end 
+end
+
+palindrom_generator(8)
+
+--[[
+local pals = numeric.integer_iterator({0}, 3)
+local count = 0
 while true do
     p = pals()
-    if not p then
+    if count > 30 then
         break
     end
-    print(table.concat(p), numeric.digits2num(p,2), is_pal(p))
+    count = count + 1
+    print(table.concat(p))
 end
---]]
+]]
