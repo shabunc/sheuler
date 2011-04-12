@@ -59,6 +59,13 @@ function palindrom_generator(n)
     if n == 1 then
         coroutine.yield({1})
     end
+    if n == 2 then
+        coroutine.yield({1,1})
+    end
+    if n == 3 then
+        coroutine.yield({1,0,1})
+        coroutine.yield({1,1,1})
+    end
     if n % 2 == 0 then
         local seq_iterator = numeric.integer_iterator({0}, 2) 
         local len =  (n - 2) / 2
@@ -88,7 +95,7 @@ function palindrom_generator(n)
                 break
             end
             local res = {1, 1}
-            for j = 1, #seq do
+            for j = 1, len  do
                 table.insert(res, j + 1, seq[j]) 
                 table.insert(res, #res - j, seq[j]) 
             end
@@ -150,5 +157,5 @@ function bruteforce(n)
     return total
 end
 
---problem36(20)
-bruteforce(20)
+problem36(20)
+--bruteforce(20)
