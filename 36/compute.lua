@@ -46,6 +46,13 @@ function is_pal(t)
 end
 
 function palindrom_generator(n) 
+    local invert = function(t) 
+        res = array.copy(t)
+        for j = 2, #res - 1 do
+            res[j] = (res[j] + 1) % 2
+        end
+        return res
+    end
     if n == 0 then
         return {{}}
     end
@@ -67,6 +74,9 @@ function palindrom_generator(n)
             end
             if #seq == len then
                 coroutine.yield(res)
+                if len > 1 then
+                    coroutine.yield(invert(res))
+                end
             end
         end
     else
@@ -85,9 +95,11 @@ function palindrom_generator(n)
             if #seq == len then
                 table.insert(res, #res/2 + 1, 0)
                 coroutine.yield(res)
+                coroutine.yield(invert(res))
                 table.remove(res, #res/2 + 1)
                 table.insert(res, #res/2 + 1, 1)
                 coroutine.yield(res)
+                coroutine.yield(invert(res))
             end
         end
     end 
@@ -99,6 +111,7 @@ end
 
 
 function problem36(n)
+    local total = 0
     for j = 1, n do 
         local pals = palindrom_iterator(j)
         while true do
@@ -108,9 +121,34 @@ function problem36(n)
             end
             local num10 = numeric.digits2num(pal, 2)
             local digits = numeric.num2digits(num10)
+            if is_pal(digits) then
+                total = total + num10
+                print(table.concat(pal), table.concat(digits))
+            end
+        end
+    end
+    print(total)
+    return total
+end
+
+function bruteforce(n)
+    local total = 0
+    local pals = numeric.integer_iterator({0}, 2)
+    while true do
+        local pal = pals()
+        if #pal > 20 then
+            break
+        end
+        local num10 = numeric.digits2num(pal, 2)
+        local digits = numeric.num2digits(num10)
+        if is_pal(digits) and is_pal(pal) then
+            total = total + num10
             print(table.concat(pal), table.concat(digits))
         end
     end
+    print("total ", total)
+    return total
 end
 
-problem36(19)
+--problem36(20)
+bruteforce(20)
