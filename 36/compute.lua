@@ -50,7 +50,7 @@ function palindrom_generator(n)
         return {{}}
     end
     if n == 1 then
-        return {{0},{1}}
+        coroutine.yield({1})
     end
     if n % 2 == 0 then
         local seq_iterator = numeric.integer_iterator({0}, 2) 
@@ -66,24 +66,51 @@ function palindrom_generator(n)
                 table.insert(res, #res - j, seq[j]) 
             end
             if #seq == len then
-                print(table.concat(res))
+                coroutine.yield(res)
             end
         end
     else
+        local seq_iterator = numeric.integer_iterator({0}, 2)
+        local len = math.floor((n - 2)/2)
+        while true do
+            local seq = seq_iterator()
+            if #seq > len then
+                break
+            end
+            local res = {1, 1}
+            for j = 1, #seq do
+                table.insert(res, j + 1, seq[j]) 
+                table.insert(res, #res - j, seq[j]) 
+            end
+            if #seq == len then
+                table.insert(res, #res/2 + 1, 0)
+                coroutine.yield(res)
+                table.remove(res, #res/2 + 1)
+                table.insert(res, #res/2 + 1, 1)
+                coroutine.yield(res)
+            end
+        end
     end 
 end
 
-palindrom_generator(8)
-
---[[
-local pals = numeric.integer_iterator({0}, 3)
-local count = 0
-while true do
-    p = pals()
-    if count > 30 then
-        break
-    end
-    count = count + 1
-    print(table.concat(p))
+function palindrom_iterator(n) 
+    return coroutine.wrap(function() return palindrom_generator(n) end)
 end
-]]
+
+
+function problem36(n)
+    for j = 1, n do 
+        local pals = palindrom_iterator(j)
+        while true do
+            local pal = pals()
+            if not pal then 
+                break
+            end
+            local num10 = numeric.digits2num(pal, 2)
+            local digits = numeric.num2digits(num10)
+            print(table.concat(pal), table.concat(digits))
+        end
+    end
+end
+
+problem36(19)
