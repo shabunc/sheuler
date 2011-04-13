@@ -47,9 +47,18 @@ local function are_equal(a, b)
     return true
 end
 
+local function are_permutations(a, b)
+    local sa = array.copy(a)
+    local sb = array.copy(b)
+    table.sort(sa)
+    table.sort(sb)
+    return are_equal(sa, sb)
+end
+
 array.join = join
 array.copy = copy
 array.map = map
 array.reduce = reduce
 array.are_equal = are_equal
+array.are_permutations = are_permutations
 return array
