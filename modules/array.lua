@@ -55,10 +55,20 @@ local function are_permutations(a, b)
     return are_equal(sa, sb)
 end
 
+local function sub(a, from, to)
+    to = to or #a
+    local res = {}
+    for j = from, to do
+        table.insert(res, a[j])
+    end
+    return res
+end
+
 array.join = join
 array.copy = copy
 array.map = map
 array.reduce = reduce
 array.are_equal = are_equal
 array.are_permutations = are_permutations
+array.sub = sub
 return array
