@@ -28,5 +28,5 @@ function problem(n)
     end
 end
 
-num, card = problem(3)
+num, card = problem(10001)
 print(num, card)
