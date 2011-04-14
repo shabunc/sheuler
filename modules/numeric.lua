@@ -108,10 +108,43 @@ local function combinations_iterator(k,t)
     return coroutine.wrap(function() return combinations(k, t, k) end)
 end
 
+local function partitions_generator(n, t, from, inner) 
+    local rem = n / t[from]
+    local res = {}
+    if from == #t then
+        if n % t[from] == 0 then
+            return {{{t[from], n / t[from]}}}
+        else
+            return false
+        end 
+    end
+    for j = 0, math.floor(rem) do
+        local head = {j, t[from]}
+        local ps = partitions_generator(n - t[from] * j, t, from + 1, true)
+        if ps then 
+            for _, p in ipairs(ps) do
+                table.insert(p, 1, head)
+                table.insert(res, p)
+                if not inner then
+                    coroutine.yield(p)
+                end
+            end
+        end
+    end
+    if inner then
+        return res
+    end
+end
+
+local function partitions_iterator(n, t)
+    return coroutine.wrap(function() return partitions_generator(n, t, 1) end)
+end
+
 numeric.divisors = divisors
 numeric.digits2num = digits2num 
 numeric.num2digits = num2digits
 numeric.combinations_iterator = combinations_iterator
 numeric.next_integer = next_integer
 numeric.integer_iterator = integer_iterator
+numeric.partitions_iterator =  partitions_iterator
 return numeric
