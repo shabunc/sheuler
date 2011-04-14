@@ -7,28 +7,27 @@ local primes = {
 
 }
 
-local function divisors(n) 
-    local res = {}
-    local is_prime = true
-    for j = 2, math.sqrt(n) do
-        local skip = false
-        for p in pairs(res) do
-            if j % p == 0 then
-                skip = true
-                res[p] = res[p] + 1
-                is_prime = false
-                break
-            end
-        end
-        if not skip then
+local function is_prime(n) 
+    if n == 2 then
+        return true
+    end
+    if n % 2 == 0 then
+        return false
+    end
+    local lim = math.sqrt(n)
+    local sieve = {}
+    for j = 3, lim, 2 do
+        if not sieve[j] then
             if n % j == 0 then
-                res[j] = 1
-                primes[j] = 1
-                is_prime = false
+                return false
+            else
+               for k = 1, math.floor(lim / j) do
+                    sieve[j*k] = 1
+               end
             end
         end
     end
-    return res, is_prime
+    return true
 end
 
 local function digits2num(t, base) 
@@ -150,7 +149,7 @@ local function partitions_iterator(n, t)
     return coroutine.wrap(function() return partitions_generator(n, t, 1) end)
 end
 
-numeric.divisors = divisors
+numeric.is_prime = is_prime
 numeric.digits2num = digits2num 
 numeric.num2digits = num2digits
 numeric.combinations_iterator = combinations_iterator

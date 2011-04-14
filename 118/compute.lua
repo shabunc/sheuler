@@ -4,7 +4,6 @@ package.path = package.path .. ";../modules/?.lua"
 require("numeric")
 require("array")
 require("permutations")
-require("primes")
 
 function is_prime(n)
     for j = 3, math.sqrt(n), 2 do
@@ -67,8 +66,7 @@ function prime_set(n)
                 if not member then
                     break
                 end
-                --print(numeric.digits2num(member), primes[numeric.digits2num(member)])
-                if not primes[numeric.digits2num(member)] then
+                if not numeric.is_prime(numeric.digits2num(member)) then
                     found = false
                     break
                 end
@@ -87,3 +85,13 @@ function prime_set(n)
 end
 
 prime_set(9)
+--[[
+local total = 0
+for j = 2, 100 do 
+    if numeric.is_prime(j) then
+        print(j)
+        total = total + 1
+    end
+end
+]]
+print(total)
