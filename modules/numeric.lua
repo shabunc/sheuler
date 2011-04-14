@@ -109,6 +109,14 @@ local function combinations_iterator(k,t)
     return coroutine.wrap(function() return combinations(k, t, k) end)
 end
 
+local serialize_partition = function(t)
+    local s = ""
+    for i, v in ipairs(t) do
+        s = s  .. v[1] .. "*" .. v[2] .. " "
+    end
+    return s
+end
+
 local function partitions_generator(n, t, from, inner) 
     local rem = n / t[from]
     local res = {}
@@ -127,6 +135,7 @@ local function partitions_generator(n, t, from, inner)
                 table.insert(p, 1, head)
                 table.insert(res, p)
                 if not inner then
+                    setmetatable(p, { __tostring = serialize_partition })
                     coroutine.yield(p)
                 end
             end
