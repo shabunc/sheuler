@@ -4,8 +4,7 @@ package.path = package.path .. ";../modules/?.lua"
 require("numeric")
 require("array")
 require("permutations")
-
-local primes = {[2] = 1}
+require("primes")
 
 function is_prime(n)
     for j = 3, math.sqrt(n), 2 do
@@ -31,11 +30,13 @@ function problem118(n, t)
     return total
 end
 
-function part_string_generator(s, parts) 
+function part_string_generator(a, parts) 
     for _, p in pairs(parts) do
-        for j = 1, p[2] do
-            coroutine.yield(s:sub(1, p[1]))
-            s = s:sub(p[1] + 1)
+        if p[1] ~= 0 then
+            for j = 1, p[2] do
+                coroutine.yield(array.sub(a, 1, p[1]))
+                a = array.sub(a, p[1] + 1)
+            end
         end
     end
 end
@@ -46,6 +47,7 @@ end
 
 function prime_set(n)
     local lex = perm.lexicographic_iterator({1,2,3,4,5,6,7,8,9})
+    local total = 0
     while true do
         local seq = lex()
         if not seq then
@@ -54,28 +56,34 @@ function prime_set(n)
         local parts = numeric.partitions_iterator(n, {9,8,7,6,5,4,3,2,1})
         while true do 
             local part = parts()
+            local found = true
             if not part then
                 break
             end
-            print(seq)
+            local set = part_string_iterator(seq, part)
+            local s = ""
+            while true do
+                local member = set()
+                if not member then
+                    break
+                end
+                --print(numeric.digits2num(member), primes[numeric.digits2num(member)])
+                if not primes[numeric.digits2num(member)] then
+                    found = false
+                    break
+                end
+                if #member > 0 then
+                    s = s .. ":" ..(table.concat(member))
+                end
+            end
+            if found then
+                print(table.concat(seq), part, s)
+                total = total + 1
+            end
         end
     end
+    print("TOTAL", total)
+    return total
 end
 
-local ps = part_string_iterator("abcdefghijk", {{3,2}, {2,2}})
-while true do
-    local p = ps()
-    if not p then
-        break
-    end
-    print(p)
-end
-
---[[
-prime_set(5)
-problem118(9, {9,8,7,6,5,4,3,2,1})
-problem118(8, {9,8,7,6,5,4,3,2,1})
-problem118(7, {9,8,7,6,5,4,3,2,1})
-problem118(6, {9,8,7,6,5,4,3,2,1})
-problem118(5, {9,8,7,6,5,4,3,2,1})
-]]
+prime_set(9)
