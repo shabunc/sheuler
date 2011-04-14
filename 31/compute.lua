@@ -35,26 +35,26 @@ end
 
 function partitions_iterator(n,t) return coroutine.wrap(function() return partitions(n, t, 1) end)end
 
-local iterator = partitions_iterator(200, {200,100, 50, 20, 10, 5, 2, 1}, 1)
-local total = 0
-while true do
-    local p = iterator()
-    if not p then 
-        break
+function problem31(n, t)
+    local iterator = partitions_iterator(n, t, 1)
+    local total = 0
+    while true do
+        local p = iterator()
+        if not p then 
+            break
+        end
+        local s = ""
+        local check = 0
+        total = total + 1
+        for i, v in ipairs(p) do
+            s = s.." "..v[1].."*"..v[2] 
+            check = check + v[1] * v[2]
+        end
+        print(s, check)
+        assert(check == n)
     end
-    local s = ""
-    total = total + #p
-    for i, v in ipairs(p) do
-        s = s.." "..v[1].."*"..v[2] 
-    end
-    print(s)
+    print(total)
+    return total
 end
-print(total)
-return total
---[[
-for _, p in ipairs(p) do
-    for _, v in ipairs(p) do
-        print(v)
-    end
-end
-]]
+
+problem31(200, {200, 100, 50, 20, 10, 5, 2, 1})
