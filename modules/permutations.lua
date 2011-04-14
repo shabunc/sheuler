@@ -1,6 +1,15 @@
 perm = {}
 
+local metas = {
+    simple_string = {
+        __tostring = function(t) 
+            return table.concat(t)
+        end
+    }
+}
+
 local function next_lexicographic(permutation)
+    setmetatable(permutation, metas.simple_string)
     coroutine.yield(permutation)
     local k, l
     for j = 1, #permutation - 1 do 
@@ -28,6 +37,7 @@ local function next_lexicographic(permutation)
 end
 
 local function prev_lexicographic(permutation)
+    setmetatable(permutation, metas.simple_string)
     coroutine.yield(permutation)
     local k, l
     for j = 1, #permutation - 1 do 

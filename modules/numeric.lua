@@ -1,5 +1,6 @@
 require("array")
 
+
 numeric = {}
 
 local primes = {

@@ -1,8 +1,9 @@
 #!/usr/bin/env lua
-package.path = package.path .. ";/Users/shabunc/mine/euler/modules/?.lua"
+package.path = package.path .. ";../modules/?.lua"
 
 require("numeric")
 require("array")
+require("permutations")
 
 local primes = {[2] = 1}
 
@@ -30,8 +31,30 @@ function problem118(n, t)
     return total
 end
 
+function prime_set(n)
+    local lex = perm.lexicographic_iterator({1,2,3,4,5,6,7,8,9})
+    while true do
+        local seq = lex()
+        if not seq then
+            break
+        end
+        local parts = numeric.partitions_iterator(n, {9,8,7,6,5,4,3,2,1})
+        while true do 
+            local part = parts()
+            if not part then
+                break
+            end
+            print(seq)
+        end
+    end
+end
+
+prime_set(5)
+
+--[[
 problem118(9, {9,8,7,6,5,4,3,2,1})
 problem118(8, {9,8,7,6,5,4,3,2,1})
 problem118(7, {9,8,7,6,5,4,3,2,1})
 problem118(6, {9,8,7,6,5,4,3,2,1})
 problem118(5, {9,8,7,6,5,4,3,2,1})
+]]
