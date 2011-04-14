@@ -31,6 +31,19 @@ function problem118(n, t)
     return total
 end
 
+function part_string_generator(s, parts) 
+    for _, p in pairs(parts) do
+        for j = 1, p[2] do
+            coroutine.yield(s:sub(1, p[1]))
+            s = s:sub(p[1] + 1)
+        end
+    end
+end
+
+function part_string_iterator(s, parts) 
+    return coroutine.wrap(function() return part_string_generator(s, parts) end)
+end
+
 function prime_set(n)
     local lex = perm.lexicographic_iterator({1,2,3,4,5,6,7,8,9})
     while true do
@@ -49,9 +62,17 @@ function prime_set(n)
     end
 end
 
-prime_set(5)
+local ps = part_string_iterator("abcdefghijk", {{3,2}, {2,2}})
+while true do
+    local p = ps()
+    if not p then
+        break
+    end
+    print(p)
+end
 
 --[[
+prime_set(5)
 problem118(9, {9,8,7,6,5,4,3,2,1})
 problem118(8, {9,8,7,6,5,4,3,2,1})
 problem118(7, {9,8,7,6,5,4,3,2,1})
