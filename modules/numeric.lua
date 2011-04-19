@@ -74,10 +74,7 @@ end
 
 local function mcombinations_generator(ks, t, k, nk, inner)
     if nk > #ks then
-        return {{}}
-    end
-    if ks[nk] == 0 then
-        return mcombinations_generator(ks, t, k, nk + 1, true)
+        return {{{}}}
     end
     local res = {}
     local cks  = array.copy(ks)
@@ -85,8 +82,15 @@ local function mcombinations_generator(ks, t, k, nk, inner)
     for j = 1, #t do 
         local tail = array.copy(t)
         local head = table.remove(tail, j)
+        local edge = false
+        if cks[nk] == 1 then
+            edge = true    
+        end
+        if cks[nk] == 0 then
+            nk = nk + 1
+        end
         local mcombs = mcombinations_generator(cks, tail, k, nk, true)
-        for j, comb in ipairs(mcombs) do
+        for j, comb in ipairs(mcombs[#mcombs]) do
             table.insert(comb, 1, head)
             table.insert(res, comb)
             if not inner then

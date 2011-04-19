@@ -60,23 +60,33 @@ function prime_set(n)
                 break
             end
             local set = part_string_iterator(seq, part)
-            local s = ""
+            local ss = {}
             while true do
                 local member = set()
                 if not member then
                     break
                 end
-                if not numeric.is_prime(numeric.digits2num(member)) then
+                local num = numeric.digits2num(member)
+                if not numeric.is_prime(num) then
                     found = false
                     break
                 end
                 if #member > 0 then
-                    s = s .. ":" ..(table.concat(member))
+                    table.insert(ss, num)
                 end
             end
             if found then
-                print(table.concat(seq), part, s)
-                total = total + 1
+                local is_asc = true
+                for j = 2, #ss do
+                    if ss[j] < ss[j-1] then
+                        is_asc = false
+                        break
+                    end
+                end
+                if is_asc  then
+                    print(table.concat(seq), part, table.concat(ss,":"), is_asc)
+                    total = total + 1
+                end
             end
         end
     end
@@ -85,7 +95,19 @@ function prime_set(n)
 end
 
 prime_set(9)
+
 --[[
+local miterator = numeric.mcombinations_iterator({1},{2,3,4})
+while true do
+    local seq = miterator()
+    if not seq then
+        break
+    end
+    print(#seq, table.concat(seq))
+end
+]]
+--[[
+prime_set(9)
 local total = 0
 for j = 2, 100 do 
     if numeric.is_prime(j) then
@@ -93,5 +115,5 @@ for j = 2, 100 do
         total = total + 1
     end
 end
-]]
 print(total)
+]]
