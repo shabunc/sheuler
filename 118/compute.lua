@@ -32,9 +32,9 @@ end
 function part_string_generator(a, parts) 
     for _, p in pairs(parts) do
         if p[1] ~= 0 then
-            for j = 1, p[2] do
-                coroutine.yield(array.sub(a, 1, p[1]))
-                a = array.sub(a, p[1] + 1)
+            for j = 1, p[1] do
+                coroutine.yield(array.sub(a, 1, p[2]))
+                a = array.sub(a, p[2] + 1)
             end
         end
     end
@@ -52,39 +52,43 @@ function prime_set(n)
         if not seq then
             break
         end
-        local parts = numeric.partitions_iterator(n, {9,8,7,6,5,4,3,2,1})
-        while true do 
-            local part = parts()
-            local found = true
-            if not part then
-                break
-            end
-            local set = part_string_iterator(seq, part)
-            local ss = {}
-            while true do
-                local member = set()
-                if not member then
+        if seq[#seq] % 2 ~= 0 and seq[#seq] ~= 5 then
+            local parts = numeric.partitions_iterator(n, {9,8,7,6,5,4,3,2,1})
+            while true do 
+                local part = parts()
+                local found = true
+                if not part then
                     break
                 end
-                local num = numeric.digits2num(member)
-                if not numeric.is_prime(num) then
-                    found = false
-                    break
-                end
-                if #member > 0 then
-                    table.insert(ss, num)
-                end
-            end
-            if found then
-                local is_asc = true
-                for j = 2, #ss do
-                    if ss[j] < ss[j-1] then
-                        is_asc = false
+                local set = part_string_iterator(seq, part)
+                local ss = {}
+                local prev_num = -1
+                while true do
+                    local member = set()
+                    if not member then
                         break
                     end
+                    local num = numeric.digits2num(member)
+                    if num == 1 then
+                        found = false
+                        break
+                    end
+                    if num < prev_num then
+                        found = false
+                        break
+                    else
+                        prev_num = num
+                    end
+                    if not numeric.is_prime(num) then
+                        found = false
+                        break
+                    end
+                    if #member > 0 then
+                        table.insert(ss, num)
+                    end
                 end
-                if is_asc  then
-                    print(table.concat(seq), part, table.concat(ss,":"), is_asc)
+                if found then
+                    print(table.concat(seq), part, table.concat(ss,":"))
                     total = total + 1
                 end
             end
@@ -95,6 +99,16 @@ function prime_set(n)
 end
 
 prime_set(9)
+--[[
+local hiterator = numeric.hcombinations_iterator(2,{1,2,3,4,5})
+while true do
+    local seq, rest = hiterator()
+    if not seq then
+        break
+    end
+    print(table.concat(seq), table.concat(rest))
+end
+]]
 
 --[[
 local miterator = numeric.mcombinations_iterator({1},{2,3,4})

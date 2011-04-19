@@ -72,40 +72,31 @@ local function combinations(k, t, k_caller)
     end
 end
 
-local function mcombinations_generator(ks, t, k, nk, inner)
-    if nk > #ks then
-        return {{{}}}
+local function hcombinations_generator(k, t, h) 
+    if k == 0 then
+        return {{}}
     end
     local res = {}
-    local cks  = array.copy(ks)
-    cks[nk] = cks[nk] - 1
-    for j = 1, #t do 
+    for i, head in ipairs(t) do
+        local ch = array.copy(h)
         local tail = array.copy(t)
-        local head = table.remove(tail, j)
-        local edge = false
-        if cks[nk] == 1 then
-            edge = true    
-        end
-        if cks[nk] == 0 then
-            nk = nk + 1
-        end
-        local mcombs = mcombinations_generator(cks, tail, k, nk, true)
-        for j, comb in ipairs(mcombs[#mcombs]) do
+        local combs = hcombinations_generator(k - 1, tail, ch)
+        for j, comb in ipairs(combs) do
             table.insert(comb, 1, head)
             table.insert(res, comb)
-            if not inner then
-                coroutine.yield(comb)
+            if #h == #t then
+                coroutine.yield(comb, ch)
             end
         end
-    end 
-    if inner then
-        return res 
+    end
+    if k ~= k_caller then
+        return res
     end
 end
 
-local function mcombinations_iterator(ks, t)
+local function hcombinations_iterator(ks, t)
     return coroutine.wrap(function() 
-        return mcombinations_generator(ks, t, ks[1], 1)
+        return hcombinations_generator(ks, t, t)
     end)
 end
 
@@ -190,7 +181,7 @@ numeric.is_prime = is_prime
 numeric.digits2num = digits2num 
 numeric.num2digits = num2digits
 numeric.combinations_iterator = combinations_iterator
-numeric.mcombinations_iterator = mcombinations_iterator
+numeric.hcombinations_iterator = hcombinations_iterator
 numeric.next_integer = next_integer
 numeric.integer_iterator = integer_iterator
 numeric.partitions_iterator =  partitions_iterator
