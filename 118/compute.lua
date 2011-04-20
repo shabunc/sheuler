@@ -23,7 +23,7 @@ function problem118(n, t)
         for i, v in ipairs(p) do
             s = s.." "..v[1].."*"..v[2] 
         end
-        --print(s)
+        print(s)
     end
     print(total)
     return total
@@ -52,7 +52,7 @@ function prime_set(n)
         if not seq then
             break
         end
-        if seq[#seq] % 2 ~= 0 and seq[#seq] ~= 5 then
+        if seq[#seq] % 2 ~= 0  then
             local parts = numeric.partitions_iterator(n, {9,8,7,6,5,4,3,2,1})
             while true do 
                 local part = parts()
@@ -68,12 +68,9 @@ function prime_set(n)
                     if not member then
                         break
                     end
+                    --[[
                     local num = numeric.digits2num(member)
-                    if num == 1 then
-                        found = false
-                        break
-                    end
-                    if num < prev_num then
+                    if num < prev_num or num == 1 or #member == 9 then
                         found = false
                         break
                     else
@@ -83,6 +80,7 @@ function prime_set(n)
                         found = false
                         break
                     end
+                    ]]
                     if #member > 0 then
                         table.insert(ss, num)
                     end
@@ -98,36 +96,46 @@ function prime_set(n)
     return total
 end
 
-prime_set(9)
---[[
-local hiterator = numeric.hcombinations_iterator(2,{1,2,3,4,5})
-while true do
-    local seq, rest = hiterator()
-    if not seq then
-        break
+function search_prime_seq(t, from, inner) 
+    if from > #t then
+        return {{}}
     end
-    print(table.concat(seq), table.concat(rest))
+    local res = {}
+    local head = {}
+    for j = from, #t do
+       table.insert(head, t[j])
+       if (j == 1 and t[1] == 5)  or t[j] == 1 or t[j] == 3 or t[j] == 7 or t[j] == 9 then
+            local tail = search_prime_seq(t, j + 1, true)
+            for k = 1, #tail do
+                table.insert(tail[k], 1, array.copy(head))
+                table.insert(res, tail[k])
+                if not inner then 
+                    coroutine.yield(tail[k])
+                end
+            end
+       end
+    end
+    if inner then
+        return res
+    end
 end
-]]
 
---[[
-local miterator = numeric.mcombinations_iterator({1},{2,3,4})
+function prime_seq_iterator(t) 
+    return coroutine.wrap(function() return search_prime_seq(t, 1) end)
+end
+
+
+local it = prime_seq_iterator({9,2,3,4,6,7,8,1, 5})
 while true do
-    local seq = miterator()
+    local seq = it()
     if not seq then
         break
     end
-    print(#seq, table.concat(seq))
-end
-]]
---[[
-prime_set(9)
-local total = 0
-for j = 2, 100 do 
-    if numeric.is_prime(j) then
-        print(j)
-        total = total + 1
+    local s = ""
+    for i, v in ipairs(seq) do
+        s = s .. table.concat(v) .. "=>"
     end
+    print(s)
 end
-print(total)
-]]
+
+--prime_set(9)
