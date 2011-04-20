@@ -5,24 +5,7 @@ require("numeric")
 require("array")
 require("permutations")
 
-function problem118(n, t)
-    local iterator = numeric.partitions_iterator(n, t, 1)
-    local total = 0
-    while true do
-        local p = iterator()
-        if not p then 
-            break
-        end
-        local s = ""
-        total = total + 1
-        for i, v in ipairs(p) do
-            s = s.." "..v[1].."*"..v[2] 
-        end
-        print(s)
-    end
-    print(total)
-    return total
-end
+
 
 function part_string_generator(a, parts) 
     for _, p in pairs(parts) do
@@ -122,19 +105,42 @@ function prime_seq_iterator(t)
     return coroutine.wrap(function() return search_prime_seq(t, 1) end)
 end
 
-print(numeric.is_prime(1))
+function problem118(n, t)
+    local iterator = perm.lexicographic_iterator(t)
+    local total = 0
+    while true do
+        local p = iterator()
+        if not p then 
+            break
+        end
+        local it = prime_seq_iterator(p) 
+        while true do
+            local seq = it()
+            if not seq then
+                break
+            end
+            local s = ""
+            for i, v in ipairs(seq) do
+                s = s .. table.concat(v) .. "=>"
+            end
+            print(s)
+            total = total + 1
+        end
+    end
+    print("TOTAL", total)
+    return total
+end
 
-local it = prime_seq_iterator({2,5,4,7,8,9,6,3,1})
+
+--[[
+local it = prime_seq_iterator({4,5,6,7,8,9,2,3,1})
 while true do
     local seq = it()
     if not seq then
         break
     end
-    local s = ""
-    for i, v in ipairs(seq) do
-        s = s .. table.concat(v) .. "=>"
-    end
-    print(s)
 end
+]]
 
 --prime_set(9)
+problem118(9, {1,2,3,4,5,6,7,8,9})
