@@ -83,11 +83,12 @@ function search_prime_seq(t, from, inner)
     local prev_match = 0
     for j = from, #t do
        table.insert(head, t[j])
+       local num_head = numeric.digits2num(head)
        if ((t[j] == 5 or t[j] == 2) and j == from)  or t[j] == 1 or t[j] == 3 or t[j] == 7 or t[j] == 9 then
-           if (numeric.is_prime(numeric.digits2num(head))) then 
+           if (numeric.is_prime(num_head)) then 
                 local tail = search_prime_seq(t, j + 1, true)
                 for k = 1, #tail do
-                    table.insert(tail[k], 1, array.copy(head))
+                    table.insert(tail[k], 1, num_head)
                     table.insert(res, tail[k])
                     if not inner then 
                         coroutine.yield(tail[k])
@@ -119,11 +120,15 @@ function problem118(n, t)
             if not seq then
                 break
             end
+            table.sort(seq)
+            print(table.concat(seq,":"))
+            --[[
             local s = ""
             for i, v in ipairs(seq) do
                 s = s .. table.concat(v) .. "=>"
             end
             print(s)
+            ]]
             total = total + 1
         end
     end
