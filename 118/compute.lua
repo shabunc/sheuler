@@ -5,11 +5,6 @@ require("numeric")
 require("array")
 require("permutations")
 
-function is_prime(n)
-    for j = 3, math.sqrt(n), 2 do
-    end
-end
-
 function problem118(n, t)
     local iterator = numeric.partitions_iterator(n, t, 1)
     local total = 0
@@ -102,17 +97,20 @@ function search_prime_seq(t, from, inner)
     end
     local res = {}
     local head = {}
+    local prev_match = 0
     for j = from, #t do
        table.insert(head, t[j])
-       if (j == 1 and t[1] == 5)  or t[j] == 1 or t[j] == 3 or t[j] == 7 or t[j] == 9 then
-            local tail = search_prime_seq(t, j + 1, true)
-            for k = 1, #tail do
-                table.insert(tail[k], 1, array.copy(head))
-                table.insert(res, tail[k])
-                if not inner then 
-                    coroutine.yield(tail[k])
+       if ((t[j] == 5 or t[j] == 2) and j == from)  or t[j] == 1 or t[j] == 3 or t[j] == 7 or t[j] == 9 then
+           if (numeric.is_prime(numeric.digits2num(head))) then 
+                local tail = search_prime_seq(t, j + 1, true)
+                for k = 1, #tail do
+                    table.insert(tail[k], 1, array.copy(head))
+                    table.insert(res, tail[k])
+                    if not inner then 
+                        coroutine.yield(tail[k])
+                    end
                 end
-            end
+           end
        end
     end
     if inner then
@@ -124,8 +122,9 @@ function prime_seq_iterator(t)
     return coroutine.wrap(function() return search_prime_seq(t, 1) end)
 end
 
+print(numeric.is_prime(1))
 
-local it = prime_seq_iterator({9,2,3,4,6,7,8,1, 5})
+local it = prime_seq_iterator({2,5,4,7,8,9,6,3,1})
 while true do
     local seq = it()
     if not seq then
