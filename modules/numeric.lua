@@ -180,6 +180,18 @@ local function partitions_iterator(n, t)
     return coroutine.wrap(function() return partitions_generator(n, t, 1) end)
 end
 
+local FACT_CACHE = {[0] = 1}
+
+local function factorial(n)
+    if FACT_CACHE[n] then
+        return FACT_CACHE[n]
+    else
+        local res = n * factorial(n - 1)
+        FACT_CACHE[n] = res
+        return res
+    end
+end
+
 numeric.is_prime = is_prime
 numeric.digits2num = digits2num 
 numeric.num2digits = num2digits
@@ -188,4 +200,5 @@ numeric.hcombinations_iterator = hcombinations_iterator
 numeric.next_integer = next_integer
 numeric.integer_iterator = integer_iterator
 numeric.partitions_iterator =  partitions_iterator
+numeric.factorial = factorial
 return numeric
