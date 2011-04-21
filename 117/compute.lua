@@ -31,7 +31,7 @@ function tile_iterator(n, m)
     return coroutine.wrap(function() return tile_generator(n, m) end)
 end
 
-function problem117(n, m)
+function problem117brute(n, m)
     local it = tile_iterator(n, m)
     total = 0
     while true do
@@ -46,4 +46,35 @@ function problem117(n, m)
     return total
 end
 
-problem117(5, 4)
+function count_combinations(t)
+    local zeros = 0
+    local total = 0
+    for i, v in ipairs(t) do
+        if v[1] == 0 then
+            zeros = zeros + 1
+        else
+            total = total + v[1]
+        end
+    end
+    if zeros == (#t - 1) then
+        total = 1
+    end
+    return total
+end
+
+function problem117(n)
+    local it  = numeric.partitions_iterator(n, {4,3,2,1})
+    total = 0
+    while true do
+        local seq = it()
+        if not seq then
+            break
+        end
+        print(seq,  count_combinations(seq))
+        total = total + count_combinations(seq)
+    end
+    print("TOTAL", total)
+    return total
+end
+
+problem117(50, 4)
