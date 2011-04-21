@@ -152,7 +152,7 @@ local function partitions_generator(n, t, from, inner)
     local res = {}
     if from == #t then
         if n % t[from] == 0 then
-            return {{{t[from], n / t[from]}}}
+            return {{{ n / t[from], t[from]}}}
         else
             return false
         end 
