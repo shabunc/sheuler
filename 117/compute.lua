@@ -47,19 +47,13 @@ function problem117brute(n, m)
 end
 
 function count_combinations(t)
-    local zeros = 0
-    local total = 0
+    local a = 0
+    local b = 1 
     for i, v in ipairs(t) do
-        if v[1] == 0 then
-            zeros = zeros + 1
-        else
-            total = total + v[1]
-        end
+        a = a + v[1]
+        b = b * numeric.factorial(v[1])
     end
-    if zeros == (#t - 1) then
-        total = 1
-    end
-    return total
+    return numeric.factorial(a) / b
 end
 
 function problem117(n)
@@ -73,7 +67,7 @@ function problem117(n)
         print(seq,  count_combinations(seq))
         total = total + count_combinations(seq)
     end
-    print("TOTAL", total)
+    print("TOTAL", string.format("%i", total))
     return total
 end
 

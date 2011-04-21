@@ -7,3 +7,10 @@ it is possible to tile a row measuring five units in length in exactly fifteen d
 How many ways can a row measuring fifty units in length be tiled?
 
 NOTE: This is related to problem 116.
+
+ANSWER
+100808458960497
+
+TODO
+просто ради фана - посмотреть что будет, если кешировать брутовую рекурсию
+сокращать до вычисления факториала
