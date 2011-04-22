@@ -63,4 +63,5 @@ function problem111(n)
     return res
 end
 
-problem111(10)
+--problem111(6)
+

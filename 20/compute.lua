@@ -9,27 +9,53 @@ function brute(n)
     return (array.reduce(numeric.num2digits(numeric.factorial(n)), function(a, b) return a + b end))
 end
 
-function skip_tens(n) 
-    local two_awaiting
-    local five_awaiting
+function digits(n) 
     local res = {}
     for j = 1, n do
         table.insert(res, j)
-        if j % 5 == 0 then
+    end
+    return res
+end
+
+function skip_tens(res) 
+    local two_awaiting
+    local five_awaiting
+    local found = false
+    for j = 1, #res do
+        if res[j] % 5 == 0 then
             five_awaiting = j
         end
-        if j % 2 == 0 then
+        if res[j] % 2 == 0 then
             two_awaiting = j
         end
         if five_awaiting and two_awaiting then
+            found = true
             res[five_awaiting] = res[five_awaiting] / 5
             res[two_awaiting] = res[two_awaiting] / 2
             five_awaiting, two_awaiting = false, false
         end
     end
+    return res, found
+    --[[
     local prod = array.reduce(res, function(a, b) return a * b end, 1)
-    return array.reduce(numeric.num2digits(prod), function(a, b) return a + b end)
+    return array.reduce(numeric.num2digits(prod), function(a, b) return a + b end), found
+    ]]
+end
+
+function silly_reduce(t)
+   local found
+   while true do
+        t, found = skip_tens(t)
+        print(table.concat(t, " "))
+        if not found then
+            break
+        end
+   end
+   local prod = array.reduce(t, function(a, b) return a * b end, 1)
+   local sum = array.reduce(numeric.num2digits(prod), function(a, b) return a + b end), found
+   print(sum)
 end
 
 local n = 100
-print(skip_tens(n), brute(n))
+--print(skip_tens(digits(n)), brute(n))
+silly_reduce(digits(n))
