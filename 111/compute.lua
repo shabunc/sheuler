@@ -6,23 +6,10 @@ require("array")
 
 function stat_for_seq(t)
     local res = {
-       [-1] = 0, [0] = 0, [1] = 0, [2] = 0, [3] = 0, [4] = 0, [5] = 0, [6] = 0, [7] = 0, [8] = 0, [9] = 0
+       [0] = 0, [1] = 0, [2] = 0, [3] = 0, [4] = 0, [5] = 0, [6] = 0, [7] = 0, [8] = 0, [9] = 0
     }
-    local prev = -1
-    local candidate = 0
     for j = 1, #t do
-        if t[j] == prev then
-            candidate = candidate + 1
-        else
-            if res[prev] < candidate then
-                res[prev] = candidate
-            end
-            candidate = 1
-        end
-        prev = t[j]
-    end
-    if res[t[#t]] < candidate then
-        res[t[#t]] = candidate
+        res[t[j]] = res[t[j]] + 1
     end
     return res
 end
@@ -52,6 +39,7 @@ function problem111(n)
         if seq[#seq] ~= 5 then
             local num_seq = numeric.digits2num(seq)
             if numeric.is_prime(num_seq) then
+                print(num_seq)
                 local stat = stat_for_seq(seq)
                 for j = 0, 9 do 
                     if M[n][j] < stat[j] then
@@ -63,9 +51,16 @@ function problem111(n)
         end
     end
 
+    local res = 0
+    local sum = function(a,b) return a + b end
     for j = 0, 9 do
-        print(j, M[n][j], table.concat(N[n][j][3], " "))
+        local _n = N[n][j][M[n][j]]
+        local s = array.reduce(_n, sum)
+        res = res + s
+        print(j, M[n][j], #_n, s)
     end
+    print(res)
+    return res
 end
 
-problem111(4)
+problem111(10)
