@@ -73,11 +73,11 @@ function bigint:add(b)
     if b:len() > a:len() then
         a, b = b, a
     end
-    local i = b:len()
+    local i = a:len()
     local dlen = a:len() - b:len()
     local rem = 0
     while true do
-        a[i + dlen], rem = inc(a[i + dlen], b[i] + rem, self.base)
+        a[i], rem = inc(a[i], (b[i - dlen] or 0) + rem, self.base)
         i = i - 1
         if i == 0 then
             if rem > 0 then
@@ -86,7 +86,7 @@ function bigint:add(b)
             break
         end
     end
-    print(a)
+    return a
 end
 
 function bigint:len()
@@ -97,9 +97,7 @@ function bigint:times(n)
     local res = bigint:new(self.num, self.base)
     local m = numeric.digits2num(self.num)
     for j = 1, n - 1 do
-        for k = 1, m do
-            res = res:inc()
-        end
+        res = res:inc()
     end
     return res
 end
