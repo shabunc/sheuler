@@ -17,8 +17,8 @@ local function wrap(func)
         __call = callfunc
     }
     local res = {
-        alive = function() 
-            return coroutine.status(co) ~= "dead"
+        dead = function() 
+            return coroutine.status(co) == "dead"
         end
     }
     setmetatable(res, mt)

@@ -4,6 +4,7 @@ package.path = package.path .. ";../modules/?.lua"
 require("numeric")
 require("array")
 require("pascal")
+require("bigint")
 
 function brute(n) 
     return (array.reduce(numeric.num2digits(numeric.factorial(n)), function(a, b) return a + b end))
@@ -56,6 +57,25 @@ function silly_reduce(t)
    print(sum)
 end
 
-local n = 100
 --print(skip_tens(digits(n)), brute(n))
-silly_reduce(digits(n))
+--silly_reduce(digits(n))
+
+local b = bigint:new{1}
+for j = 1, 100 do
+    print(b:inc(1))
+end
+
+
+--[[
+function crazy_factorial(n)
+    local res = bigint:new{1}
+    for j = 2, n do
+        res = res:times(j)
+        print(j, res)
+    end
+    return res
+end
+
+print(crazy_factorial(10))
+]]
+
