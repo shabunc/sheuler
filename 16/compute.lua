@@ -5,10 +5,7 @@ require("numeric")
 require("bigint")
 
 function problem16(n)
-    local a = bigint:new{2}
-    for j = 1, n - 1 do
-        a = a:times(2)
-    end
+    local a = (bigint:new{2}):pow(n)
     return a, array.reduce(a.num, function(a,b) return  a + b end)
 end
 

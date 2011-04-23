@@ -119,4 +119,13 @@ function bigint:times(n)
     return res
 end
 
+function bigint:pow(n) 
+    local a = self:copy()
+    local res = a:copy()
+    for j = 1, n - 1 do
+        res = res:mul(a)
+    end
+    return res
+end
+
 return bigint

@@ -20,4 +20,8 @@ function problem48(n)
     return total
 end 
 
-problem48(1000)
+--problem48(1000)
+local a = bigint:new{9}
+local b = bigint:new{9}
+
+print(a:mul(b))
