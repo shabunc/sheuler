@@ -1,6 +1,4 @@
 require("array")
---shame on me)))
-require("numeric")
 
 
 local function __tostring(self)
@@ -45,25 +43,6 @@ local function inc(digit, n, base)
     end
 end
 
-function bigint:inc(n, from)
-    local big = self:copy()
-    local rem = n
-    from = from  or #big.num
-    local i = from
-    while true do
-        big.num[i], rem = inc(big.num[i], rem, big.base) 
-        if rem == 0 then
-            break
-        end
-        i = i - 1
-        if i == 0 then
-            table.insert(big.num, 1, 1)
-            break
-        end
-    end
-    return big
-end
-
 function bigint:copy()
     return bigint:new(array.copy(self.num), self.base)
 end
@@ -94,10 +73,10 @@ function bigint:len()
 end
 
 function bigint:times(n)
-    local res = bigint:new(self.num, self.base)
-    local m = numeric.digits2num(self.num)
+    --shame on me )))
+    local res = self:copy()
     for j = 1, n - 1 do
-        res = res:inc()
+        res = res:add(self)
     end
     return res
 end

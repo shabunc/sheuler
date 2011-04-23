@@ -60,13 +60,13 @@ end
 --print(skip_tens(digits(n)), brute(n))
 --silly_reduce(digits(n))
 
-local b = bigint:new{1}
-for j = 1, 100 do
-    print(b:inc(1))
-end
-
-
 --[[
+local a = bigint:new{1,1,1,1}
+local b = bigint:new{1,0,9}
+print(b:times(3))
+]]
+
+
 function crazy_factorial(n)
     local res = bigint:new{1}
     for j = 2, n do
@@ -76,6 +76,5 @@ function crazy_factorial(n)
     return res
 end
 
-print(crazy_factorial(10))
-]]
+print(array.reduce(crazy_factorial(100).num, function(a, b) return a + b end))
 
