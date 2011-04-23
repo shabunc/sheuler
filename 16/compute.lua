@@ -1,19 +1,15 @@
 #!/usr/bin/env lua
-package.path = package.path .. ";/Users/shabunc/mine/euler/modules/?.lua"
+package.path = package.path .. ";../modules/?.lua"
 
 require("numeric")
-require("array")
+require("bigint")
 
-for j = 1000,1000 do
-    num = 2 ^ j
-    local digits = numeric.num2digits(num)
-    local num10 = numeric.digits2num(digits)
-    assert(num10 == 2^1000)
-    local sum = array.reduce(digits, function(a,b) return a + b end)
-    local check_sum = 0
-    for i, v in ipairs(digits) do
-        check_sum = check_sum + v
+function problem16(n)
+    local a = bigint:new{2}
+    for j = 1, n - 1 do
+        a = a:times(2)
     end
-    assert(check_sum, sum)
-    print(sum)
+    return a, array.reduce(a.num, function(a,b) return  a + b end)
 end
+
+print(problem16(1000))
