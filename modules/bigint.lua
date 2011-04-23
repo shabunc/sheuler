@@ -12,7 +12,18 @@ local function bigint_new(num, base)
     res.num = num
     res.base = base or 10
     local mt = {
-        __index = bigint,
+        __index = function(self, k)
+            if type(k) == "string" then
+                return rawget(bigint, k)
+            elseif type(k) == "number" then
+                return self.num[k]
+            end
+        end,
+        __newindex = function(self, k, v)
+            if type(k) == "number" then
+                self.num[k] = v
+            end
+        end,
         __tostring = __tostring
     }
     setmetatable(res, mt)
@@ -20,7 +31,6 @@ local function bigint_new(num, base)
 end
 
 bigint = {}
-
 
 function bigint:new(num, base) 
     return bigint_new(num, base)
@@ -35,53 +45,52 @@ local function inc(digit, n, base)
     end
 end
 
-function bigint:inc(n)
+function bigint:inc(n, from)
+    local big = self:copy()
     local rem = n
-    local i = #self.num
+    from = from  or #big.num
+    local i = from
     while true do
-        self.num[i], rem = inc(self.num[i], rem, self.base) 
+        big.num[i], rem = inc(big.num[i], rem, big.base) 
         if rem == 0 then
             break
         end
         i = i - 1
         if i == 0 then
-            table.insert(self.num, 1, 1)
+            table.insert(big.num, 1, 1)
             break
         end
     end
-    return self
+    return big
 end
 
---[[
-function bigint:inc()
-    local base = self.base or 10
-    local res = array.copy(self.num)
-    local max_digit = base - 1
-    local i = #res - 1
-    if res[#res] ~= max_digit then
-        res[#res] = res[#res] + 1
-    else
-        res[#res] = 0
-        while res[i] == max_digit do
-            res[i] = 0
-            i = i - 1
-        end
+function bigint:copy()
+    return bigint:new(array.copy(self.num), self.base)
+end
+
+function bigint:add(b) 
+    local a = self:copy()
+    if b:len() > a:len() then
+        a, b = b, a
+    end
+    local i = b:len()
+    local dlen = a:len() - b:len()
+    local rem = 0
+    while true do
+        a[i + dlen], rem = inc(a[i + dlen], b[i] + rem, self.base)
+        i = i - 1
         if i == 0 then
-            table.insert(res, 1, 1)
-        else
-            res[i] = res[i] + 1
+            if rem > 0 then
+                table.insert(a.num, 1, rem)
+            end
+            break
         end
     end
-    return bigint:new(res, base)
+    print(a)
 end
-]]
 
-function bigint:add(n)
-    local res = bigint:new(self.num, self.base)
-    for j = 1, n do
-        res = res:inc()
-    end
-    return res
+function bigint:len()
+    return #self.num
 end
 
 function bigint:times(n)
