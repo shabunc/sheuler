@@ -192,6 +192,16 @@ local function factorial(n)
     end
 end
 
+local function sign(n)
+    if n > 0 then
+        return 1
+    elseif n == 0 then
+        return 0
+    else
+        return -1
+    end
+end
+
 numeric.is_prime = is_prime
 numeric.digits2num = digits2num 
 numeric.num2digits = num2digits
@@ -201,4 +211,5 @@ numeric.next_integer = next_integer
 numeric.integer_iterator = integer_iterator
 numeric.partitions_iterator =  partitions_iterator
 numeric.factorial = factorial
+numeric.sign = sign
 return numeric
