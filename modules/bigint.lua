@@ -43,6 +43,13 @@ local function inc(digit, n, base)
     end
 end
 
+local function mul(digit, n, base)
+    base = base or 10
+    local res = digit * n
+    local rem = math.floor(res / base)
+    return res - rem * base, rem
+end
+
 function bigint:copy()
     return bigint:new(array.copy(self.num), self.base)
 end
@@ -70,6 +77,37 @@ end
 
 function bigint:len()
     return #self.num
+end
+
+function bigint:mul(b)
+    local a = self:copy()
+    if b:len() > a:len() then
+        a, b = b, a
+    end
+    local res = bigint:new{0}
+    for i = b:len(), 1, -1 do
+        local row = a:copy()
+        local j = row:len()
+        local rem = 0
+        local rem_prev = 0
+        while true do
+            row[j], rem = mul(row[j], b[i], self.base)
+            row[j], rem_prev  = inc(row[j], rem_prev, self.base)
+            rem_prev = rem + rem_prev
+            j = j - 1
+            if j == 0 then
+                if rem_prev > 0 then
+                    table.insert(row.num, 1, rem_prev)
+                end
+                break
+            end
+        end
+        for k = 1, b:len() - i do
+            table.insert(row.num, 0)
+        end
+        res = row:add(res)
+    end
+    return res
 end
 
 function bigint:times(n)
