@@ -128,4 +128,13 @@ function bigint:pow(n)
     return res
 end
 
+function bigint:revert(n)
+    local rev = {}
+    for j = self:len(), 1, -1 do
+        table.insert(rev, self.num[j])
+    end
+    local res = bigint:new(rev, self.base)
+    return res
+end
+
 return bigint
