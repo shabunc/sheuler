@@ -72,4 +72,4 @@ function problem145(len)
 end
 
 assert(problem145(4) == 120)
-problem145(7)
+problem145(9)
