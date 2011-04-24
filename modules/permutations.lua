@@ -1,3 +1,5 @@
+require("array")
+
 perm = {}
 
 local metas = {
@@ -70,7 +72,34 @@ local function lexicographic_iterator(t, iterate_func)
     return iterator
 end
 
+local function permutations_generator(t, inner) 
+    if #t == 0 then
+        return {{}}
+    end
+    local res = {}
+    for j = 1, #t do
+        local tail = array.copy(t)
+        local head = table.remove(tail, j)
+        local recs = permutations_generator(tail, true)
+        for _, p in ipairs(recs) do
+            table.insert(p, 1, head)
+            table.insert(res, p)
+            if not inner then
+                coroutine.yield(p)
+            end
+        end
+    end
+    if inner then
+        return res
+    end
+end
+
+local function permutations_iterator(t)
+    return coroutine.wrap(function() return permutations_generator(t) end)
+end
+
 perm.next_lexicographic = next_lexicographic
 perm.prev_lexicographic = prev_lexicographic
 perm.lexicographic_iterator = lexicographic_iterator
+perm.iterator = permutations_iterator
 return perm
