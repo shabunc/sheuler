@@ -29,19 +29,16 @@ local function inc(digit, n, base)
     end
 end
 
-function bigint:add_if_reversible(b)
+function bigint:is_reversible()
     if self[self:len()] == 0 then
         return false
     end
     local a = self:copy()
-    if b:len() > a:len() then
-        a, b = b, a
-    end
+    local b = self:copy()
     local i = a:len()
-    local dlen = a:len() - b:len()
     local rem = 0
     while true do
-        a[i], rem = inc(a[i], (b[i - dlen] or 0) + rem, self.base)
+        a[i], rem = inc(a[i], b[b:len() - i + 1] + rem, self.base)
         if a[i] % 2 == 0 then
             return false
         end
@@ -63,7 +60,7 @@ function problem145(len)
     local total  = 0
     local big = bigint:new{1} 
     while big:len() < len do
-        local test = big:add_if_reversible(big:revert())
+        local test = big:is_reversible()
         if test then
             print(big)
             total = total + 1
@@ -75,5 +72,4 @@ function problem145(len)
 end
 
 assert(problem145(4) == 120)
-
-problem145(9)
+problem145(7)
