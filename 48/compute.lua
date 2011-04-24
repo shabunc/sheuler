@@ -4,24 +4,18 @@ package.path = package.path .. ";../modules/?.lua"
 require("numeric")
 require("bigint")
 
-function pow(n, m)
-    local big = bigint:new(numeric.num2digits(n))
-    for j = 1, m - 1 do
-        big  = big:times(n)
-    end
-    return big
-end
 
 function problem48(n) 
     local total = bigint:new{1}
+    local it = bigint:new{1}
     for j = 2, n do
-        print(j, pow(j,j))
+        it = it:add(bigint:new{1})
+        local sum = it:pow(j)
+        print(sum)
+        total = total:add(sum)
     end
     return total
 end 
 
---problem48(1000)
-local a = bigint:new{9}
-local b = bigint:new{9}
-
-print(a:mul(b))
+--assert(numeric.digits2num(problem48(10).num) == 10405071317)
+print("TOTAL", problem48(1000))
