@@ -50,9 +50,6 @@ function step(t)
                 end
             end
         end
-        if not (found_right or found_left) then
-            print("LAST ONE", table.concat(v))
-        end
     end
     return res
 end
@@ -60,13 +57,11 @@ end
 
 function problem37()
     local iterator = {{2},{3},{5},{7},{9}}
-    local count = 1
     while true do 
-        if count > 6 then
+        if #iterator == 0 then
             break
         end
         iterator = step(iterator)
-        count = count + 1
     end
 end
 
