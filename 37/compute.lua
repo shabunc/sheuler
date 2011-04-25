@@ -8,7 +8,7 @@ function step(t)
     local res = {}
     for _, v in ipairs(t) do
         local found_left, found_right= true, true
-        for _, left_digit in ipairs({3,5,7,9}) do
+        for _, left_digit in ipairs({1, 2, 3, 4, 5, 6, 7, 8, 9}) do
             local from_left = array.copy(v)
             table.insert(from_left, 1, left_digit)
             local num_left = numeric.digits2num(from_left)
@@ -24,12 +24,12 @@ function step(t)
                     end
                 end
                 if found_left then
-                    print(num_left)
+                    coroutine.yield(num_left)
                     table.insert(res, from_left)
                 end
             end
         end
-        for _, right_digit in ipairs({3,5,7,9}) do
+        for _, right_digit in ipairs({3, 7, 9}) do
             local from_right = array.copy(v)
             table.insert(from_right, right_digit)
             local num_right = numeric.digits2num(from_right)
@@ -45,24 +45,31 @@ function step(t)
                     end
                 end
                 if found_right then
-                    print(num_right)
+                    coroutine.yield(num_right)
                     table.insert(res, from_right)
                 end
             end
         end
     end
-    return res
+    if #res > 0 then
+        step(res)
+    end
 end
 
 
 function problem37()
-    local iterator = {{2},{3},{5},{7},{9}}
+    local this_step = {{2},{3},{5},{7}}
+    local iterator = coroutine.wrap(function(t) return step(t) end)
+    local res = {}
     while true do 
-        if #iterator == 0 then
+        local n = iterator(this_step)
+        if not n then
             break
         end
-        iterator = step(iterator)
+        array.insert_sorted(res, n)
     end
+    print(table.concat(res," "), "#", #res)
+    print(array.reduce(res, function(a, b) return a + b end))
 end
 
 problem37()
