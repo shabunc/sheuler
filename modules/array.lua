@@ -64,6 +64,24 @@ local function sub(a, from, to)
     return res
 end
 
+local function insert_sorted(a, n)
+    if #a == 0 then
+        a[1] = n
+        return a
+    end
+    if n < a[1] then
+        table.insert(a, 1, n)
+        return a, 1
+    end
+    for j = 1, #a do
+        if n > a[j] and (j == #a or n < a[j+1]) then
+            table.insert(a, j + 1, n)
+            return a, j + 1 
+        end
+    end
+    return a
+end
+
 array.join = join
 array.copy = copy
 array.map = map
@@ -71,4 +89,5 @@ array.reduce = reduce
 array.are_equal = are_equal
 array.are_permutations = are_permutations
 array.sub = sub
+array.insert_sorted = insert_sorted
 return array

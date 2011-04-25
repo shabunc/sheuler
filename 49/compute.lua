@@ -5,23 +5,6 @@ require("numeric")
 require("array")
 require("permutations")
 
-function insert_sorted(t, n)
-    if #t == 0 then
-        t[1] = n
-        return t
-    end
-    if n < t[1] then
-        table.insert(t, 1, n)
-    end
-    for j = 1, #t do
-        if n > t[j] and (j == #t or n < t[j+1]) then
-            table.insert(t, j + 1, n)
-            break
-        end
-    end
-    return t
-end
-
 local FOUND = {}
 
 function is_arithmetic_sequence(num)
@@ -36,7 +19,7 @@ function is_arithmetic_sequence(num)
         end
         local n = numeric.digits2num(seq)
         if seq[1] ~= 0 and numeric.is_prime(n) then
-             insert_sorted(all_possible, n)
+             array.insert_sorted(all_possible, n)
         end
     end
     if #all_possible > 2 then
