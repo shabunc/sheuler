@@ -11,10 +11,12 @@ local function join(a, b)
     return a
 end
 
-local function copy(t) 
+local function copy(t, from, to) 
+    from = from or 1
+    to = to or #t
     local res = {}
-    for j in ipairs(t) do
-        res[j] = t[j]
+    for j = from, to do
+        table.insert(res, t[j])
     end
     return res
 end
