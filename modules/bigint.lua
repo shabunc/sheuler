@@ -133,6 +133,15 @@ function bigint:pow(n)
     return res 
 end
 
+function bigint:in_base(n) 
+    local res = bigint:new({0}, n)
+    local base = bigint:new(numeric.num2digits(self.base), n)
+    for j = self:len() - 1, 0, -1 do
+        res = res:add(base:pow(j):mul(bigint:new({self[self:len() - j]}, n)))
+    end
+    return res
+end
+
 function bigint:revert(n)
     local rev = {}
     for j = self:len(), 1, -1 do
