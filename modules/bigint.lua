@@ -120,12 +120,17 @@ function bigint:times(n)
 end
 
 function bigint:pow(n) 
-    local a = self:copy()
-    local res = a:copy()
-    for j = 1, n - 1 do
-        res = res:mul(a)
+    if n == 0 then
+        return bigint:new{1}
+    end 
+    if n == 1 then
+        return self:copy()
     end
-    return res
+    local a = self:copy()
+    local b = a:pow((n - n % 2)/2)
+    b = b:mul(b)
+    res = b:mul(a:pow(n % 2))
+    return res 
 end
 
 function bigint:revert(n)
