@@ -40,7 +40,7 @@ assert(c:pong(), "ClassC:pong")
 
 print("inheritance tests", "OK")
 
-print("starting metatable methods tests\t...")
+print("__tostring tests\t...")
 ClassS = class:new()
 function ClassS:__tostring()
     return "~~ClassS~~"
@@ -61,7 +61,24 @@ assert(tostring(s) == "~~ClassS~~")
 assert(tostring(a) == "~~ClassA~~")
 assert(tostring(b) == "~~ClassA~~")
 assert(tostring(c) == "~~ClassC~~")
+print("__tostring tests", "OK")
 
+print("own properties and __eq tests\t...")
+function ClassA:init(name) 
+    self.name = name
+end
 
-print("metatable methods tests", "OK")
+function ClassA:__eq(b)
+    return self.name == b.name
+end
+a = ClassA:new("shabunc")
+b = ClassB:new("shahen")
+c = ClassC:new("shabunc")
+
+assert(a.name == "shabunc")
+assert(a == c)
+assert(a ~= b)
+assert(c == a)
+print("own properties and __eq tests\tOK")
+
 print("all the tests are OK")
