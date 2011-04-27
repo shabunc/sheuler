@@ -16,6 +16,7 @@ end
 function class:add_metas(instance)
     local mt = getmetatable(instance)
     mt.__eq = instance.__eq
+    mt.__tostring = instance.__tostring
 end
 
 function class:init()end

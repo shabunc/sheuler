@@ -40,4 +40,7 @@ end
 local a = array:new({1,2,3})
 local b = array:new({1,2,3})
 print(a:map(function(a) return a*a end):reduce(function(a,b) return a + b end))
-print(a == b)
+b:remove()
+b:remove()
+b:insert(2):insert(3):insert(7)
+print(a,b)
