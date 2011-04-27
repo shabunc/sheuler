@@ -6,6 +6,11 @@ class = {}
     and redefine some properties. 
 
     the logic is pretty same as in javascript implementation of prototype inheritance
+
+    as for instances, we create them this way
+    ClassA = class:new()
+    a = ClassA(params)
+    and you alsow should define :init method
 ]]
 
 function class:inherit(instance)
@@ -17,6 +22,11 @@ function class:inherit(instance)
         else
             return self[key]
         end 
+    end
+    mt.__call  = function(instance, ...)
+        instance = instance:new()
+        instance:init(...)
+        return instance
     end
     return self
 end
@@ -37,7 +47,6 @@ function class:new(...)
     setmetatable(res, {})
     self:inherit(res)
     res:add_metas()
-    res:init(...)
     return res
 end
 

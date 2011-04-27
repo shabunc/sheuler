@@ -46,7 +46,10 @@ b:remove()
 b:insert(2):insert(3):insert(7)
 print(a,b)
 ]]
-
+--[[
 local b = bignum:new(2)
 local a = bignum:new({2,2})
-print(a)
+]]
+
+local b = bignum{1,2,3,4}
+print(b)

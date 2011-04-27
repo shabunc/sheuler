@@ -71,9 +71,9 @@ end
 function ClassA:__eq(b)
     return self.name == b.name
 end
-a = ClassA:new("shabunc")
-b = ClassB:new("shahen")
-c = ClassC:new("shabunc")
+a = ClassA("shabunc")
+b = ClassB("shahen")
+c = ClassC("shabunc")
 
 assert(a.name == "shabunc")
 assert(a == c)
