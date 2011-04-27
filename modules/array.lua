@@ -25,6 +25,17 @@ function array:map(map_func)
     return res
 end
 
+function array:__eq(b)
+    if #self ~= #b then
+        return false
+    end
+    for i in ipairs(self) do
+       if self[i] ~= b[i] then
+            return false
+       end
+    end
+    return true
+end
 
 local function join(a, b) 
     while true do

@@ -13,13 +13,20 @@ function class:inherit(instance)
     return self
 end
 
+function class:add_metas(instance)
+    local mt = getmetatable(instance)
+    mt.__eq = instance.__eq
+end
+
 function class:init()end
+function class:__eq()end
 
 function class:new(...) 
     local parent = select(2) or self
     local res = {}
     setmetatable(res, {})
     parent:inherit(res)
+    parent:add_metas(res)
     res:init(...)
     return res
 end

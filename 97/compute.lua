@@ -38,5 +38,6 @@ end
 --problem97(28433, 30000)
 --problem97(2343434,12)
 local a = array:new({1,2,3})
+local b = array:new({1,2,3})
 print(a:map(function(a) return a*a end):reduce(function(a,b) return a + b end))
-
+print(a == b)
