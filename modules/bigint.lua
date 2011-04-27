@@ -80,6 +80,7 @@ function bigint:len()
 end
 
 function bigint:mul(b)
+    --малоприятное известие, но, изменяя здесь, изменяй и mul_generator
     local a = self:copy()
     if b:len() > a:len() then
         a, b = b, a
@@ -108,6 +109,43 @@ function bigint:mul(b)
         res = row:add(res)
     end
     return res
+end
+
+function bigint:mul_generator(b)
+    --!!! тут ничего не меняем, меняем в mul
+    local a = self:copy()
+    if b:len() > a:len() then
+        a, b = b, a
+    end
+    local res = bigint:new{0}
+    for i = b:len(), 1, -1 do
+        local row = a:copy()
+        local j = row:len()
+        local rem = 0
+        local rem_prev = 0
+        while true do
+            row[j], rem = mul(row[j], b[i], self.base)
+            row[j], rem_prev  = inc(row[j], rem_prev, self.base)
+            rem_prev = rem + rem_prev
+            j = j - 1
+            if j == 0 then
+                if rem_prev > 0 then
+                    table.insert(row.num, 1, rem_prev)
+                end
+                break
+            end
+        end
+        for k = 1, b:len() - i do
+            table.insert(row.num, 0)
+        end
+        res = row:add(res)
+    end
+    return res
+end
+
+function bigint:mul_iterator(b) 
+    return coroutine.wrap(function() 
+    end)
 end
 
 function bigint:times(n)

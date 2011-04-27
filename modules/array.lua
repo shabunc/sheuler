@@ -1,4 +1,30 @@
-array = {}
+require("class")
+
+array = class:new(table)
+function array:init(t, from, to)
+    from = from or 1
+    to = to or #t
+    for j = from, to do
+        table.insert(self, t[j])
+    end
+end
+
+function array:reduce(reduce_func, initial_value)
+    local res = initial_value or 0
+    for i, v in ipairs(self) do
+        res = reduce_func(res, v)
+    end
+    return res
+end
+
+function array:map(map_func)
+    local res = array:new({})
+    for i, v in ipairs(self) do
+        table.insert(res, map_func(v, i))
+    end
+    return res
+end
+
 
 local function join(a, b) 
     while true do
@@ -85,8 +111,10 @@ end
 
 array.join = join
 array.copy = copy
+--[[
 array.map = map
 array.reduce = reduce
+]]
 array.are_equal = are_equal
 array.are_permutations = are_permutations
 array.sub = sub
