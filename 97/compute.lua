@@ -12,31 +12,20 @@ function base2(n)
        n = math.floor(n/2)
        table.insert(res, 1, rem)
     end
-    return bigint:new(res, 2)
+    return bignum(res, 2)
 end
 
-function problem97(a, n) 
-    local a = base2(a)
-    print("a is", a)
-    local b = {1}
-    for j = 1, n do
-        table.insert(b, 0)
-    end
-    b = bigint:new(b, 2)
-    print("b has been formed and consists of", b:len(), "digits")
-    local it = a:mul_iterator(b)
-    while true do
-        local seq, continue  = it()
-        print(seq)
-        if not continue then
-            break
-        end
-    end
+function problem97brute(a, n) 
+    local a = bignum{2,8,4,3,3}
+    local b = bignum{2}
+    b = b:pow(n)
+    c = a:mul(b)
+    c = c:add(bigint(1))
+    print(c)
 end 
 
 
---problem97(28433, 30000)
---problem97(2343434,12)
+problem97brute(28433, 7830457)
 --[[
 local a = array:new({1,2,3})
 local b = array:new({1,2,3})
@@ -50,6 +39,11 @@ print(a,b)
 local b = bignum:new(2)
 local a = bignum:new({2,2})
 ]]
-
+--[[
 local b = bignum{1,2,3,4}
-print(b)
+print(b, b.base)
+local c = b:copy()
+print(c, c.base)
+print(b:add(c))
+print(b:mul(bignum{3}))
+]]

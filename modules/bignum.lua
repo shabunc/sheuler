@@ -73,13 +73,13 @@ function bignum:mul(b)
         for k = 1, #b - i do
             table.insert(row, 0)
         end
-        print(i)
         res = row:add(res)
     end
     return res
 end
 
 function bignum:pow(n) 
+    print(n)
     if n == 0 then
         return bignum{1}
     end 
