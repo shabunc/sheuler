@@ -17,7 +17,7 @@ a = ClassA:new()
 assert(a:ping() == "ClassA:ping")
 assert(a:pong() == "ClassA:pong")
 
-ClassB = class:new(ClassA)
+ClassB = ClassA:new()
 function ClassB:ping()
     return "ClassB:ping"
 end
@@ -34,3 +34,5 @@ end
 c = ClassC:new()
 assert(c:ping(), "ClassB:ping")
 assert(c:pong(), "ClassC:pong")
+
+print("all the tests are OK")

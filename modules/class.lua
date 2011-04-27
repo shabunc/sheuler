@@ -24,10 +24,9 @@ function class:__eq()end
 function class:__tostring() return "WRONG SERIALIZE"end
 
 function class:new(...) 
-    local parent = select(1, ...) or self
     local res = {}
     setmetatable(res, {})
-    parent:inherit(res)
+    self:inherit(res)
     res:init(...)
     return res
 end
