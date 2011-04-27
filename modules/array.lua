@@ -87,6 +87,5 @@ local function insert_sorted(a, n)
 end
 
 array.join = join
-array.are_permutations = are_permutations
 array.insert_sorted = insert_sorted
 return array

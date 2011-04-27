@@ -3,7 +3,7 @@ package.path = package.path .. ";../modules/?.lua"
 
 require("numeric")
 require("array")
-require("bigint")
+require("bignum")
 
 function base2(n) 
     local res = {}
@@ -37,6 +37,7 @@ end
 
 --problem97(28433, 30000)
 --problem97(2343434,12)
+--[[
 local a = array:new({1,2,3})
 local b = array:new({1,2,3})
 print(a:map(function(a) return a*a end):reduce(function(a,b) return a + b end))
@@ -44,3 +45,8 @@ b:remove()
 b:remove()
 b:insert(2):insert(3):insert(7)
 print(a,b)
+]]
+
+local b = bignum:new(2)
+local a = bignum:new({2,2})
+print(a)

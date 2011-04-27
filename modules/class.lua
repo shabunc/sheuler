@@ -13,21 +13,21 @@ function class:inherit(instance)
     return self
 end
 
-function class:add_metas(instance)
-    local mt = getmetatable(instance)
-    mt.__eq = instance.__eq
-    mt.__tostring = instance.__tostring
+function class:add_metas()
+    local mt = getmetatable(self)
+    mt.__eq = self.__eq
+    mt.__tostring = self.__tostring
 end
 
 function class:init()end
 function class:__eq()end
+function class:__tostring() return "WRONG SERIALIZE"end
 
 function class:new(...) 
-    local parent = select(2) or self
+    local parent = select(1, ...) or self
     local res = {}
     setmetatable(res, {})
     parent:inherit(res)
-    parent:add_metas(res)
     res:init(...)
     return res
 end
