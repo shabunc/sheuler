@@ -33,6 +33,33 @@ local function is_prime(n)
     return true
 end
 
+local function get_degree(n, p) 
+    local deg = 0
+    while n % p == 0 do
+        deg = deg + 1
+        n = n / p
+    end
+    return n, deg
+end
+
+local function divisors(n) 
+    local res = {}
+    local deg
+    n, deg = get_degree(n, 2) 
+    table.insert(res, {2, deg})
+    local p = 3
+    while n ~= 1 do
+        if is_prime(p) then
+            n, deg = get_degree(n, p) 
+            if deg ~= 0 then
+                table.insert(res, {p, deg})
+            end
+        end
+        p = p + 2
+    end
+    return res
+end
+
 local function digits2num(t, base) 
     base = base or 10
     local res = 0
@@ -204,6 +231,7 @@ end
 
 numeric.is_prime = is_prime
 numeric.digits2num = digits2num 
+numeric.divisors = divisors
 numeric.num2digits = num2digits
 numeric.combinations_iterator = combinations_iterator
 numeric.hcombinations_iterator = hcombinations_iterator
