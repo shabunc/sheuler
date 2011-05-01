@@ -46,7 +46,9 @@ local function divisors(n)
     local res = {}
     local deg
     n, deg = get_degree(n, 2) 
-    table.insert(res, {2, deg})
+    if deg ~= 0 then 
+        table.insert(res, {2, deg})
+    end
     local p = 3
     while n ~= 1 do
         if is_prime(p) then
