@@ -27,7 +27,7 @@ function test(n, len)
     for j = 1, len - 1 do
        table.insert(res, n + j)
        if not test_passed(res[#res-1], res[#res], len) then
-            return false
+            return false, j
        end
     end
     return res
@@ -36,12 +36,12 @@ end
 function problem47(len)
     local n = 3
     while true do
-        local res = test(n, len)
+        local res, skip = test(n, len)
         if res then
             print(table.concat(res," "))
             return res
         end
-        n = n + 1
+        n = n + skip
         print(n)
     end
 end
