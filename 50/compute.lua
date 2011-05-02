@@ -115,10 +115,39 @@ function problem50brute(lim)
     return res, max
 end
 
+local function sum_generator(n, parts, inner) 
+    if parts == 1 then
+        return {{n}}
+    end
+    local res = {}
+    local a, b, step = 0, n - parts - 1, 1
+    if parts == 2 then
+       a, b = b, a
+       step = -1
+    end
+    for head = a, b, step do
+        local tail = sum_generator(n - head, parts - 1, true)
+        for _, v in ipairs(tail) do
+            table.insert(v, 1, head)
+            table.insert(res, v)
+            if not inner then
+                coroutine.yield(v)
+            end
+        end
+    end
+    if inner then
+        return res
+    end
+end
+
+local sum_iterator = function(n, parts) 
+    return coroutine.wrap(function() return sum_generator(n, parts) end)
+end
+
 function problem50(lim)
     local primes = get_primes(lim)
     print("PRIMES", #primes)
-    local it = numeric.sum_iterator(#primes, 3)
+    local it = sum_iterator(#primes, 3)
     local max = 0
     local res = false
     while true do
@@ -130,13 +159,20 @@ function problem50(lim)
             local from = seq[1] + 1
             local to = from + seq[2] - 1
             local pr_seq = array(primes, from, to)
-            sum = pr_seq:reduce(function(a, b) return a + b end)
-            if sum < lim and numeric.is_prime(sum) then
+            local sum = 0
+            for j = 1, #pr_seq do
+                sum = sum + pr_seq[j]                
+                if sum > lim then
+                    sum = 0
+                    break
+                end
+            end
+            if sum > 0 and numeric.is_prime(sum) then
                 --print(table.concat(seq," "),"\t", table.concat(pr_seq," "), "\t",sum)
                 if seq[2] > max then
                     max = seq[2] 
                     res = {pr_seq, sum}
-                    print(max, sum, table.concat(pr_seq, "+"))
+                    print(sum, max,  table.concat(pr_seq, "+"))
                 end
             end
         end
@@ -147,5 +183,16 @@ end
 assert(#problem50(100) == 6)
 assert(#problem50(1000) == 21)
 
-primes, sum = problem50(10000)
+primes, sum = problem50(1000000)
 print(sum, #primes, table.concat(primes,"+"))
+
+--[[
+local it = sum_iterator(25, 3)
+while true do
+    local seq = it()
+    if not seq then
+        break
+    end
+    print(table.concat(seq," "))
+end
+]]
