@@ -13,3 +13,9 @@ The first three consecutive numbers to have three distinct prime factors are:
 646 = 2  17  19.
 
 Find the first four consecutive integers to have four distinct primes factors. What is the first of these numbers?
+
+ANSEWER
+134043 134044 134045 134046
+
+TODO
+    считалось очень долго, явно я делаю что-то совсем не подумав
