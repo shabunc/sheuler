@@ -32,7 +32,7 @@ function partitions_generator(n, t, from, inner)
             return false
         end 
     end
-    for j = 0, math.floor(rem) do
+    for j = 0, math.min(math.floor(rem), 1) do
         local head = {j, t[from]}
         local ps = partitions_generator(n - t[from] * j, t, from + 1, true)
         if ps then 
@@ -66,4 +66,4 @@ function problem50(n)
    end
 end
 
-problem50(20)
+problem50(41)
