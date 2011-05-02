@@ -29,6 +29,17 @@ function brute(n)
     return total
 end
 
+function good_seq(seq) 
+    if #seq <= 2 then
+        return true
+    end
+    for j = 2, #seq do
+        if seq[j] < seq[j-1] then
+            return false
+        end
+    end
+    return true
+end
 
 function problem76(n)
     local total = 0
@@ -39,12 +50,14 @@ function problem76(n)
             if not seq then
                 break
             end
-            print(table.concat(seq," "))
-            total = total + 1
+            if good_seq(seq) then
+                print(table.concat(seq," "))
+                total = total + 1
+            end
         end
     end
     print("TOTAL", total)
     return total
 end
 
-problem76(5)
+problem76(100)

@@ -218,7 +218,7 @@ local function sum_generator(n, parts, inner)
         return {{n}}
     end
     local res = {}
-    for head = 0, n - parts - 1 do
+    for head = 1, n - parts do
         local tail = sum_generator(n - head, parts - 1, true)
         for _, v in ipairs(tail) do
             table.insert(v, 1, head)
