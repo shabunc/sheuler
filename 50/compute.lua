@@ -100,11 +100,12 @@ function count(n)
    return max
 end
 
-function problem50(lim)
+function problem50brute(lim)
     local max = 0
     local res = -1
     for j = 3, lim, 2 do
         if numeric.is_prime(j) then
+            print(j)
             local lmax = count(j)
             if lmax > max then
                 max, res = lmax, j
@@ -114,5 +115,33 @@ function problem50(lim)
     return res, max
 end
 
-print(problem50(500))
+function problem50(lim)
+    local primes = get_primes(lim)
+    print("PRIMES", #primes)
+    local it = numeric.sum_iterator(#primes, 3)
+    local max = 0
+    local res = false
+    while true do
+        local seq = it()
+        if not seq then 
+            break
+        end
+        if  seq[2] ~= 1 then
+            local from = seq[1] + 1
+            local to = from + seq[2] - 1
+            local pr_seq = array(primes, from, to)
+            sum = pr_seq:reduce(function(a, b) return a + b end)
+            if sum < lim and numeric.is_prime(sum) then
+                --print(table.concat(seq," "),"\t", table.concat(pr_seq," "), "\t",sum)
+                if seq[2] > max then
+                    max = seq[2] 
+                    res = {sum, pr_seq}
+                end
+            end
+        end
+    end
+    return res[1], res[2]
+end
 
+sum, primes = problem50(100000)
+print(sum, #primes, table.concat(primes,"+"))
