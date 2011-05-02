@@ -213,6 +213,30 @@ local function partitions_iterator(n, t)
     return coroutine.wrap(function() return partitions_generator(n, t, 1) end)
 end
 
+local function sum_generator(n, parts, inner) 
+    if parts == 1 then
+        return {{n}}
+    end
+    local res = {}
+    for head = 1, n - parts do
+        local tail = sum_generator(n - head, parts - 1, true)
+        for _, v in ipairs(tail) do
+            table.insert(v, 1, head)
+            table.insert(res, v)
+            if not inner then
+                coroutine.yield(v)
+            end
+        end
+    end
+    if inner then
+        return res
+    end
+end
+
+local sum_iterator = function(n, parts) 
+    return coroutine.wrap(function() return sum_generator(n, parts) end)
+end
+
 local FACT_CACHE = {[0] = 1}
 
 local function factorial(n)
@@ -244,6 +268,7 @@ numeric.hcombinations_iterator = hcombinations_iterator
 numeric.next_integer = next_integer
 numeric.integer_iterator = integer_iterator
 numeric.partitions_iterator =  partitions_iterator
+numeric.sum_iterator =  sum_iterator
 numeric.factorial = factorial
 numeric.sign = sign
 return numeric
