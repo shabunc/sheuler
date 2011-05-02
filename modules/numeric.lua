@@ -8,6 +8,9 @@ local primes = {
 }
 
 local function is_prime(n) 
+    if primes[n] then
+        return true
+    end
     if n == 1 then
         return false
     end
@@ -30,6 +33,7 @@ local function is_prime(n)
             end
         end
     end
+    primes[n] = 1
     return true
 end
 
