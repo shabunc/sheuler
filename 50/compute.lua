@@ -126,7 +126,7 @@ function problem50(lim)
         if not seq then 
             break
         end
-        if  seq[2] ~= 1 then
+        if  seq[2] ~= 1 and (seq[1] == 0 and seq[2] % 2 == 0) or (seq[1] ~= 0 and seq[2] % 2 == 1) then
             local from = seq[1] + 1
             local to = from + seq[2] - 1
             local pr_seq = array(primes, from, to)
@@ -135,7 +135,8 @@ function problem50(lim)
                 --print(table.concat(seq," "),"\t", table.concat(pr_seq," "), "\t",sum)
                 if seq[2] > max then
                     max = seq[2] 
-                    res = {sum, pr_seq}
+                    res = {pr_seq, sum}
+                    print(max, sum, table.concat(pr_seq, "+"))
                 end
             end
         end
@@ -143,5 +144,8 @@ function problem50(lim)
     return res[1], res[2]
 end
 
-sum, primes = problem50(100000)
+assert(#problem50(100) == 6)
+assert(#problem50(1000) == 21)
+
+primes, sum = problem50(10000)
 print(sum, #primes, table.concat(primes,"+"))
