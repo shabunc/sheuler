@@ -25,6 +25,15 @@ function array:map(map_func)
     return res
 end
 
+function array:index_of(el) 
+    for j = 1, #self do
+        if self[j] == el then
+            return j
+        end
+    end
+    return 0
+end
+
 function array:__eq(b)
     if #self ~= #b then
         return false
