@@ -66,6 +66,16 @@ local function divisors(n)
     return res
 end
 
+local function alldivisors(n) 
+    local res = {}
+    for j = 1, n do
+        if n % j == 0 then
+            table.insert(res, j)
+        end
+    end
+    return res
+end
+
 local function digits2num(t, base) 
     base = base or 10
     local res = 0
@@ -262,6 +272,7 @@ end
 numeric.is_prime = is_prime
 numeric.digits2num = digits2num 
 numeric.divisors = divisors
+numeric.alldivisors = alldivisors
 numeric.num2digits = num2digits
 numeric.combinations_iterator = combinations_iterator
 numeric.hcombinations_iterator = hcombinations_iterator
