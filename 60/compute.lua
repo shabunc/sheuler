@@ -31,4 +31,23 @@ function all_remarkable(primes)
     return true
 end
 
+function contains_remarkable(seq, len)
+    local it = numeric.combinations_iterator(len, seq)
+    while true do
+        local seq = it()
+        if not seq then 
+            break 
+        end
+        if all_remarkable(seq) then
+            return true
+        end
+    end
+    return false
+end
+
+
 assert(all_remarkable({3, 7, 109, 673}) == true)
+assert(contains_remarkable({3, 7, 17, 109, 673}, 4) == true)
+
+
+
