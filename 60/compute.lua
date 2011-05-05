@@ -49,20 +49,17 @@ function problem60(len)
     if len == 2 then
         return {3, 7}
     end
-    local primes = problem60(len - 1)
-    local n = primes[#primes] + 2
+    local seq = problem60(len - 1)
+    local n = seq[#seq] + 2
     while true do
         if numeric.is_prime(n) then
-            local seq = contains_remarkable(primes, len - 1)
-            if seq then
-                table.insert(seq, n)
-                print(table.concat(seq," "))
-                if all_remarkable(seq) then
-                    print("SEQ", table.concat(seq, " "), "=>", array.reduce(seq, function(a, b) return a + b end))
-                    return seq
-                end
+            print(n)
+            local a = array(seq)
+            table.insert(a, n)
+            if all_remarkable(a) then
+                 print("SEQ", table.concat(a, " "), "=>", array.reduce(a, function(a, b) return a + b end))
+                 return a
             end
-            table.insert(primes, n)
         end
         n = n + 2
     end
