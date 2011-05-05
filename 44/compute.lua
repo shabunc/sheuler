@@ -33,9 +33,6 @@ function problem44(f)
         if n > 3000 then
             break
         end
-        for i, v  in pairs(chain) do
-            --print(i)
-        end
         n = n + 1
     end
 end
@@ -48,4 +45,4 @@ function triangle(n)
     return n * (n + 1) * 0.5
 end
 
-problem44(penta)
+problem44(triangle)

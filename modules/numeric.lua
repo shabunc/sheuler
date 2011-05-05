@@ -271,9 +271,11 @@ end
 
 numeric.is_prime = is_prime
 numeric.digits2num = digits2num 
+numeric.number = digits2num 
 numeric.divisors = divisors
 numeric.alldivisors = alldivisors
 numeric.num2digits = num2digits
+numeric.digits = num2digits
 numeric.combinations_iterator = combinations_iterator
 numeric.hcombinations_iterator = hcombinations_iterator
 numeric.next_integer = next_integer
