@@ -102,7 +102,7 @@ local function combinations(k, t, k_caller)
     end
     local res = {}
     for i, head in ipairs(t) do
-        local tail = array.copy(t)
+        local tail = array(t)
         table.remove(tail, i)
         local combs = combinations(k - 1, tail, k)
         for j, comb in ipairs(combs) do
