@@ -39,31 +39,37 @@ function contains_remarkable(seq, len)
             break 
         end
         if all_remarkable(seq) then
-            return true, seq
+            return seq
         end
     end
     return false
 end
 
 function problem60(len)
-    local primes = {2, 3, 5, 7, 11, 13}
+    if len == 2 then
+        return {3, 7}
+    end
+    local primes = problem60(len - 1)
+    local n = primes[#primes] + 2
     while true do
-        local test_passed, seq = contains_remarkable(primes, len)
-        if test_passed then
-            print("SEQ", table.concat(seq))
-            return seq
+        if numeric.is_prime(n) then
+            local seq = contains_remarkable(primes, len - 1)
+            if seq then
+                table.insert(seq, n)
+                print(table.concat(seq," "))
+                if all_remarkable(seq) then
+                    print("SEQ", table.concat(seq, " "), "=>", array.reduce(seq, function(a, b) return a + b end))
+                    return seq
+                end
+            end
+            table.insert(primes, n)
         end
-        local n = primes[#primes] + 2
-        while not numeric.is_prime(n) do
-            n = n + 2
-        end
-        table.insert(primes, n)
-        print("found ", #primes, "primes")
+        n = n + 2
     end
 end
 
 assert(all_remarkable({3, 7, 109, 673}) == true)
-assert(contains_remarkable({3, 7, 17, 109, 673}, 4) == true)
+assert(contains_remarkable({3, 7, 17, 109, 673}, 4) ~= false)
 
 problem60(5)
 
