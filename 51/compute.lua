@@ -26,9 +26,11 @@ function filter_primes(t)
                 a[i] = j
             end
         end
-        local n = numeric.number(a)
-        if numeric.is_prime(n) then
-            table.insert(res, n)
+        if a[1] ~= 0 then
+            local n = numeric.number(a)
+            if numeric.is_prime(n) then
+                table.insert(res, n)
+            end
         end
     end
     return res
@@ -47,10 +49,9 @@ function problem51(max)
                 local primes_found = filter_primes(seq)
                 if #primes_found == max then
                     print(table.concat(primes_found," "))
+                    return primes_found
                 end
             end
-            --[[
-            ]]
         end
         n = n + 2
     end
