@@ -6,3 +6,12 @@ Problem 34
 Find the sum of all numbers which are equal to the sum of the factorial of their digits.
 
 Note: as 1! = 1 and 2! = 2 are not sums they are not included.
+
+ANSWER:
+localhost:34(master) shabunc$ ./compute.lua 
+145
+40585
+
+
+TODO
+вообще говоря, ещё надо доказать что кроме этих двх чисел ничего нет

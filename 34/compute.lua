@@ -6,7 +6,7 @@ require("array")
 
 function is_curious(n, func) 
     if n == 1 or n == 2 then
-        return false
+        return false, 0
     end
     local digs = numeric.digits(n)
     local nfsum = array.reduce(digs, function(a, b) return a + func(b) end)
