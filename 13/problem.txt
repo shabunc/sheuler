@@ -1,0 +1,8 @@
+Problem 13
+22 March 2002
+
+Work out the first ten digits of the sum of the following one-hundred 50-digit numbers.
+
+
+localhost:13(master) shabunc$ ./compute.lua 
+5537376230390876637302048746832985971773659831892672    5537376230
