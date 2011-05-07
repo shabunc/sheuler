@@ -6,12 +6,7 @@ require("array")
 require("permutations")
 
 function is_cube(n)
-    for j = math.floor(math.sqrt(n)), 1, -1 do
-        if j*j*j == n then
-            return true
-        end
-    end
-    return false
+    return math.ceil(n^(1/3))^3 == n
 end
 
 function find_some(n, func)
@@ -28,8 +23,31 @@ function find_some(n, func)
             table.insert(res, nseq)
         end
     end
-    print(table.concat(res," "))
-    return res
+    table.sort(res)
+    local uniq = {res[1]}
+    for j = 2, #res do 
+        if res[j] ~= uniq[#uniq] then
+            table.insert(uniq, res[j])
+        end
+    end
+    print(table.concat(uniq," "))
+    return uniq
 end
 
-find_some(41063625, is_cube)
+function problem62(max)
+    local n = 100
+    while true do
+        local cube = n^3
+        print(n, cube)
+        local found = find_some(cube, is_cube)
+        if (#found - 1) == max then
+            print(table.concat(found, " "))
+            return found
+        end
+        n = n + 1
+    end
+end
+
+assert(table.concat(find_some(41063625, is_cube)," ") == "41063625 56623104 66430125")
+
+problem62(2)
