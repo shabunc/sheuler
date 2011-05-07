@@ -9,6 +9,9 @@ function is_cube(n)
     return math.ceil(n^(1/3))^3 == n
 end
 
+local CACHE = {}
+
+
 function find_some(n, func)
     local digs = numeric.digits(n)
     local it = perm.iterator(digs)
@@ -36,7 +39,8 @@ function find_some(n, func)
 end
 
 function problem62(max)
-    local n = 100
+    local n = 100 
+    local excluded = {}
     while true do
         local cube = n^3
         print(n, cube)
