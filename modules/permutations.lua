@@ -78,7 +78,7 @@ local function permutations_generator(t, inner)
     end
     local res = {}
     for j = 1, #t do
-        local tail = array.copy(t)
+        local tail = array(t)
         local head = table.remove(tail, j)
         local recs = permutations_generator(tail, true)
         for _, p in ipairs(recs) do
