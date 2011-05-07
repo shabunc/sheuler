@@ -79,7 +79,6 @@ function bignum:mul(b)
 end
 
 function bignum:pow(n) 
-    print(n)
     if n == 0 then
         return bignum{1}
     end 
