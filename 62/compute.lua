@@ -18,9 +18,11 @@ function find_some(n, func)
         if not seq then
             break
         end
-        local nseq = numeric.number(seq)
-        if func(nseq) then
-            table.insert(res, nseq)
+        if seq[1] ~= 0 then
+            local nseq = numeric.number(seq)
+            if func(nseq) then
+                table.insert(res, nseq)
+            end
         end
     end
     table.sort(res)
@@ -30,7 +32,6 @@ function find_some(n, func)
             table.insert(uniq, res[j])
         end
     end
-    print(table.concat(uniq," "))
     return uniq
 end
 
@@ -40,9 +41,9 @@ function problem62(max)
         local cube = n^3
         print(n, cube)
         local found = find_some(cube, is_cube)
-        if (#found - 1) == max then
+        if #found == max then
             print(table.concat(found, " "))
-            return found
+            return found, n
         end
         n = n + 1
     end
@@ -50,4 +51,4 @@ end
 
 assert(table.concat(find_some(41063625, is_cube)," ") == "41063625 56623104 66430125")
 
-problem62(2)
+problem62(5)
