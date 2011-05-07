@@ -66,9 +66,9 @@ local function divisors(n)
     return res
 end
 
-local function alldivisors(n) 
+local function proper_divisors(n) 
     local res = {}
-    for j = 1, n do
+    for j = 1, n - 1 do
         if n % j == 0 then
             table.insert(res, j)
         end
@@ -273,7 +273,7 @@ numeric.is_prime = is_prime
 numeric.digits2num = digits2num 
 numeric.number = digits2num 
 numeric.divisors = divisors
-numeric.alldivisors = alldivisors
+numeric.proper_divisors = proper_divisors
 numeric.num2digits = num2digits
 numeric.digits = num2digits
 numeric.combinations_iterator = combinations_iterator

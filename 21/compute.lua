@@ -5,8 +5,7 @@ require("numeric")
 require("array")
 
 function d(a)
-    local divs = numeric.alldivisors(a)
-    table.remove(divs)
+    local divs = numeric.proper_divisors(a)
     return array.reduce(divs, function(a, b) return a + b end)
 end
 
