@@ -11,10 +11,10 @@ end
 
 local CACHE = {}
 
-
 function find_some(n, func)
     local digs = numeric.digits(n)
-    local it = perm.iterator(digs)
+    --TODO выяснить, нужен ли этот шаг действительно
+    local it = perm.lexicographic_iterator(digs)
     local res = {}
     while true do
         local seq = it()
@@ -28,14 +28,7 @@ function find_some(n, func)
             end
         end
     end
-    table.sort(res)
-    local uniq = {res[1]}
-    for j = 2, #res do 
-        if res[j] ~= uniq[#uniq] then
-            table.insert(uniq, res[j])
-        end
-    end
-    return uniq
+    return res
 end
 
 function problem62(max)
