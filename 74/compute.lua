@@ -10,13 +10,23 @@ function step(n)
     return sum
 end
 
+local CACHE = {}
+
 function chain(n) 
     local res = {n}
     while true do
         local next_n = step(res[#res])
-        for j = #res, 1, -1 do
-            if res[j] == next_n then
-                return res
+        if CACHE[next_n] then
+            for j = 1, #CACHE[next_n] do
+                table.insert(res, CACHE[next_n][j])
+            end
+            return res
+        else
+            for j = #res, 1, -1 do
+                if res[j] == next_n then
+                    CACHE[n] = res
+                    return res
+                end
             end
         end
         table.insert(res, next_n)
@@ -30,6 +40,7 @@ function problem74(max, len)
         --print(n, #ch)
         if #ch == len then
             print(n)
+            print(table.concat(ch," "))
             total = total + 1
         end
     end
@@ -38,5 +49,8 @@ function problem74(max, len)
 end
 
 assert(table.concat(chain(69)," ") == "69 363600 1454 169 363601")
+assert(#chain(78) == 4)
+assert(#chain(145) == 1)
+assert(#chain(540) == 2)
 
-problem74(100000, 60)
+problem74(1000000, 60)
