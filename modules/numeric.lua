@@ -46,7 +46,22 @@ local function get_degree(n, p)
     return n, deg
 end
 
+local function divisors_tostring(res)
+    local s = {}
+    for j = 1, #res do
+        table.insert(s, res[j][1].."^"..res[j][2])
+    end
+    return table.concat(s,"+")
+end
+
 local function divisors(n) 
+    --[[
+    if n == 1 then
+        return setmetatable({{1, 1}}, {
+                 ["__tostring"] = divisors_tostring
+               })
+    end
+    ]]
     local res = {}
     local deg
     n, deg = get_degree(n, 2) 
@@ -64,14 +79,17 @@ local function divisors(n)
         p = p + 2
     end
     setmetatable(res, {
-        ["__tostring"] = function() 
-            local s = {}
-            for j = 1, #res do
-                table.insert(s, res[j][1].."^"..res[j][2])
-            end
-            return table.concat(s,"+")
-        end
+        ["__tostring"] = divisors_tostring
     })
+    return res
+end
+
+local function totient(n)
+    if n == 1 then
+        return 1
+    end
+    local divs = divisors(n)
+    local res = array.reduce(divs, function(a, b) return a * (b[1]^b[2] - b[1]^(b[2] - 1)) end, 1)
     return res
 end
 
@@ -291,6 +309,7 @@ numeric.next_integer = next_integer
 numeric.integer_iterator = integer_iterator
 numeric.partitions_iterator =  partitions_iterator
 numeric.sum_iterator =  sum_iterator
+numeric.totient = totient
 numeric.factorial = factorial
 numeric.sign = sign
 return numeric
