@@ -1,4 +1,6 @@
 require("array")
+--чтобы стары код сразу весь не поломался
+require("iterator")
 
 numeric = {}
 
@@ -122,58 +124,6 @@ local function num2digits(n)
     return res
 end
 
-local function combinations(k, t, k_caller) 
-    if k == 0 then
-        return {{}}
-    end
-    local res = {}
-    for i, head in ipairs(t) do
-        local tail = array(t)
-        table.remove(tail, i)
-        local combs = combinations(k - 1, tail, k)
-        for j, comb in ipairs(combs) do
-            table.insert(comb, 1, head)
-            table.insert(res, comb)
-            if k == k_caller then
-                coroutine.yield(comb)
-            end
-        end
-    end
-    if k ~= k_caller then
-        return res
-    end
-end
-
-local function comb_generator(k, t, rest)
-    if k == 0 then
-        return {{}}
-    end
-    local is_inner = #rest ~= 0
-    local res = {}
-    for i = #t - k - 1 , #t do
-        local head = t[i]
-        local tail = array(t)
-        table.insert(rest, table.remove(tail, i))
-        local recs = combinations(k - 1, tail, res)
-        for j, rec in ipairs(recs) do
-            table.insert(rec, 1, head)
-            table.insert(res, rec)
-            if not is_inner then
-                coroutine.yield(rec, rest)
-            end
-        end
-    end
-    if is_inner then
-        return res
-    end
-end
-
-local function comb_iterator(k, t) 
-    return coroutine.wrap(function() 
-        return comb_generator(k, t, {})
-    end)
-end
-
 local function next_integer(t, base) 
     base = base or 10
     local max_digit = base - 1
@@ -204,51 +154,6 @@ local function integer_iterator(t, base)
              iterator = next_integer(iterator, base)
         end
     end)
-end
-
-local function combinations_iterator(k,t) 
-    return coroutine.wrap(function() return combinations(k, t, k) end)
-end
-
-local serialize_partition = function(t)
-    local s = ""
-    for i, v in ipairs(t) do
-        s = s  .. v[1] .. "*" .. v[2] .. " "
-    end
-    return s
-end
-
-local function partitions_generator(n, t, from, inner) 
-    local rem = n / t[from]
-    local res = {}
-    if from == #t then
-        if n % t[from] == 0 then
-            return {{{ n / t[from], t[from]}}}
-        else
-            return false
-        end 
-    end
-    for j = 0, math.floor(rem) do
-        local head = {j, t[from]}
-        local ps = partitions_generator(n - t[from] * j, t, from + 1, true)
-        if ps then 
-            for _, p in ipairs(ps) do
-                table.insert(p, 1, head)
-                table.insert(res, p)
-                if not inner then
-                    setmetatable(p, { __tostring = serialize_partition })
-                    coroutine.yield(p)
-                end
-            end
-        end
-    end
-    if inner then
-        return res
-    end
-end
-
-local function partitions_iterator(n, t)
-    return coroutine.wrap(function() return partitions_generator(n, t, 1) end)
 end
 
 local function sum_generator(n, parts, inner) 
@@ -304,11 +209,10 @@ numeric.divisors = divisors
 numeric.proper_divisors = proper_divisors
 numeric.num2digits = num2digits
 numeric.digits = num2digits
-numeric.combinations_iterator = combinations_iterator
-numeric.comb_iterator = comb_iterator
+numeric.combinations_iterator = iterator.combinations
 numeric.next_integer = next_integer
 numeric.integer_iterator = integer_iterator
-numeric.partitions_iterator =  partitions_iterator
+numeric.partitions_iterator = iterator.partitions
 numeric.sum_iterator =  sum_iterator
 numeric.totient = totient
 numeric.factorial = factorial
