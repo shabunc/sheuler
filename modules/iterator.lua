@@ -4,42 +4,16 @@ iterator = {}
 
 local generator = {}
 
-generator.combinations = function(k, t, k_caller)
-    if k == 0 then
-        return {{}}
-    end
-    local res = {}
-    for i, head in ipairs(t) do
-        local tail = array(t)
-        table.remove(tail, i)
-        local combs = generator.combinations(k - 1, tail, k)
-        for j, comb in ipairs(combs) do
-            table.insert(comb, 1, head)
-            table.insert(res, comb)
-            if k == k_caller then
-                coroutine.yield(comb)
-            end
-        end
-    end
-    if k ~= k_caller then
-        return res
-    end
-end
 
-local function combinations(k, t)
-    return coroutine.wrap(function() 
-        return generator.combinations(k, t, k)
-    end)
-end
-
-generator.combs = function(k, t, from, inner) 
+generator.combinations = function(k, t, from, inner) 
+    local caller = generator.combinations
     if k == 0 then
         return {{}}
     end
     local res = {}
     for i = from, #t do
         local head = t[i]
-        local recs = generator.combs(k - 1, t, i + 1, true)
+        local recs = caller(k - 1, t, i + 1, true)
         for j, rec in ipairs(recs) do
             table.insert(rec, 1, head)
             table.insert(res, rec)
@@ -53,9 +27,9 @@ generator.combs = function(k, t, from, inner)
     end
 end
 
-local function combs(k, t)
+local function combinations(k, t)
     return coroutine.wrap(function() 
-        return generator.combs(k, t, 1)
+        return generator.combinations(k, t, 1)
     end)
 end
 
@@ -170,6 +144,35 @@ local function perm_lex(t, iterate_func)
     return iterator
 end
 
+generator.permutations.combinations = function(k, t, k_caller)
+    local caller = generator.permutations.combinations
+    if k == 0 then
+        return {{}}
+    end
+    local res = {}
+    for i, head in ipairs(t) do
+        local tail = array(t)
+        table.remove(tail, i)
+        local combs = caller(k - 1, tail, k)
+        for j, comb in ipairs(combs) do
+            table.insert(comb, 1, head)
+            table.insert(res, comb)
+            if k == k_caller then
+                coroutine.yield(comb)
+            end
+        end
+    end
+    if k ~= k_caller then
+        return res
+    end
+end
+
+local function perm_combinations(k, t)
+    return coroutine.wrap(function() 
+        return generator.permutations.combinations(k, t, k)
+    end)
+end
+
 --в основном для тестирования
 local function get_all(iterator)
     local res = {}
@@ -185,9 +188,12 @@ local function get_all(iterator)
 end
 
 iterator.combinations = combinations
-iterator.combs = combs
 iterator.partitions = partitions
 iterator.perm_lex = perm_lex
 iterator.get_all = get_all
+
+iterator.permutations = {}
+iterator.permutations.combinations = perm_combinations
+
 
 return iterator
