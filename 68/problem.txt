@@ -21,4 +21,12 @@ By concatenating each group it is possible to form 9-digit strings; the maximum 
 
 Using the numbers 1 to 10, and depending on arrangements, it is possible to form 16- and 17-digit strings. What is the maximum 16-digit string for a "magic" 5-gon ring?
 
+ANSWER
+localhost:68(iterator) shabunc$ ./compute.lua 
+6357528249411013    16
+6531031914842725    16
+2594936378711015    16
+2951051817673439    16
+MAX 6531031914842725
+TOTAL   4
 
