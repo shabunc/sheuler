@@ -145,34 +145,6 @@ local function combinations(k, t, k_caller)
     end
 end
 
-local function hcombinations_generator(k, t, h) 
-    if k == 0 then
-        return {{}}
-    end
-    local res = {}
-    for i, head in ipairs(t) do
-        local ch = array.copy(h)
-        local tail = array.copy(t)
-        local combs = hcombinations_generator(k - 1, tail, ch)
-        for j, comb in ipairs(combs) do
-            table.insert(comb, 1, head)
-            table.insert(res, comb)
-            if #h == #t then
-                coroutine.yield(comb, ch)
-            end
-        end
-    end
-    if k ~= k_caller then
-        return res
-    end
-end
-
-local function hcombinations_iterator(ks, t)
-    return coroutine.wrap(function() 
-        return hcombinations_generator(ks, t, t)
-    end)
-end
-
 local function next_integer(t, base) 
     base = base or 10
     local max_digit = base - 1
@@ -304,7 +276,6 @@ numeric.proper_divisors = proper_divisors
 numeric.num2digits = num2digits
 numeric.digits = num2digits
 numeric.combinations_iterator = combinations_iterator
-numeric.hcombinations_iterator = hcombinations_iterator
 numeric.next_integer = next_integer
 numeric.integer_iterator = integer_iterator
 numeric.partitions_iterator =  partitions_iterator
