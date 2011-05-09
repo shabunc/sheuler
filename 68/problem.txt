@@ -30,3 +30,6 @@ localhost:68(iterator) shabunc$ ./compute.lua
 MAX 6531031914842725
 TOTAL   4
 
+
+TODO
+ну как минимум - генерить дополнение (rems) сразу с последовательностью
