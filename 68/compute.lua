@@ -13,7 +13,7 @@ function magic_generator(seq, alphabet)
             table.remove(rems, found)
         end
     end
-    local it = iterator.combinations(#rems, rems)
+    local it = iterator.perm_lex(rems)
     while true do
         local p = it()
         if not p then
@@ -46,8 +46,12 @@ function magic_iterator(seq, alphabet)
     end)
 end
 
-function problem68(k, len, alphabet)
+function problem68(k, len)
     local total = 0
+    local alphabet = {}
+    for j = 1, 2*k do
+        table.insert(alphabet, j)
+    end
     local it = iterator.permutations.combinations(k, alphabet)
     local max = -1
     while true do
@@ -79,5 +83,5 @@ function problem68(k, len, alphabet)
     print("TOTAL", total)
 end
 
-problem68(3, 9, {1,2,3,4,5,6})
+problem68(3, 9)
 --problem68(5, 16, {1,2,3,4,5,6})
