@@ -21,16 +21,21 @@ function magic_generator(seq, alphabet)
         end
         local found = true
         local sum = seq[#seq] + seq[1] + p[#p]
-        local res = {seq[#seq], seq[1], p[#p]}
+        local res = {}
+        table.insert(res, seq[#seq])
+        table.insert(res, seq[1])
+        table.insert(res, p[#p])
         for j = 1, #seq - 1 do
             if seq[j] + seq[j+1] + p[j] ~= sum then
                 found = false
                 break
             end
-            table.insert(res, {seq[j], seq[j+1], p[j]})
+            table.insert(res, seq[j])
+            table.insert(res, seq[j+1])
+            table.insert(res, p[j])
         end
         if found then
-            coroutine.yield(res)
+            coroutine.yield(table.concat(res))
         end
     end
 end
@@ -45,6 +50,7 @@ function problem68()
     local total = 0
     local alphabet = {1,2,3,4,5,6,7,8,9,10}
     local it = iterator.permutations.combinations(5, alphabet)
+    local max = -1
     while true do
         local seq, qes = it()
         if not seq then
@@ -56,11 +62,22 @@ function problem68()
             if not res then
                 break
             end
-            print(res)
-            total = total + 1
+            if string.len(res) == 16 then
+                local digs = {}
+                for d in string.gmatch(res, ".") do
+                    table.insert(digs, d) 
+                end
+                local n = numeric.number(digs)
+                print(string.format("%i", n), res)
+                if n > max then
+                    max = n
+                end
+                total = total + 1
+            end
         end
     end
-    print(total)
+    print(string.format("MAX %i", max))
+    print("TOTAL", total)
 end
 
 problem68()
