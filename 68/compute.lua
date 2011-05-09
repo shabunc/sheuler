@@ -21,13 +21,13 @@ function magic_generator(seq, alphabet)
         end
         local found = true
         local sum = seq[#seq] + seq[1] + p[#p]
-        local res = {{p[#seq], seq[#seq], seq[1]}}
+        local res = {{p[#seq], seq[1], seq[#seq]}}
         for j = 1, #seq - 1 do
             if seq[j] + seq[j+1] + p[j] ~= sum then
                 found = false
                 break
             end
-            table.insert(res, {p[j], seq[j], seq[j+1]})
+            table.insert(res, {p[j], seq[j + 1], seq[j]})
         end
         if found then
             table.sort(res, function(a, b) return a[1] < b[1] end)
@@ -46,10 +46,9 @@ function magic_iterator(seq, alphabet)
     end)
 end
 
-function problem68()
+function problem68(k, len, alphabet)
     local total = 0
-    local alphabet = {1,2,3,4,5,6,7,8,9,10}
-    local it = iterator.permutations.combinations(5, alphabet)
+    local it = iterator.permutations.combinations(k, alphabet)
     local max = -1
     while true do
         local seq, qes = it()
@@ -62,7 +61,7 @@ function problem68()
             if not res then
                 break
             end
-            if string.len(res) == 16 then
+            if string.len(res) == len then
                 local digs = {}
                 for d in string.gmatch(res, ".") do
                     table.insert(digs, d) 
@@ -80,4 +79,4 @@ function problem68()
     print("TOTAL", total)
 end
 
-problem68()
+problem68(3, 9, {1,2,3,4,5,6})
