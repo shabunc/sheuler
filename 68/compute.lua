@@ -6,14 +6,8 @@ require("array")
 require("iterator")
 
 function is_magic(t)
-    local res = {}
-    for j = 1, #t - 1 do
-        local n = t[j] + t[j+1]
-        table.insert(res, n)
-    end
-    table.insert(res, t[#t] + t[1])
-    print(table.concat(t), table.concat(res," "))
-    return res
+    local sum = array.reduce(t, function(a,b) return a + b end)
+    sum = 2 * sum
 end
 
 function problem68()
