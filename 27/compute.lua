@@ -26,3 +26,25 @@ end
 
 assert(#chain(gen_poly(1, 41)) == 40)
 assert(#chain(gen_poly(-79, 1601)) == 80)
+
+function problem27()
+    local max = -1
+    local res
+    for a = -999, 999, 2  do
+        for b = -1000, 1000 do
+            if numeric.is_prime(b) then
+                local ch = chain(gen_poly(a, b))
+                if #ch > max then
+                    print(a, b, #ch)
+                    max = #ch
+                    res = a * b
+                end
+            end
+        end
+    end
+    print("MAX", max)
+    print("RES", res)
+    return max, res
+end
+
+problem27()
