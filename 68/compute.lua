@@ -13,7 +13,7 @@ function magic_generator(seq, alphabet)
             table.remove(rems, found)
         end
     end
-    local it = iterator.perm_lex(rems)
+    local it = iterator.combinations(#rems, rems)
     while true do
         local p = it()
         if not p then
@@ -80,3 +80,4 @@ function problem68(k, len, alphabet)
 end
 
 problem68(3, 9, {1,2,3,4,5,6})
+--problem68(5, 16, {1,2,3,4,5,6})
