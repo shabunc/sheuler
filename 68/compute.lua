@@ -18,19 +18,21 @@ function magic_generator(seq, alphabet)
             break
         end
         local found = true
-        local res = {{nodes[1], seq[1], seq[2]}}
-        local sum = array.reduce(res[1], function(a,b) return a + b end)
+        local res = {nodes[1], seq[1], seq[2]}
+        local sum = array.reduce(res, function(a,b) return a + b end)
         for j = 2, #seq  do
             if seq[j] + (seq[j + 1] or seq[1]) + nodes[j] ~= sum then
                 found = false
                 break
             end
-            table.insert(res,{nodes[j], seq[j], (seq[j+1] or seq[1])})
+            table.insert(res, nodes[j])
+            table.insert(res, seq[j])
+            table.insert(res, (seq[j+1] or seq[1]))
         end
         if found then
             local flatten = ""
             for i, v in ipairs(res) do
-                flatten = flatten .. table.concat(v)
+                flatten = flatten .. (v)
             end
             coroutine.yield(flatten)
         end
@@ -76,5 +78,5 @@ function problem68(k, len)
     print("TOTAL", total)
 end
 
---problem68(3, 9)
+problem68(3, 9)
 problem68(5, 16)
