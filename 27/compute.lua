@@ -24,14 +24,11 @@ function gen_poly(a, b)
     end
 end
 
-assert(#chain(gen_poly(1, 41)) == 40)
-assert(#chain(gen_poly(-79, 1601)) == 80)
-
 function problem27()
     local max = -1
     local res
-    for a = -999, 999, 2  do
-        for b = -1000, 1000 do
+    for b = 0, 1000 do
+        for a = -999, 1 - b, 2  do
             if numeric.is_prime(b) then
                 local ch = chain(gen_poly(a, b))
                 if #ch > max then
@@ -47,4 +44,8 @@ function problem27()
     return max, res
 end
 
+assert(#chain(gen_poly(1, 41)) == 40)
+assert(#chain(gen_poly(-79, 1601)) == 80)
+
 problem27()
+--print(table.concat(chain(gen_poly(-999, 61))," "))
