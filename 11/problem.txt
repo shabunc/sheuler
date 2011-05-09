@@ -26,3 +26,13 @@ In the 2020 grid below, four numbers along a diagonal line have been marked in r
 The product of these numbers is 26  63  78  14 = 1788696.
 
 What is the greatest product of four adjacent numbers in any direction (up, down, left, right, or diagonally) in the 20^20 grid?
+
+ANSWER
+localhost:11(master) shabunc$ ./compute.lua 
+MAX RIGHT   48477312
+MAX DOWN    51267216
+MAX DOWNRIGHT   32719995
+MAX DOWNLEFT    70600674
+BIGGEST 70600674
+
+видимо, задумка в том, чтобы не догадаться про downleft )
