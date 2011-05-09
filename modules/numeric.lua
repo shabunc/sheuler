@@ -55,6 +55,8 @@ local function divisors_tostring(res)
     return table.concat(s," * ")
 end
 
+local CACHE_DIVISORS = {}
+
 local function divisors(n) 
     --[[
     if n == 1 then
@@ -63,6 +65,9 @@ local function divisors(n)
                })
     end
     ]]
+    if CACHE_DIVISORS[n] then
+        return CACHE_DIVISORS[n]
+    end
     local res = {}
     local deg
     n, deg = get_degree(n, 2) 
@@ -82,7 +87,23 @@ local function divisors(n)
     setmetatable(res, {
         ["__tostring"] = divisors_tostring
     })
+    CACHE_DIVISORS[n] = res
     return res
+end 
+
+local function HCF(a, b) 
+    if b > a then
+        a, b = b, a
+    end
+    if b == 0 then
+        return a
+    end
+    return HCF(b, a % b)
+end
+
+
+local function are_rel_primes(a, b) 
+    return HCF(a, b) == 1
 end
 
 local function totient(n)
@@ -203,6 +224,8 @@ local function sign(n)
 end
 
 numeric.is_prime = is_prime
+numeric.are_rel_primes = are_rel_primes
+numeric.HCF = HCF
 numeric.digits2num = digits2num 
 numeric.number = digits2num 
 numeric.divisors = divisors
