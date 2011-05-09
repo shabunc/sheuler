@@ -145,33 +145,28 @@ local function perm_lex(t, iterate_func)
     return iterator
 end
 
-generator.permutations.combinations = function(k, t, from, remainders)
+generator.permutations.combinations = function(k, t, inner)
     local caller = generator.permutations.combinations
-    local inner = from > 1
-    if k == 0 then
-        return {{}}
-    end
-    local res = {}
-    for i = from, #t do
-        local head = t[i]
-        local tail = array(t)
-        local combs = caller(k - 1, tail, from + 1, {1})
-        for j, comb in ipairs(combs) do
-            table.insert(comb, 1, head)
-            table.insert(res, comb)
-            if not inner then
-                coroutine.yield(comb)
-            end
+    local combos_it = iterator.combinations(k, t)
+    while true do
+        local combo = combos_it()
+        if not combo then
+            break
         end
-    end
-    if inner then
-        return res
+        local perm_it = iterator.perm_lex(combo)
+        while true do 
+            local seq = perm_it()
+            if not seq then
+                break
+            end
+            coroutine.yield(seq)
+        end
     end
 end
 
 local function perm_combinations(k, t)
     return coroutine.wrap(function() 
-        return generator.permutations.combinations(k, t, 1, {})
+        return generator.permutations.combinations(k, t)
     end)
 end
 
