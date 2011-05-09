@@ -51,7 +51,7 @@ local function divisors_tostring(res)
     for j = 1, #res do
         table.insert(s, res[j][1].."^"..res[j][2])
     end
-    return table.concat(s,"+")
+    return table.concat(s," * ")
 end
 
 local function divisors(n) 
