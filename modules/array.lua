@@ -26,8 +26,12 @@ function array:map(map_func)
 end
 
 function array:index_of(el) 
+    local filter = function(i, v) return v == el end
+    if type(el) == "function" then
+        filter = function(i, v) return el(i, v) end
+    end
     for j = 1, #self do
-        if self[j] == el then
+        if filter(j, self[j]) then
             return j
         end
     end
