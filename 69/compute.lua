@@ -4,7 +4,7 @@ package.path = package.path .. ";../modules/?.lua"
 require("numeric")
 require("array")
 
-function problem69(lim)
+function problem69brute(lim)
     local max = -1
     local n
     for j = 2, lim do
@@ -19,16 +19,20 @@ function problem69(lim)
     return n, max
 end
 
-function investigate(len)
-    local max = -1
-    for j = 2, len do
-        local n = problem69(j)
-        if n > max then
-            max = n
-            print(j, n, numeric.divisors(n))
+function problem69(len)
+    local primes = {2} 
+    local n = 3
+    while true do
+        if numeric.is_prime(n) then
+            local pr = array.reduce(primes, function(a, b) return a*b end, 1)
+            if pr * n > len then
+                print("RES", pr, numeric.divisors(pr))
+                return pr
+            end
+            table.insert(primes, n)
         end
+        n = n + 2
     end
 end
 
-investigate(5000)
-
+problem69(1000000)

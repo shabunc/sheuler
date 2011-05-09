@@ -18,3 +18,9 @@ It can be seen that n=6 produces a maximum n/φ(n) for n  10.
 Find the value of n <=  1,000,000 for which n/φ(n) is a maximum.
 
 ANSWER
+localhost:69(master) shabunc$ ./compute.lua 
+RES 510510  2^1 * 3^1 * 5^1 * 7^1 * 11^1 * 13^1 * 17^1
+
+TODO
+я доказал это смутно, дифференцируя
+но нужно конечно строго доказать
