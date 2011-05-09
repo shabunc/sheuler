@@ -21,21 +21,21 @@ function magic_generator(seq, alphabet)
         end
         local found = true
         local sum = seq[#seq] + seq[1] + p[#p]
-        local res = {}
-        table.insert(res, seq[#seq])
-        table.insert(res, seq[1])
-        table.insert(res, p[#p])
+        local res = {{p[#seq], seq[#seq], seq[1]}}
         for j = 1, #seq - 1 do
             if seq[j] + seq[j+1] + p[j] ~= sum then
                 found = false
                 break
             end
-            table.insert(res, seq[j])
-            table.insert(res, seq[j+1])
-            table.insert(res, p[j])
+            table.insert(res, {p[j], seq[j], seq[j+1]})
         end
         if found then
-            coroutine.yield(table.concat(res))
+            table.sort(res, function(a, b) return a[1] < b[1] end)
+            local flatten = ""
+            for _, v in ipairs(res)  do
+                flatten = flatten..table.concat(v)
+            end
+            coroutine.yield(flatten)
         end
     end
 end
