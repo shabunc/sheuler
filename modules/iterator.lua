@@ -32,6 +32,33 @@ local function combinations(k, t)
     end)
 end
 
+generator.combs = function(k, t, from, inner) 
+    if k == 0 then
+        return {{}}
+    end
+    local res = {}
+    for i = from, #t do
+        local head = t[i]
+        local recs = generator.combs(k - 1, t, i + 1, true)
+        for j, rec in ipairs(recs) do
+            table.insert(rec, 1, head)
+            table.insert(res, rec)
+            if not inner then
+                coroutine.yield(rec)
+            end
+        end
+    end
+    if inner then
+        return res
+    end
+end
+
+local function combs(k, t)
+    return coroutine.wrap(function() 
+        return generator.combs(k, t, 1)
+    end)
+end
+
 local serialize_partition = function(t)
     local s = ""
     for i, v in ipairs(t) do
@@ -158,6 +185,7 @@ local function get_all(iterator)
 end
 
 iterator.combinations = combinations
+iterator.combs = combs
 iterator.partitions = partitions
 iterator.perm_lex = perm_lex
 iterator.get_all = get_all
