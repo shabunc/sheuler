@@ -46,6 +46,38 @@ function magic_iterator(seq, alphabet)
     end)
 end
 
+function magic(seq, alphabet)
+    local rems = array(alphabet)
+    for _, n in ipairs(seq) do
+        table.remove(rems, array.index_of(rems, n))
+    end
+    local it = iterator.perm_lex(rems)
+    local first = rems[1]
+    while true do
+        local nodes = it()
+        if nodes[1] ~= first then
+            break
+        end
+        local found = true
+        local res = {{nodes[1], seq[1], seq[2]}}
+        local sum = array.reduce(res[1], function(a,b) return a + b end)
+        for j = 2, #seq  do
+            if seq[j] + (seq[j + 1] or seq[1]) + nodes[j] ~= sum then
+                found = false
+                break
+            end
+            table.insert(res,{nodes[j], seq[j], seq[j+1]})
+        end
+        if found then
+            local flatten = ""
+            for i, v in ipairs(res) do
+                flatten = flatten .. table.concat(v)
+            end
+            print(flatten)
+        end
+    end
+end
+
 function problem68(k, len)
     local total = 0
     local alphabet = {}
@@ -54,6 +86,14 @@ function problem68(k, len)
     end
     local it = iterator.permutations.combinations(k, alphabet)
     local max = -1
+    while true do
+        local seq = it()
+        if not seq then
+            break
+        end
+        magic(seq, alphabet) 
+    end
+    --[[
     while true do
         local seq, qes = it()
         if not seq then
@@ -79,6 +119,7 @@ function problem68(k, len)
             end
         end
     end
+    ]]
     print(string.format("MAX %i", max))
     print("TOTAL", total)
 end

@@ -31,7 +31,7 @@ function array:index_of(el)
             return j
         end
     end
-    return 0
+    return -1
 end
 
 function array:__eq(b)
