@@ -1,4 +1,5 @@
 require("array")
+print("OBSOLETE, USE iterator.permuations")
 
 perm = {}
 

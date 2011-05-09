@@ -73,6 +73,77 @@ local function partitions(n, t)
     return coroutine.wrap(function() return generator.partitions(n, t, 1) end)
 end
 
+local metas = {
+    simple_string = {
+        __tostring = function(t) 
+            return table.concat(t)
+        end
+    }
+}
+
+generator.permutations = {}
+generator.permutations.next_lex = function(permutation)
+    setmetatable(permutation, metas.simple_string)
+    coroutine.yield(permutation)
+    local k, l
+    for j = 1, #permutation - 1 do 
+        if permutation[j] < permutation[j+1] then
+            k = j
+        end
+    end
+    if not k then
+        return false
+    end
+    for j = k + 1, #permutation do
+        if permutation[j] > permutation[k] then
+            l = j
+        end
+    end
+    permutation[k], permutation[l] = permutation[l], permutation[k]
+    local reverted = {}
+    for j = #permutation, k + 1, -1  do
+        reverted[#reverted + 1] = table.remove(permutation)
+    end
+    for j = 1, #reverted do
+        table.insert(permutation, reverted[j])
+    end
+    return generator.permutations.next_lex(permutation)
+end
+generator.permutations.prev_lex = function(permutation)
+    setmetatable(permutation, metas.simple_string)
+    coroutine.yield(permutation)
+    local k, l
+    for j = 1, #permutation - 1 do 
+        if permutation[j] > permutation[j+1] then
+            k = j
+        end
+    end
+    if not k then
+        return false
+    end
+    for j = k + 1, #permutation do
+        if permutation[j] < permutation[k] then
+            l = j
+        end
+    end
+    permutation[k], permutation[l] = permutation[l], permutation[k]
+    local reverted = {}
+    for j = #permutation, k + 1, -1  do
+        reverted[#reverted + 1] = table.remove(permutation)
+    end
+    for j = 1, #reverted do
+        table.insert(permutation, reverted[j])
+    end
+    return generator.permutations.prev_lex(permutation)
+end
+
+local function perm_lex(t, iterate_func)
+    iterate_func = iterate_func or generator.permutations.next_lex
+    local iterator = coroutine.wrap(function() return iterate_func(t) end)
+    return iterator
+end
+
+--в основном для тестирования
 local function get_all(iterator)
     local res = {}
     while true do
@@ -88,6 +159,7 @@ end
 
 iterator.combinations = combinations
 iterator.partitions = partitions
+iterator.perm_lex = perm_lex
 iterator.get_all = get_all
 
 return iterator
