@@ -1,6 +1,5 @@
 require("array")
 
-
 numeric = {}
 
 local primes = {
@@ -145,6 +144,36 @@ local function combinations(k, t, k_caller)
     end
 end
 
+local function comb_generator(k, t, rest)
+    if k == 0 then
+        return {{}}
+    end
+    local is_inner = #rest ~= 0
+    local res = {}
+    for i = #t - k - 1 , #t do
+        local head = t[i]
+        local tail = array(t)
+        table.insert(rest, table.remove(tail, i))
+        local recs = combinations(k - 1, tail, res)
+        for j, rec in ipairs(recs) do
+            table.insert(rec, 1, head)
+            table.insert(res, rec)
+            if not is_inner then
+                coroutine.yield(rec, rest)
+            end
+        end
+    end
+    if is_inner then
+        return res
+    end
+end
+
+local function comb_iterator(k, t) 
+    return coroutine.wrap(function() 
+        return comb_generator(k, t, {})
+    end)
+end
+
 local function next_integer(t, base) 
     base = base or 10
     local max_digit = base - 1
@@ -276,6 +305,7 @@ numeric.proper_divisors = proper_divisors
 numeric.num2digits = num2digits
 numeric.digits = num2digits
 numeric.combinations_iterator = combinations_iterator
+numeric.comb_iterator = comb_iterator
 numeric.next_integer = next_integer
 numeric.integer_iterator = integer_iterator
 numeric.partitions_iterator =  partitions_iterator
