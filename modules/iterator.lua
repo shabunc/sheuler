@@ -5,15 +5,16 @@ iterator = {}
 local generator = {}
 
 
-generator.combinations = function(k, t, from, inner) 
+generator.combinations = function(k, t, from) 
     local caller = generator.combinations
+    local inner = from ~= 1
     if k == 0 then
         return {{}}
     end
     local res = {}
     for i = from, #t do
         local head = t[i]
-        local recs = caller(k - 1, t, i + 1, true)
+        local recs = caller(k - 1, t, i + 1)
         for j, rec in ipairs(recs) do
             table.insert(rec, 1, head)
             table.insert(res, rec)
