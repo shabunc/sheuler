@@ -29,6 +29,17 @@ end
 
 function Player:sort()
     table.sort(self.cards, function(a, b) return a.value < b.value end)
+    local cluster = {{self.cards[1].value, 1}}
+    for j = 2, #self.cards do
+        if self.cards[j].value ~= self.cards[j - 1].value then
+             table.insert(cluster, {self.cards[j].value, 1})
+        else
+            cluster[#cluster][2] = cluster[#cluster][2] + 1
+        end
+    end
+    table.sort(cluster, function(a, b) return a[2] > b[2] end)
+    self.cluster = cluster
+    return self.cards, self.luster
 end
 
 function Player:hasRoyalFlush()
@@ -40,13 +51,11 @@ function Player:hasStraightFlush()
 end
 
 function Player:hasFourOfAKind()
-    local cluster = self:cluster()
-    return cluster[1][2] == 4
+    return self.cluster[1][2] == 4
 end
 
 function Player:hasFullHouse()
-    local cluster = self:cluster()
-    return cluster[1][2] == 3 and cluster[2][2] == 2
+    return self.cluster[1][2] == 3 and cluster[2][2] == 2
 end
 
 
@@ -69,31 +78,17 @@ function Player:hasStraight()
 end
 
 function Player:hasTwoPairs()
-    local cluster = self:cluster()
-    return cluster[1][2] == 2 and cluster[2][2] == 2
+    return self.cluster[1][2] == 2 and self.cluster[2][2] == 2
 end
 
 function Player:hasOnePair()
-    local cluster = self:cluster()
-    return cluster[1][2] == 2
+    return self.cluster[1][2] == 2
 end
 
 function Player:highestCard()
     return self.cards[#self.cards] 
 end
 
-function Player:cluster()
-    local uniq = {{self.cards[1].value, 1}}
-    for j = 2, #self.cards do
-        if self.cards[j].value ~= self.cards[j - 1].value then
-             table.insert(uniq, {self.cards[j].value, 1})
-        else
-            uniq[#uniq][2] = uniq[#uniq][2] + 1
-        end
-    end
-    table.sort(uniq, function(a, b) return a[2] > b[2] end)
-    return uniq
-end
 
 Game = class:new()
 function Game:init(player1, player2, data)
@@ -106,8 +101,12 @@ function Game:init(player1, player2, data)
         end
         count = count + 1
     end
+
     assert(player1:isReady())
     assert(player2:isReady())
+
+    player1:sort()
+    player2:sort()
 end
 
 function Game:findWinner() 
