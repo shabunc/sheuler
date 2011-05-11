@@ -22,6 +22,7 @@ local NUMWORDS = {
     [18] = "eighteen",
     [20] = "twenty",
     [30] = "thirty",
+    [40] = "forty",
     [50] = "fifty",
     [80] = "eighty"
 }
@@ -61,9 +62,15 @@ function translate(n)
 end
 
 function problem17()
+    local total = 0
     for n = 1, 1000 do
-        print(n, translate(n))
+        local tr = translate(n)
+        local trtr = string.gsub(tr, "[%s-]", "")
+        print(string.format("%i\t%s\t%s",n, trtr, tr))
+        total = total + trtr:len()
     end
+    print("TOTAL", total)
+    return total
 end
 
 problem17()
