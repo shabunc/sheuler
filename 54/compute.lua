@@ -94,3 +94,30 @@ function Player:cluster()
     table.sort(uniq, function(a, b) return a[2] > b[2] end)
     return uniq
 end
+
+Game = class:new()
+function Game:init(player1, player2, data)
+    local count = 1
+    local player = player1
+    for card in data:gmatch("%w%w") do
+        player:addCard(card)
+        if count == 5 then
+            player = player2
+        end
+        count = count + 1
+    end
+    assert(player1:isReady())
+    assert(player2:isReady())
+end
+
+function Game:findWinner() 
+    if player1:hasRoyalFlush() then
+        return player1
+    end
+    if player2:hasRoyalFlush() then
+        return player2
+    end
+end
+
+local game = Game(Player(), Player(), "5H 5C 6S 7S KD 2C 3S 8S 8D TD")
+
