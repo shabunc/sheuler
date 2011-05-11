@@ -27,6 +27,10 @@ function Player:isReady()
     return #self.cards == 5
 end
 
+function Player:sort()
+    table.sort(self.cards, function(a, b) return a.value < b.value end)
+end
+
 function Player:hasRoyalFlush()
     return self:hasStraightFlush() and self.cards[1].value == "T"
 end
@@ -36,12 +40,15 @@ function Player:hasStraightFlush()
 end
 
 function Player:hasFourOfAKind()
-    return self:hasN(4)
+    local cluster = self:cluster()
+    return cluster[1][2] == 4
 end
 
 function Player:hasFullHouse()
-    return self:hasN(3,2)
+    local cluster = self:cluster()
+    return cluster[1][2] == 3 and cluster[2][2] == 2
 end
+
 
 function Player:hasFlush()
     for j = 2, #self.cards do
@@ -62,13 +69,28 @@ function Player:hasStraight()
 end
 
 function Player:hasTwoPairs()
-    return self:hasN(2,2)
+    local cluster = self:cluster()
+    return cluster[1][2] == 2 and cluster[2][2] == 2
 end
 
 function Player:hasOnePair()
-    return self:hasN(1)
+    local cluster = self:cluster()
+    return cluster[1][2] == 2
 end
 
 function Player:highestCard()
     return self.cards[#self.cards] 
+end
+
+function Player:cluster()
+    local uniq = {{self.cards[1].value, 1}}
+    for j = 2, #self.cards do
+        if self.cards[j].value ~= self.cards[j - 1].value then
+             table.insert(uniq, {self.cards[j].value, 1})
+        else
+            uniq[#uniq][2] = uniq[#uniq][2] + 1
+        end
+    end
+    table.sort(uniq, function(a, b) return a[2] > b[2] end)
+    return uniq
 end
