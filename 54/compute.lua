@@ -39,7 +39,7 @@ function Player:sort()
     end
     table.sort(cluster, function(a, b) return a[2] > b[2] end)
     self.cluster = cluster
-    return self.cards, self.luster
+    return self.cards, self.cluster
 end
 
 function Player:hasRoyalFlush()
@@ -95,41 +95,28 @@ end
 
 function Player:getRank() 
     local rank = 0
-    if self:hasOnePair() then
-        rank = rank + 1
-    end
 
-    if self:hasTwoPairs() then
-        rank = rank + 1
-    end
-    
-    if self:hasThreeOfAKind() then
-        rank = rank + 1
-    end
+        --[[
+            High Card: Highest value card.
+            One Pair: Two cards of the same value.
+            Two Pairs: Two different pairs.
+            Three of a Kind: Three cards of the same value.
+            Straight: All cards are consecutive values.
+            Flush: All cards of the same suit.
+            Full House: Three of a kind and a pair.
+            Four of a Kind: Four cards of the same value.
+            Straight Flush: All cards are consecutive values of same suit.
+            Royal Flush: Ten, Jack, Queen, King, Ace, in same suit.
+        ]]
+    local check = array{"hasOnePair", "hasTwoPairs", "hasFourOfAKind", "hasFullHouse",
+    "hasFlush", "hasStraight", "hasThreeOfAKind",  "hasTwoPairs", "hasOnePair"}:map(function(func) 
+        if self[func](self) then
+            return 1
+        end
+        return 0
+    end)    
 
-    if self:hasStraight() then
-        rank = rank + 1
-    end
-
-    if self:hasFlush() then
-        rank = rank + 1
-    end
-
-    if self:hasFullHouse() then
-        rank = rank + 1
-    end
-
-    if self:hasFourOfAKind() then
-        rank = rank + 1
-    end
-
-    if self:hasStraightFlush() then
-        rank = rank + 1
-    end
-
-    if self:hasRoyalFlush() then
-        rank = rank + 1
-    end
+    print(check)
 
     return rank
 end
