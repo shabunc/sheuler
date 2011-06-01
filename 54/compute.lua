@@ -134,11 +134,15 @@ function Player:getRank()
     end
     local highest_card
     if has == "hasRoyalFlush" or has == "hasStraightFlush" or has == "hasFlush" or has == "hasStraight" or has == "hasHighestCard" then
-        highest_card = self.cards[#self.cards].value
+        highest_card = self:highestCard()
     else
         highest_card = self.cluster[1][1]
     end
     return rank, highest_card, has, CARDS[highest_card]
+end
+
+function Player:highestCard()
+    return self.cards[#self.cards].value
 end
 
 Game = class:new()
@@ -170,8 +174,6 @@ function Game:findWinner()
 
     local rank1, highest1, has1, major1 = player1:getRank()
     local rank2, highest2, has2, major2 = player2:getRank()
-    print(has1, major1)
-    print(has2, major2)
 
     local winner
     if rank1 < rank2 then
@@ -180,9 +182,16 @@ function Game:findWinner()
         winner = player2
     elseif highest1 > highest2 then
         winner = player1 
+    elseif highest1 < highest2 then
+        winner = player2
+    elseif player1:highestCard() > player2:highestCard() then
+        winner = player1
     else
         winner = player2
     end
+
+    print(has1, major1)
+    print(has2, major2)
 
     return winner
 end
@@ -203,3 +212,6 @@ assert(game:isFirstPlayer(game:findWinner()) == true)
 
 local game = Game(Player(), Player(), " 2D 9C AS AH AC 3D 6D 7D TD QD")
 assert(game:isSecondPlayer(game:findWinner()) == true)
+
+local game = Game(Player(), Player(), "4D 6S 9H QH QC 3D 6D 7H QD QS")
+assert(game:isFirstPlayer(game:findWinner()) == true)
