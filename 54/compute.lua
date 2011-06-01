@@ -5,7 +5,7 @@ require("class")
 require("numeric")
 require("array")
 
-local CARDS = {2, 3, 4, 5, 6, 7, 8, 9, "T", "J", "Q", "K", "A"}
+local CARDS = {"2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"}
 
 Player = class:new()
 function Player:init()
@@ -108,17 +108,17 @@ function Player:getRank()
             Straight Flush: All cards are consecutive values of same suit.
             Royal Flush: Ten, Jack, Queen, King, Ace, in same suit.
         ]]
-    local check = array{"hasOnePair", "hasTwoPairs", "hasFourOfAKind", "hasFullHouse",
-    "hasFlush", "hasStraight", "hasThreeOfAKind",  "hasTwoPairs", "hasOnePair"}:map(function(func) 
+    local check = array{"hasRoyalFlush", "hasTwoPairs", "hasThreeOfAKind", "hasStraight", "hasFlush", "hasFullHouse", "hasFourOfAKind", "hasTwoPairs", "hasOnePair"}:map(function(func) 
         if self[func](self) then
             return 1
         end
         return 0
     end)    
 
-    print(check)
+    local rank = numeric.digits2num(check, 2)
+    print(check, " => ", rank)
 
-    return rank
+    return rank, CARDS[self.cluster[1][1]]
 end
 
 Game = class:new()
@@ -147,17 +147,20 @@ function Game:findWinner()
     local player1 = self.player1
     local player2 = self.player2
 
-    local rank1 = player1:getRank()
-    local rank2 = player2:getRank()
+    local rank1, highest1 = player1:getRank()
+    local rank2, highest2 = player2:getRank()
     print(rank1, rank2)
+    print(highest1, highest2)
 
     local winner
     if rank1 > rank2 then
         winner = player1
     elseif rank1 < rank2 then
         winner = player2
+    elseif highest1 > highest2 then
+        winner = player1 
     else
-        winner = self:playerWithHighestCard()
+        winner = player2
     end
 
     return winner
@@ -171,19 +174,8 @@ function Game:isSecondPlayer(player)
     return self.player2 == player
 end
 
-function Game:playerWithHighestCard()
-    local player1 = self.player1
-    local player2 = self.player2
-
-    if player2.cards[#player2.cards].value > player1.cards[#player1.cards].value then
-        return player2
-    end
-    return player1
-end
-
 local game = Game(Player(), Player(), "5H 5C 6S 7S KD 2C 3S 8S 8D TD")
-if game:isFirstPlayer(game:findWinner())  then
-    print("PLAYER1")
-else
-    print("PLAYER2")
-end
+assert(game:isSecondPlayer(game:findWinner()) == true)
+
+local game = Game(Player(), Player(), "5D 8C 9S JS AC 2C 5C 7D 8S QH")
+assert(game:isFirstPlayer(game:findWinner()) == true)
