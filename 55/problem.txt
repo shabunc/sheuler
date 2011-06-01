@@ -18,3 +18,10 @@ Surprisingly, there are palindromic numbers that are themselves Lychrel numbers;
 How many Lychrel numbers are there below ten-thousand?
 
 NOTE: Wording was modified slightly on 24 April 2007 to emphasise the theoretical nature of Lychrel numbers.
+
+ANSWER
+TOTAL   249
+
+TODO
+когда припирает к стенке - вспоминаешь более изящные тесты на палиндром)))
+проверить хватил ли "обычных" чисел

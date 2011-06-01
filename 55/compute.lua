@@ -31,8 +31,7 @@ function lych_test(bnum)
         return true
     end
     local it = bnum
-    for step = 1, 50000 do
-        print(bnum, step)
+    for step = 1, 50 do
         it = it:add(it:reverse()) 
         if is_palindrome(it) then
             BADCACHE[uid] = true
@@ -47,7 +46,6 @@ function problem55()
     local total = 0
     for j = 1, 10000 do
         local num = bignum(numeric.digits(j))
-        print(num)
         if lych_test(num) then
             total = total + 1
         end
