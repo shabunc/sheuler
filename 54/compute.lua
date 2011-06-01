@@ -184,10 +184,16 @@ function Game:findWinner()
         winner = player1 
     elseif highest1 < highest2 then
         winner = player2
-    elseif player1:highestCard() > player2:highestCard() then
-        winner = player1
     else
-        winner = player2
+        for j = #player2.cards, 1, -1 do
+            if player1.cards[j].value > player2.cards[j].value then
+                winner = player1
+                break
+            elseif player2.cards[j].value > player1.cards[j].value then
+                winner = player2
+                break
+            end
+        end
     end
 
     print(has1, major1)
@@ -215,3 +221,7 @@ assert(game:isSecondPlayer(game:findWinner()) == true)
 
 local game = Game(Player(), Player(), "4D 6S 9H QH QC 3D 6D 7H QD QS")
 assert(game:isFirstPlayer(game:findWinner()) == true)
+
+local game = Game(Player(), Player(), "2H 2D 4C 4D 4S 3C 3D 3S 9S 9D")
+assert(game:isFirstPlayer(game:findWinner()) == true)
+
