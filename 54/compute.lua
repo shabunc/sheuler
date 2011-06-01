@@ -19,7 +19,7 @@ end
 function Player:parseCard(card)
     return {
         value = array.index_of(CARDS, card:sub(1, 1)),
-        suid = card: sub(2, 1)
+        suit = card:sub(2,2)
     }
 end
 
@@ -47,7 +47,7 @@ function Player:hasRoyalFlush()
 end
 
 function Player:hasStraightFlush()
-    return self:hasFlush() and self:hasSameSuit()
+    return self:hasFlush() and self:hasStraight()
 end
 
 function Player:hasFourOfAKind()
@@ -65,7 +65,7 @@ end
 
 function Player:hasFlush()
     for j = 2, #self.cards do
-        if self.cards[j].suit ~= self.cards[1] then
+        if self.cards[j].suit ~= self.cards[j - 1].suit then
             return false
         end
     end
@@ -108,21 +108,42 @@ function Player:getRank()
             Straight Flush: All cards are consecutive values of same suit.
             Royal Flush: Ten, Jack, Queen, King, Ace, in same suit.
         ]]
-    local check = array{"hasRoyalFlush", "hasTwoPairs", "hasThreeOfAKind", "hasStraight", "hasFlush", "hasFullHouse", "hasFourOfAKind", "hasTwoPairs", "hasOnePair"}:map(function(func) 
-        if self[func](self) then
-            return 1
+    local checks = {
+        "hasRoyalFlush",
+        "hasStraightFlush",
+        "hasFourOfAKind",
+        "hasFullHouse",
+        "hasFlush",
+        "hasStraight",
+        "hasThreeOfAKind",
+        "hasTwoPairs",
+        "hasOnePair"
+    }
+
+    local has, rank
+    for i, v in ipairs(checks) do
+        rank = i
+        if self[v](self) then
+            has = v
+            break
         end
-        return 0
-    end)    
+    end
 
-    local rank = numeric.digits2num(check, 2)
-    print(check, " => ", rank)
-
-    return rank, CARDS[self.cluster[1][1]]
+    if not has then
+        has = "hasHighestCard"
+    end
+    local highest_card
+    if has == "hasRoyalFlush" or has == "hasStraightFlush" or has == "hasFlush" or has == "hasStraight" or has == "hasHighestCard" then
+        highest_card = self.cards[#self.cards].value
+    else
+        highest_card = self.cluster[1][1]
+    end
+    return rank, highest_card, has, CARDS[highest_card]
 end
 
 Game = class:new()
 function Game:init(player1, player2, data)
+    print("game", data)
     local count = 1
     local player = player1
     for card in data:gmatch("%w%w") do
@@ -147,15 +168,15 @@ function Game:findWinner()
     local player1 = self.player1
     local player2 = self.player2
 
-    local rank1, highest1 = player1:getRank()
-    local rank2, highest2 = player2:getRank()
-    print(rank1, rank2)
-    print(highest1, highest2)
+    local rank1, highest1, has1, major1 = player1:getRank()
+    local rank2, highest2, has2, major2 = player2:getRank()
+    print(has1, major1)
+    print(has2, major2)
 
     local winner
-    if rank1 > rank2 then
+    if rank1 < rank2 then
         winner = player1
-    elseif rank1 < rank2 then
+    elseif rank1 > rank2 then
         winner = player2
     elseif highest1 > highest2 then
         winner = player1 
@@ -179,3 +200,6 @@ assert(game:isSecondPlayer(game:findWinner()) == true)
 
 local game = Game(Player(), Player(), "5D 8C 9S JS AC 2C 5C 7D 8S QH")
 assert(game:isFirstPlayer(game:findWinner()) == true)
+
+local game = Game(Player(), Player(), " 2D 9C AS AH AC 3D 6D 7D TD QD")
+assert(game:isSecondPlayer(game:findWinner()) == true)
