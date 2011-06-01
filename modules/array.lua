@@ -38,6 +38,15 @@ function array:index_of(el)
     return 0
 end
 
+function array:reverse()
+    local res = array{}
+    print(self)
+    for j = #self, 1, -1 do
+        table.insert(res, self[j])
+    end
+    return res
+end
+
 function array:__eq(b)
     if #self ~= #b then
         return false
