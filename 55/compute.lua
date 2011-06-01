@@ -23,15 +23,15 @@ end
 
 function lych_test(bnum)
     local steps = math.huge
+    local uid = tostring(bnum)
+    if BADCACHE[uid] then
+        return false
+    end
+    if GOODCACHE[uid] then
+        return true
+    end
     local it = bnum
     for step = 1, 50000 do
-        local uid = tostring(it)
-        if BADCACHE[uid] then
-            return false
-        end
-        if GOODCACHE[uid] then
-            return true
-        end
         print(bnum, step)
         it = it:add(it:reverse()) 
         if is_palindrome(it) then
@@ -39,7 +39,7 @@ function lych_test(bnum)
             return false, step
         end
     end
-    GOODCACHE[tostring(bnum)] = true
+    GOODCACHE[uid] = true
     return true, math.huge
 end
 
