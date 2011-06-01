@@ -225,3 +225,17 @@ assert(game:isFirstPlayer(game:findWinner()) == true)
 local game = Game(Player(), Player(), "2H 2D 4C 4D 4S 3C 3D 3S 9S 9D")
 assert(game:isFirstPlayer(game:findWinner()) == true)
 
+function problem54(filename)
+    local file = io.open(filename, "r")
+    local total = 0
+    for line in file:lines() do
+        local game = Game(Player(), Player(), line)
+        if game:isFirstPlayer(game:findWinner()) then
+            total = total + 1
+        end
+    end
+    print("TOTAL", total)
+    return total
+end
+
+problem54("poker.txt")
