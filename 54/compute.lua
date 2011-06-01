@@ -131,13 +131,19 @@ function Player:getRank()
 
     if not has then
         has = "hasHighestCard"
+        rank = rank + 1
     end
+
     local highest_card
     if has == "hasRoyalFlush" or has == "hasStraightFlush" or has == "hasFlush" or has == "hasStraight" or has == "hasHighestCard" then
         highest_card = self:highestCard()
+    elseif has == "hasTwoPairs" then
+        --TODO - убедиться нужно ли это вообще
+        highest_card = math.max(self.cluster[1][1], self.cluster[2][1])
     else
         highest_card = self.cluster[1][1]
     end
+
     return rank, highest_card, has, CARDS[highest_card]
 end
 
@@ -196,8 +202,13 @@ function Game:findWinner()
         end
     end
 
-    print(has1, major1)
-    print(has2, major2)
+    if winner == player1 then
+        print(has1, major1, "WINNER")
+        print(has2, major2)
+    else
+        print(has1, major1)
+        print(has2, major2, "WINNER")
+    end
 
     return winner
 end
