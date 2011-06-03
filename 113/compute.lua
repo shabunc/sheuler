@@ -5,8 +5,29 @@ package.path = package.path .. ";/Users/shabunc/mine/euler/modules/?.lua"
 require("numeric")
 require("array")
 
-CACHEBI = {}
-CACHEBD = {}
+function memoize(func)
+    local CACHE = {}
+    return function(n)
+        if CACHE[n] then
+            return CACHE[n]
+        end
+        local res = func(n)
+        CACHE[n] = res
+        return res
+    end 
+end
+
+function memoize2(func)
+    local CACHE = {}
+    return function(n, m)
+        if CACHE[n] and CACHE[n][m] then
+            return CACHE[n][m]
+        end
+        local res = func(n, m)
+        CACHE[n] = {[m] = res}
+        return res
+    end
+end
 
 function bi(n, k) 
     local res
@@ -51,4 +72,8 @@ end
 assert(problem113(6) == 12951)
 assert(problem113(10) == 277032)
 
-print(problem113(11))
+--f = memoize(f)
+--bi = memoize2(bi)
+--bd = memoize2(bd)
+
+print(f(19))
