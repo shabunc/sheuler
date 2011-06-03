@@ -18,30 +18,8 @@ function get_bounce_type(t)
     return is_asc, is_desc, false
 end
 
-function f(n, k) 
-    if n == 0 then
-        return 1
-    end
-    total = 0
-    for j = k, 9 do
-        total = total + f(n-1, j)
-    end
-    return total
-end
-
-function g(n, k) 
-    if n == 0 then
-        return 1
-    end
-    total = 0
-    for j = 9 - k, 9 do
-        total = total + g(n-1, j)
-    end
-    return total
-end
-
 function bounce_stat(from, dencity)
-    local iterator = numeric.integer_iterator(from, 9998)
+    local iterator = numeric.integer_iterator(from)
     local res = {[-1] = {}, [0] = {}, [1] = {}}
     local count = 0
     while true do
@@ -59,8 +37,7 @@ function bounce_stat(from, dencity)
         end
         if is_bouncing then
             table.insert(res[0], num)
-            --if #res[0]/count == dencity then
-            if false then
+            if #res[0]/count == dencity then
                 print("answer is ", table.concat(num))
                 break
             end
@@ -74,6 +51,4 @@ function bounce_stat(from, dencity)
     print("non-bouncy", count - #res[0])
 end
 
-bounce_stat({1,0,0,0}, 0.99)
-print(f(4,0))
-print(g(4,0))
+bounce_stat({0}, 0.99)

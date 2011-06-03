@@ -5,50 +5,50 @@ package.path = package.path .. ";/Users/shabunc/mine/euler/modules/?.lua"
 require("numeric")
 require("array")
 
-function get_bounce_type(t) 
-    local is_asc = true
-    local is_desc = true
-    for j = 2, #t do 
-        is_asc = is_asc and t[j] >= t[j-1]
-        is_desc = is_desc and t[j] <= t[j-1]
-        if not(is_desc or is_asc) then
-            return false, false, true
-        end
+CACHEBI = {}
+CACHEBD = {}
+
+function bi(n, k) 
+    local res
+    if n == 1 then
+        res = 10 - k
+        return res
     end
-    return is_asc, is_desc, false
+    local res = 0
+    for j = k, 9 do
+        res = res + bi(n - 1, j)
+    end
+    return res
 end
 
-function bounce_stat(from, dencity)
-    local iterator = numeric.integer_iterator(from)
-    local res = {[-1] = {}, [0] = {}, [1] = {}}
-    local count = 0
-    while true do
-        num = iterator()
-        if not num then
-            break
-        end
-        local is_asc, is_desc, is_bouncing  = get_bounce_type(num)
-        --print(btype, table.concat(num))
-        if is_asc then
-            table.insert(res[1], num)
-        end
-        if is_desc then
-            table.insert(res[-1], num)
-        end
-        if is_bouncing then
-            table.insert(res[0], num)
-            if #res[0]/count == dencity then
-                print("answer is ", table.concat(num))
-                break
-            end
-        end
-        count = count + 1
+function bd(n, k)
+    local res 
+    if n == 1 then
+        return k + 1
     end
-    print("from ", table.concat(from), " to", count, "there are") 
-    print("ascending => ",  #res[1])
-    print("descending => ",  #res[-1])
-    print("bouncing => ",  #res[0], #res[0]/count)
-    print("non-bouncy", count - #res[0])
+    local res = 0
+    for j = 0, k do
+        res = res + bd(n - 1, j)
+    end
+    return res
 end
 
-bounce_stat({0}, 0.99)
+function f(n)
+    local inc = bi(n, 1)
+    local dec = bd(n, 9)
+    local res = inc + dec - 10
+    return res, inc, dec
+end
+
+function problem113(n)
+    local res = 0
+    for j = 1, n do
+        res = res + f(j)
+    end
+    return res
+end
+
+assert(problem113(6) == 12951)
+assert(problem113(10) == 277032)
+
+print(problem113(11))
