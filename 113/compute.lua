@@ -31,6 +31,16 @@ function memoize2(func)
     end
 end
 
+function tailcall(func) 
+    function res(head, tail) 
+       if head == 1 then
+            return tail
+       end
+       return res(head - 1, tail + func(head))
+    end
+    return res
+end
+
 function bi(n, k) 
     local res
     if n == 1 then
@@ -70,22 +80,22 @@ function f2(n)
     return res, inc, dec
 end
 
+function f3(n)
+    return tailcall(function(n) return bd(n, 8) + bd(n, 9) - 10 end)(n, 9)
+end
 
 function problem113(n)
-    local res = 0
-    for j = n, 1, -1 do
-        res = res + f2(j)
-    end
-    return res
+    return tailcall(f)(n, f3(1))
 end
+
 
 assert(problem113(6) == 12951)
 assert(problem113(10) == 277032)
 
-f = memoize(f)
+--f = memoize(f)
 --bi = memoize2(bi)
 --bd = memoize2(bd)
 
 local now = os.clock()
-print(problem113(21))
+print(problem113(100))
 print(string.format("time: %.2f\n", os.clock() - now))
