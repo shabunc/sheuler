@@ -9,6 +9,14 @@ function array:init(t, from, to)
     end
 end
 
+function array.range(from, to)
+    local res = array{}
+    for j = from, to do
+        table.insert(res, j)
+    end
+    return res
+end
+
 function array:reduce(reduce_func, initial_value)
     local res = initial_value or 0
     for i, v in ipairs(self) do
