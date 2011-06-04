@@ -22,11 +22,14 @@ function memoize2(func)
     local CACHE = {}
     return function(n, m)
         if CACHE[n] and CACHE[n][m] then
-            print("from cache", n, m, CACHE[n][m])
+            --print(n, m)
             return CACHE[n][m]
         end
         local res = func(n, m)
-        CACHE[n] = {[m] = res}
+        if not CACHE[n] then
+            CACHE[n] = {}
+        end
+        CACHE[n][m] = res
         return res
     end
 end
@@ -92,10 +95,10 @@ end
 assert(problem113(6) == 12951)
 assert(problem113(10) == 277032)
 
---f = memoize(f)
+--f3 = memoize(f3)
 --bi = memoize2(bi)
---bd = memoize2(bd)
+bd = memoize2(bd)
 
 local now = os.clock()
-print(problem113(100))
+print(problem113(32))
 print(string.format("time: %.2f\n", os.clock() - now))
