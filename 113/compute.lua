@@ -62,10 +62,11 @@ function bd(n, k)
     if n == 1 then
         return k + 1
     end
-    local res = 0
-    for j = 0, k do
-        res = res + bd(n - 1, j)
+    if k == 0 then
+        return 1
     end
+    local res = 0
+    res = bd(n, k - 1) + bd(n - 1, k)
     return res
 end
 
@@ -91,6 +92,7 @@ function problem113(n)
     return tailcall(f)(n, f3(1))
 end
 
+print(bd(2,9))
 
 assert(problem113(6) == 12951)
 assert(problem113(10) == 277032)
@@ -100,5 +102,5 @@ assert(problem113(10) == 277032)
 bd = memoize2(bd)
 
 local now = os.clock()
-print(problem113(32))
+print(problem113(30))
 print(string.format("time: %.2f\n", os.clock() - now))
