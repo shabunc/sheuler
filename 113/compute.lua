@@ -92,11 +92,18 @@ function problem113(n)
     return tailcall(f)(n, f3(1))
 end
 
-print(bd(2,9))
 
 assert(problem113(6) == 12951)
 assert(problem113(10) == 277032)
 
+local n = 20
+for j = 1, n do
+    for i = j, n do
+        print(i, j, bd(i,j))
+    end
+end
+
+--[[
 --f3 = memoize(f3)
 --bi = memoize2(bi)
 bd = memoize2(bd)
@@ -104,3 +111,4 @@ bd = memoize2(bd)
 local now = os.clock()
 print(problem113(30))
 print(string.format("time: %.2f\n", os.clock() - now))
+]]
