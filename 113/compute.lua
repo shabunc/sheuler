@@ -4,6 +4,7 @@ package.path = package.path .. ";/Users/shabunc/mine/euler/modules/?.lua"
 
 require("numeric")
 require("array")
+local memoize = require("memoize")
 
 function bd(n, k)
     if n == 1 then
@@ -36,9 +37,8 @@ end
 assert(problem113(6) == 12951)
 assert(problem113(10) == 277032)
 
+bd = memoize(bd)
 
---[[
 local now = os.clock()
-print(problem113(10))
+print(problem113(100))
 print(string.format("time: %.2f\n", os.clock() - now))
-]]
