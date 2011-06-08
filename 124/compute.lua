@@ -16,6 +16,7 @@ end
 function radpairs(n)
     local res = {}
     for j = 1, n do
+        print(j)
         table.insert(res, {j, rad(j)})
     end
     for _, v in ipairs(res) do
