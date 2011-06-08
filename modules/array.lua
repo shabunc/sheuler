@@ -33,6 +33,16 @@ function array:map(map_func)
     return res
 end
 
+function array:filter(filter_func)
+    local res = array:new({})
+    for i, v in ipairs(self) do
+        if filter_func(v, i) then
+            table.insert(res, v)
+        end
+    end
+    return res
+end
+
 function array:index_of(el) 
     local filter = function(i, v) return v == el end
     if type(el) == "function" then
