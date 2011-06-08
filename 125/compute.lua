@@ -4,7 +4,7 @@ package.path = package.path .. ";/Users/shabunc/mine/euler/modules/?.lua"
 require("numeric")
 require("array")
 
-function allsquares(len, max) 
+function squares(len, max) 
     local from = 1
     local res = {}
     while true do
@@ -20,4 +20,37 @@ function allsquares(len, max)
     end
 end
 
-print(table.concat(allsquares(3, 100), " "))
+function allsquares(max)
+    local res = {}
+    local len = 2
+    while true do
+        sqs = squares(len, max)
+        if #sqs == 0 then
+            break
+        end
+        for _, sq in ipairs(sqs) do
+            table.insert(res, sq)
+        end
+        len = len + 1
+    end
+    return res
+end
+
+function is_palindrome(digits)
+    for j = 1, math.ceil(#digits/2) do
+        if digits[j] ~=  digits[#digits - j + 1] then
+            return false
+        end
+    end
+    return true, num
+end
+
+function problem125(max) 
+    local pals = array.filter(allsquares(max), function(it) 
+        return is_palindrome(numeric.digits(it))
+    end)
+    local res = pals:reduce(function(a, b) return a + b end)
+    return res
+end
+
+print(problem125(100000000))
