@@ -18,6 +18,8 @@ function radpairs(n)
     for j = 1, n do
         table.insert(res, {j, rad(j)})
     end
+    for _, v in ipairs(res) do
+    end
     return res
 end
 
@@ -30,14 +32,11 @@ end
 
 function problem124(n)
     local rs = radpairs(n)
-    for _, v in ipairs(rs) do
-        print(_, v[1], v[2])
-    end
     table.sort(rs, radsort)
     return rs
 end
 
-problem124(10)
-print("=====")
-problem124(10)
+assert(problem124(10)[4][1] == 8)
+assert(problem124(10)[6][1] == 9)
 
+print(problem124(100000)[10000][1])

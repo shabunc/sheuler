@@ -58,13 +58,11 @@ end
 local CACHE_DIVISORS = {}
 
 local function divisors(n) 
-    --[[
     if n == 1 then
         return setmetatable({{1, 1}}, {
                  ["__tostring"] = divisors_tostring
                })
     end
-    ]]
     if CACHE_DIVISORS[n] then
         return CACHE_DIVISORS[n]
     end
