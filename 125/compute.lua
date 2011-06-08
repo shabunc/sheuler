@@ -9,7 +9,7 @@ function squares(len, max)
     local res = {}
     while true do
         local total = 0
-        for j = from, from + len do
+        for j = from, from + len - 1 do
             total = total + j*j        
             if total > max then
                 return res
@@ -48,9 +48,14 @@ end
 function problem125(max) 
     local pals = array.filter(allsquares(max), function(it) 
         return is_palindrome(numeric.digits(it))
-    end)
+    end):uniq()
+    for _, v in ipairs(pals) do
+        --print(v)
+    end
     local res = pals:reduce(function(a, b) return a + b end)
     return res
 end
 
-print(problem125(100000000))
+assert(problem125(10^3) == 4164)
+
+print(problem125(10^8))
