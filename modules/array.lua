@@ -56,6 +56,21 @@ function array:index_of(el)
     return 0
 end
 
+function array:uniq()
+    if #self == 0 then
+        return {}
+    end
+    local copy = array(self)
+    table.sort(copy)
+    local res = array{copy[1]}
+    for j = 2,  #copy do
+        if copy[j] ~= copy[j - 1] then
+            table.insert(res, copy[j])
+        end
+    end
+    return res
+end
+
 function array:reverse()
     local res = array{}
     for j = #self, 1, -1 do
