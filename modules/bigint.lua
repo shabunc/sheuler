@@ -1,5 +1,6 @@
 require("array")
 
+print("WARN! bigint is obsolete, use bignum!")
 
 local function __tostring(self)
     return table.concat(self.num)
