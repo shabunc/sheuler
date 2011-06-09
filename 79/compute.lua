@@ -11,8 +11,8 @@ function analize(data)
     local test_key = function(key)
         if not res[key] then
             res[key] = {
-                ["before"] = {},
-                ["after"] = {}
+                ["before"] = array{},
+                ["after"] = array{}
             }
         end
     end
@@ -33,11 +33,13 @@ end
 
 function inspect(data)
     for k, info in pairs(data) do
+        table.sort(info.before)
+        table.sort(info.after)
+        info.before = info.before:uniq()
+        info.after = info.after:uniq()
         print(k)
-        print("before", #info.before)
-        print(table.concat(info.before," "))
-        print("after", #info.after)
-        print(table.concat(info.after," "))
+        print("before", table.concat(info.before))
+        print("after", table.concat(info.after))
     end
 end
 
