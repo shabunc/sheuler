@@ -88,6 +88,22 @@ end
 local CACHE_DIVISORS = {}
 
 local function divisors(n) 
+    local k = 1
+    local divs = {}
+    while numeric.prime(k) <= n/2 do 
+        if n % numeric.prime(k) == 0 then
+            table.insert(divs, numeric.prime(k))
+        end
+        k = k + 1
+    end
+    if #divs == 0 then
+        table.insert(divs, n)
+    end
+    return divs
+end
+
+local function alldivisors(n) 
+    print("WARN!!! This method has changed, use alldivisors")
     if n == 1 then
         return setmetatable({{1, 1}}, {
                  ["__tostring"] = divisors_tostring
@@ -134,13 +150,17 @@ local function are_rel_primes(a, b)
     return HCF(a, b) == 1
 end
 
-local function totient(n)
+local function totient(n, divs)
     if n == 1 then
         return 1
     end
-    local divs = divisors(n)
-    local res = array.reduce(divs, function(a, b) return a * (b[1]^b[2] - b[1]^(b[2] - 1)) end, 1)
-    return res
+   local divs = divs or numeric.divisors(n) 
+   local res = n 
+   for _, p in ipairs(divs) do
+        res = res/p
+        res = res * (p - 1)
+   end 
+   return res 
 end
 
 local function proper_divisors(n) 
@@ -256,6 +276,7 @@ numeric.are_rel_primes = are_rel_primes
 numeric.HCF = HCF
 numeric.digits2num = digits2num 
 numeric.number = digits2num 
+numeric.alldivisors = alldivisors
 numeric.divisors = divisors
 numeric.proper_divisors = proper_divisors
 numeric.prime = prime

@@ -5,36 +5,7 @@ require("numeric")
 require("array")
 
 
-function divisors(n) 
-    local k = 1
-    local divs = {}
-    while numeric.prime(k) <= n/2 do 
-        if n % numeric.prime(k) == 0 then
-            table.insert(divs, numeric.prime(k))
-        end
-        k = k + 1
-    end
-    if #divs == 0 then
-        table.insert(divs, n)
-    end
-    return divs
-end
-
-function totient(n, divs)
-   if n == 1  then
-        return 1
-   end 
-   local divs = divs or divisors(n) 
-   res = n 
-   for _, p in ipairs(divs) do
-        res = res/p
-        res = res * (p - 1)
-   end 
-   return res 
-end
-
 function brute72(d)
-    local lookup = {}
     local total = 0
     for b = d, 2, -1 do
        for a = 1, b - 1 do
@@ -51,7 +22,7 @@ function problem72(n)
     total = 0
     for d = 2, n do
         print(d)
-        total = total + totient(d)
+        total = total + numeric.totient(d)
     end
     return total
 end
