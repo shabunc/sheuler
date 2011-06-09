@@ -38,6 +38,36 @@ local function is_prime(n)
     return true
 end
 
+local prime = (function() 
+    local max = 3
+    local primeslookup = {2, 3}
+
+    local function is_prime(n) 
+        local test = true
+        for j = 1, math.sqrt(n) do
+            if n % primeslookup[j] == 0 then
+                test = false
+                break
+            end
+        end
+        return test
+    end
+
+    return function(n) 
+       if n <= #primeslookup then
+            return primeslookup[n]
+       end
+       m = primeslookup[#primeslookup] + 2
+       while #primeslookup ~= n do
+            if is_prime(m) then
+                table.insert(primeslookup, m)
+            end
+            m = m + 2
+       end
+       return primeslookup[n]
+    end
+end)()
+
 local function get_degree(n, p) 
     local deg = 0
     while n % p == 0 do
@@ -228,6 +258,7 @@ numeric.digits2num = digits2num
 numeric.number = digits2num 
 numeric.divisors = divisors
 numeric.proper_divisors = proper_divisors
+numeric.prime = prime
 numeric.num2digits = num2digits
 numeric.digits = num2digits
 numeric.combinations_iterator = iterator.combinations
