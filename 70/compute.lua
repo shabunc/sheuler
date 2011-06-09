@@ -92,9 +92,39 @@ function are_permutations(a, b)
     return da == db
 end
 
+function firstprime(n)
+    local i = 1
+    while primes(i) <= n do
+        i = i + 1
+    end    
+    return i, primes(i)
+end
+
 function problem70(n)
     local min = math.huge
     local minnum, minphi
+    local max = firstprime(n)
+    print(max)
+    for j = 1, max do
+        local p1 = primes(j)
+        for i = max, j, -1 do
+            local p2 = primes(i)
+            local num = p1 * p2
+            if num < n then
+                local phi = totient(num) 
+                if are_permutations(num, phi) then
+                    if min > num/phi then
+                        min = num/phi
+                        minnum = num
+                        minphi = phi
+                        print(minnum, minphi, p1, p2, min)
+                    end
+                    break
+                end
+            end
+        end
+    end
+    --[[
     for j = 1, n do
         local p1 = primes(j)
         if p1 > n then
@@ -118,6 +148,7 @@ function problem70(n)
             end
         end
     end
+    ]]
 end
 
-problem70(10^5)
+problem70(4 * 10^4)
