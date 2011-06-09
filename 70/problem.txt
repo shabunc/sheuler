@@ -4,3 +4,18 @@ The number 1 is considered to be relatively prime to every positive number, so �
 Interestingly, φ(87109)=79180, and it can be seen that 87109 is a permutation of 79180.
 
 Find the value of n, 1  n  107, for which φ(n) is a permutation of n and the ratio n/φ(n) produces a minimum.
+
+
+ANSWER
+broadband-109-173-96-184:70(master) shabunc$ time ./compute.lua  
+start from  3137
+7357291 7351792 3203    2297    1.0007479809004 true
+7507321 7501732 3347    2243    1.0007450279482 true
+8319823 8313928 3557    2339    1.0007090511248 true
+...
+
+TODO
+вообще говоря не досчитал до конца - а в друг там что-то ещё
+взял то значение, на котором "застопорилось"
+
+остальные варианты оставляю в качестве выдающегося памятника собственному торможению

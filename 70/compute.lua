@@ -97,7 +97,7 @@ function firstprime(n)
     while primes(i) <= n do
         i = i + 1
     end    
-    return i, primes(i)
+    return i - 1, primes(i - 1)
 end
 
 function problem70(n)
@@ -170,4 +170,26 @@ function problem703(n)
     end
 end
 
-problem70(10^6)
+function problem70(n)
+    local max = firstprime(math.sqrt(n))
+    print("start from", primes(max))
+    local min = math.huge
+    for j = max, n do
+        for i = j, 1, -1 do
+            local p1 = primes(j)
+            local p2 = primes(i)
+            local num = p1 * p2
+            if num <= n then
+                local phi = totient(num, {p1, p2})
+                if are_permutations(num, phi) then
+                    if min > num/phi then
+                        min = num/phi
+                        print(num, phi, p1, p2, num/phi, are_permutations(num, phi))
+                    end 
+                end
+            end
+        end
+    end
+end
+
+problem70(10^7)
