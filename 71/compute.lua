@@ -58,5 +58,5 @@ end
 
 assert(#get_all_fractions(8) == 21)
 
-problem71(1000000)
+problem71(10^4)
 
