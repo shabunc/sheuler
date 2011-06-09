@@ -37,7 +37,7 @@ end)()
 function divisors(n) 
     local k = 1
     local divs = {}
-    while primes(k) <= n do 
+    while primes(k) <= n/2 do 
         if n % primes(k) == 0 then
             table.insert(divs, primes(k))
         end
@@ -71,28 +71,53 @@ function totient(n)
    if n == 1  then
         return 1
    end 
-   local alls = alldivisors(n) 
-   local total = 1
-   for _, v in ipairs(alls) do
-        total = total * (v[1] ^ v[2] - v[1] ^ (v[2] - 1))
-   end
-   return total
+   local divs = divisors(n) 
+   res = n 
+   for _, p in ipairs(divs) do
+        res = res/p
+        res = res * (p - 1)
+   end 
+   return res 
 end
 
 assert(totient(87109) == 79180)
+assert(totient(2310) == 480)
+assert(totient(30030) == 5760)
+
+function are_permutations(a, b)
+    local da = array(numeric.digits(a))
+    local db = array(numeric.digits(b))
+    table.sort(da)
+    table.sort(db)
+    return da == db
+end
 
 function problem70(n)
+    local min = math.huge
+    local minnum, minphi
     for j = 1, n do
-        local phi = totient(j)
-        local a = array(numeric.digits(j))
-        table.sort(a)
-        local b = array(numeric.digits(phi))
-        table.sort(b)
-        if a == b then
-            print(j, phi, j/phi)
+        local p1 = primes(j)
+        if p1 > n then
+            break
+        end
+        local p2
+        for i = j, n do
+            p2 = primes(i)
+            if p2 > n or p1 * p2 > n then
+                break
+            end
+            local num = p1 * p2
+            local phi = totient(num) 
+            if are_permutations(num, phi) then
+                if min > num/phi then
+                    min = num/phi
+                    minnum = num
+                    minphi = phi
+                    print(minnum, minphi, p1, p2, min)
+                end
+            end
         end
     end
 end
 
-problem70(10^3)
-
+problem70(10^5)
