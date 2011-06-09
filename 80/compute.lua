@@ -23,16 +23,12 @@ end
 function root(n, precision)
     local lim = array(numeric.digits(n))
     local head = array(numeric.digits(math.floor(math.sqrt(n))))
-    print(lim, head)
     local dig
     for j = 1, precision do
        head, dig = nextdig(head, lim) 
     end
-    print(head:mul(head))
     table.remove(head, 1)
-    print(head)
-    local total = head:reduce(function(a, b) return a + b end)
-    print(total)
+    return head
 end
 
-print(root(3,100))
+assert(tostring(root(2,98)) == "41421356237309504880168872420969807856967187537694807317667973799073247846210703885038753432764157")
