@@ -67,11 +67,11 @@ function alldivisors(n)
     return all
 end
 
-function totient(n)
+function totient(n, divs)
    if n == 1  then
         return 1
    end 
-   local divs = divisors(n) 
+   local divs = divs or divisors(n) 
    res = n 
    for _, p in ipairs(divs) do
         res = res/p
@@ -124,7 +124,11 @@ function problem70(n)
             end
         end
     end
-    --[[
+end
+
+function problem702(n)
+    local min = math.huge
+    local minnum, minphi
     for j = 1, n do
         local p1 = primes(j)
         if p1 > n then
@@ -148,7 +152,22 @@ function problem70(n)
             end
         end
     end
-    ]]
 end
 
-problem70(4 * 10^4)
+function problem703(n)
+    local min = math.huge
+    for k = n, 1, -1 do 
+        local divs = divisors(k)
+        if #divs == 2 then
+            local phi = totient(k, divs)
+            if are_permutations(k, phi) then
+                if min > k/phi then
+                    min = k/phi
+                    print(k, phi, divs[1], divs[2], k/phi)
+                end
+            end
+        end
+    end
+end
+
+problem70(10^6)
