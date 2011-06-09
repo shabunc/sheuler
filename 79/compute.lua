@@ -37,9 +37,7 @@ function inspect(data)
         table.sort(info.after)
         info.before = info.before:uniq()
         info.after = info.after:uniq()
-        print(k)
-        print("before", table.concat(info.before))
-        print("after", table.concat(info.after))
+        print(table.concat(info.before), "<=", k, "=>", table.concat(info.after))
     end
 end
 
