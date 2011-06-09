@@ -24,21 +24,29 @@ function root(n, precision)
     local lim = array(numeric.digits(n))
     local head = array(numeric.digits(math.floor(math.sqrt(n))))
     local dig
-    for j = 1, precision do
+    for j = 1, precision - #head do
        head, dig = nextdig(head, lim) 
     end
-    table.remove(head, 1)
     return head
 end
 
 function problem80()
-    local sq = root(2, 3)
-    local total = sq:reduce(function(a, b) return a + b end)
-    print(sq)
-    print(total)
+    local total = 0
+    for j = 1, 100 do
+        if j % math.sqrt(j) ~= 0 then
+            local sq = root(j, 100)
+            local sum = sq:reduce(function(a, b) return a + b end)
+            total = total + sum
+            print(j, sum)
+        end
+    end
+    print("TOTAL", total)
 end
 
---assert(tostring(root(2,98)) == "41421356237309504880168872420969807856967187537694807317667973799073247846210703885038753432764157")
+--[[
+assert(tostring(root(2,98)) == "41421356237309504880168872420969807856967187537694807317667973799073247846210703885038753432764157")
 assert(tostring(root(2, 100)) == "4142135623730950488016887242096980785696718753769480731766797379907324784621070388503875343276415727")
+]]
+
 
 problem80()
