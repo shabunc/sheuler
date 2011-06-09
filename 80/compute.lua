@@ -11,8 +11,9 @@ function nextdig(head, lim)
     for j = 0, 9 do
         local num = bignum(head)
         table.insert(num, j)
-        local test = array(num:mul(num), 1, #lim)
-        if test == lim then
+        local sq = num:mul(num)
+        local test = array(sq, 1, #lim)
+        if numeric.number(test) >= numeric.number(lim) then
             break
         end
         prevnum = num
@@ -37,7 +38,7 @@ function problem80()
             local sq = root(j, 100)
             local sum = sq:reduce(function(a, b) return a + b end)
             total = total + sum
-            print(j, sum)
+            print(sq, j, sum)
         end
     end
     print("TOTAL", total)
@@ -46,6 +47,7 @@ end
 --[[
 assert(tostring(root(2, 100)) == "4142135623730950488016887242096980785696718753769480731766797379907324784621070388503875343276415727")
 ]]
+--ОШИБКА - см. на те последовательности где дофига девяток - они врут
 
 
 problem80()
