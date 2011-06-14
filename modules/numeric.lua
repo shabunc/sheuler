@@ -160,7 +160,7 @@ local function totient(n, divs)
         res = res/p
         res = res * (p - 1)
    end 
-   return res 
+   return res, divs
 end
 
 local function proper_divisors(n) 
