@@ -15,8 +15,9 @@ totient2 :: Integer -> Integer
 totient2 n = n * totient n
 
 is_cube :: Integer -> Bool
-is_cube n = (dropWhile (\a -> a^3 < n) [1..] !! 0) ^ 3 == n
+--is_cube n = (dropWhile (\a -> a^3 < n) [1..] !! 0) ^ 3 == n
+is_cube n = (round (fromIntegral n ** (1/3))) ^ 3 == n 
 
 main :: IO()
 main = do
-    print $ filter (\n -> is_cube $ totient2 n) [1..10^5]
+    print $ sum $ filter (\n -> is_cube $ totient2 n) [1..10^10]
