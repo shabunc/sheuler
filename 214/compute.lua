@@ -44,15 +44,20 @@ end
 
 function prolem214(max, len) 
     local total = 0
-    for n = 1, max do
-        local l, phi = chain(n)
-        if l == len and phi == (n - 1) then
-            print(n)
-            total = total + n
+    for n = 2, max do
+        local divs = divisors(n)
+        local is_prime = #divs == 1 and divs[1] == n
+        if is_prime then
+            local l = chain(n)
+            if l == len then
+                print(n)
+                total = total + n
+            end
         end
     end
     return total
 end
 
 assert(prolem214(20, 4) == 12)
-prolem214(4 * 10^7, 25)
+print("====")
+print("TOTAL", prolem214(4 * 10^7, 25))
