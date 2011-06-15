@@ -8,8 +8,9 @@ function nth(n)
     return (n+1) * n * 0.5
 end
 
+
 function problem12(max, nth)
-    local n = 1
+    local n = 2
     while true do
        local fn = nth(n)
         local divs = numeric.proper_divisors(fn)
