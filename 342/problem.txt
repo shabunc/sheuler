@@ -8,3 +8,7 @@ So 2500 is a square and φ(2500) is a cube.
 Find the sum of all numbers n, 1 < n  1010 such that φ(n2) is a cube.
 
 1 φ denotes Euler's totient function.
+
+NOTE
+очень хороший пример того как memoize только всё портит
+нужно всегда понимать когда его стоит использовать а когда нет
