@@ -11,7 +11,7 @@ end
 function problem12(max, nth)
     local n = 1
     while true do
-        local fn = nth(n)
+       local fn = nth(n)
         local divs = numeric.proper_divisors(fn)
         print(fn, #divs)
         if #divs >= max then
@@ -20,7 +20,7 @@ function problem12(max, nth)
         n = n + 1
     end
     print(nth(n), n)
-    return n
+    return nth(n)
 end
 
-problem12(500, nth)
+assert(problem12(5, nth) == 28)
