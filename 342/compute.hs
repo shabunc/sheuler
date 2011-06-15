@@ -18,6 +18,14 @@ is_cube :: Integer -> Bool
 --is_cube n = (dropWhile (\a -> a^3 < n) [1..] !! 0) ^ 3 == n
 is_cube n = (round (fromIntegral n ** (1/3))) ^ 3 == n 
 
+problem342 :: Integer -> [Integer]
+problem342 n = map (\a -> a^3) $ takeWhile (\a -> a^3 <= n) [1..]
+
+solve_totient n = filter (\x -> totient(x) == n) [n..5*n]
+
 main :: IO()
 main = do
-    print $ sum $ filter (\n -> is_cube $ totient2 n) [1..10^10]
+    print $ solve_totient 100
+    print $ solve_totient 200
+    --print $ problem342(10^5)
+    -- print $ sum $ filter (\n -> is_cube $ totient2 n) [1..10^10]
