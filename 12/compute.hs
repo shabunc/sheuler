@@ -10,11 +10,20 @@ divisors n divs from
 proper_divisors :: Int -> [Int]
 proper_divisors n = [x | x <- [1..n], n `mod` x == 0]
 
+divz n = filter (==0) $ zipWith (mod) (repeat n) [1..n] 
+
+count :: Int -> [Int] -> Int 
+count n [] = 0 
+count x (y:ys)
+    | x == y = 1 + (count x ys) 
+    | otherwise = count x ys
+
+
 problem12 :: Int -> Int
-problem12 n =  dropWhile (\a -> length(proper_divisors a) <= n ) [round (x * (x + 1) * 0.5) | x <- [1..]] !! 0
+problem12 n =  dropWhile (\a -> length(divz a) <= n ) (scanl (+) 1 [2..]) !! 0
 
 main :: IO()
 main = do
-    print $ problem12 500
+   print $ problem12 5
     --print $ problem342(10^5)
     -- print $ sum $ filter (\n -> is_cube $ totient2 n) [1..10^10]

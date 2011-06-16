@@ -10,7 +10,7 @@ end
 
 function find_largest(max, func)
     for n = 3, math.huge do
-        if (numeric.prime(n) ^ 2 + numeric.prime(n-1)^3 + numeric.prime(n-2)^4) > max then
+        if (numeric.prime(n) ^ 2) > max then
             return n
         end
     end

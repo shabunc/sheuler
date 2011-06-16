@@ -25,3 +25,4 @@ function problem12(max, nth)
 end
 
 assert(problem12(5, nth) == 28)
+problem12(500, nth)
