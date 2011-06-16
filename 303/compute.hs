@@ -9,4 +9,4 @@ f n = (dropWhile (is_diadic) $ zipWith (*) (repeat n) [1 ..]) !! 0
 
 main :: IO()
 main = do
-    print $  f(99)
+    print $  f 99
