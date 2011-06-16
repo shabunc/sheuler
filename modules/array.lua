@@ -43,6 +43,15 @@ function array:filter(filter_func)
     return res
 end
 
+function array:every(every_func)
+    for i, v in ipairs(self) do
+        if not every_func(v, i) then
+            return false
+        end
+    end
+    return true
+end
+
 function array:index_of(el) 
     local filter = function(i, v) return v == el end
     if type(el) == "function" then
