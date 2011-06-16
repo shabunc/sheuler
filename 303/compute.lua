@@ -45,6 +45,9 @@ function fdiad(n)
     if n % 999 == 0 then
         return 112222222222222, 112222222222222 / n
     end
+    if n % 9999 == 0 then
+        return 112222222222222222, 112222222222222222 / n
+    end
     local b = bignum({0},3) 
     while true do
         b = b:add(bignum({1},3))
