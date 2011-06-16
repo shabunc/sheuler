@@ -24,9 +24,11 @@ chain :: [Integer] -> [Integer]
 chain ks = takeWhile (\p -> is_prime(abs(p)))[ poly ks n | n <- [0 .. ]]
 
 
-problem27 n = sort [(length $ chain [a,b,1], a, b) | a <- [-n .. n], b <- [-n .. n]]
+
+problem27 n = sort [(length $ chain [a,b,1], a, b) | a <- [-n .. n], b <- [-n .. n], is_prime(abs(a))]
+--problem27 n = sort [(length $ chain [a,b,1], a, b) | a <- [-n .. n], b <- [-n .. n]]
 
 main :: IO()
 main = do
     --print $ length $ filter is_prime [1 .. 1000]
-    print $ problem27 1000
+    print $ problem27 100
