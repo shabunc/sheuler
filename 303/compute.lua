@@ -70,6 +70,9 @@ function ff(n, func)
     return total
 end
 
-print(fim(99))
+for j = 501, 2000 do
+    print(j, "=====")
+    assert(fim(j) == fdiad(j))
+end
 --assert(ff(100, fim) == 11363107)
 --print("TOTAL", string.format("%i",ff(10000)))
