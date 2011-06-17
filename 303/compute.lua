@@ -15,26 +15,40 @@ function f(n)
     end
 end
 
+function test(m)
+    local digs = numeric.digits(m)
+    return array.every(digs, function(d) return d < 3 end) and m
+end
+
+function fim(n)
+    for j = 1, math.huge do 
+        local m = test(j*n)
+        if m then
+            return m, j
+        end
+    end
+end
+
 function fdiad(n) 
     local b = bignum({0},3) 
     while true do
         b = b:add(bignum({1},3))
         local m = numeric.number(b)
         if m % n == 0 then
-            return n, m/n
+            return m, m/n
         end
     end
 end
 
-function ff(n)
+function ff(n, func)
     local total = 0
     for j = 1, n do
-        local _, k = fdiad(j)
-        print(j, k)
+        local _, k = func(j)
+        print(string.format("%i %i %i", j, k, _))
         total = total + k
     end
     return total
 end
 
-assert(ff(100) == 11363107)
-print("TOTAL", string.format("%i",ff(10000)))
+assert(ff(100, fim) == 11363107)
+--print("TOTAL", string.format("%i",ff(10000)))
