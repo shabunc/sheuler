@@ -21,7 +21,7 @@ function test(m)
 end
 
 function fim(n)
-    -- filter (\a -> a `mod` 10 < 3) [0..9
+    -- filter (\a -> n * a `mod` 10 < 3) [0..9]
     local checks = {
         [0] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
         [1] = {0, 1, 2},
@@ -32,15 +32,17 @@ function fim(n)
         [6] = {0, 2, 5, 7},
         [7] = {0, 3, 6},
         [8] = {0, 4, 5, 9},
-        [9] = {0, 8, 9}
+        [9] = {0, 8, 9},
     }
-    local checkvals = checks[0]
-    print(table.concat(checkvals))
-    for j = 1, math.huge, 10 do 
+    local checkvals = checks[n % 10]
+    for j = 0, math.huge, 10 do 
         for _, d in ipairs(checkvals) do
-            local m = test((j + d) * n)
-            if m then
-                return m, (j + d)
+            if not (d == 0 and  j ==0) then
+                --print(n, j, d)
+                m = test((j + d) * n) 
+                if m then
+                    return m, (j + d)
+                end
             end
         end
     end
@@ -61,11 +63,13 @@ function ff(n, func)
     local total = 0
     for j = 1, n do
         local _, k = func(j)
-        print(string.format("%i %i %i", j, k, _))
+        --print(string.format("%i %i %i", j, k, _))
         total = total + k
     end
+    print("TOTAL", total)
     return total
 end
 
-assert(ff(100, fim) == 11363107)
+print(fim(99))
+--assert(ff(100, fim) == 11363107)
 --print("TOTAL", string.format("%i",ff(10000)))
