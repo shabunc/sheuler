@@ -34,10 +34,14 @@ function fim(n)
         [8] = {0, 4, 5, 9},
         [9] = {0, 8, 9}
     }
-    for j = 1, math.huge do 
-        local m = test(j*n)
-        if m then
-            return m, j
+    local checkvals = checks[0]
+    print(table.concat(checkvals))
+    for j = 1, math.huge, 10 do 
+        for _, d in ipairs(checkvals) do
+            local m = test((j + d) * n)
+            if m then
+                return m, (j + d)
+            end
         end
     end
 end
