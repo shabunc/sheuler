@@ -1,4 +1,4 @@
---import Control.Monad
+import Control.Monad
 import Data.List
 
 divisors :: Integer -> [Integer] -> Integer -> [Integer]
@@ -10,7 +10,7 @@ divisors n divs from
 proper_divisors :: Int -> [Int]
 proper_divisors n = [x | x <- [1..n], n `mod` x == 0, x <= n]
 
-divz n = filter (==0) $ zipWith (mod) (repeat n) ([1..n])
+divz n = filter (==0) $ map (mod n) [1..n]
 
 count :: Int -> [Int] -> Int 
 count n [] = 0 
@@ -19,11 +19,11 @@ count x (y:ys)
     | otherwise = count x ys
 
 
-problem12 :: Int -> Int
-problem12 n =  dropWhile ((<=n).length.divz) (scanl1 (+) [1, 2..]) !! 0
+problem12 :: Int -> [Int]
+problem12 n =  takeWhile ((<=n).length.divz) (scanl1 (+) [1, 2..]) 
 
 main :: IO()
 main = do
-   print $ problem12 5
+     mapM_ print $ problem12 500 
     --print $ problem342(10^5)
     -- print $ sum $ filter (\n -> is_cube $ totient2 n) [1..10^10]
