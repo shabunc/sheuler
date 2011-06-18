@@ -18,6 +18,7 @@ problem61 xs ys = filter (is_pretty_match) [[show a, show b] | a <- xs, b <- ys]
 
 main :: IO()
 main = do
+    print $  map (\a -> map (figs) a) $ permutations [3,4,5]
     print $  filter (is_pretty_match) [[show a, show b, show c] | a <- (figs 3), b <- (figs 4), c <- (figs 5)]
     print $  filter (is_pretty_match) [[show a, show b, show c] | a <- (figs 3), b <- (figs 5), c <- (figs 4)]
     -- print $ is_pretty_match ["8128", "2882", "8281"]
