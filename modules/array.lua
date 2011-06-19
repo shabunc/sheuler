@@ -52,6 +52,15 @@ function array:every(every_func)
     return true
 end
 
+function array.zipWith(zip_func, a, b)
+    local l = math.min(#a, #b)
+    local res = {}
+    for j = 1, l do
+        table.insert(res, zip_func(a[j], b[j], a, b, j))
+    end
+    return res
+end
+
 function array:index_of(el) 
     local filter = function(i, v) return v == el end
     if type(el) == "function" then
