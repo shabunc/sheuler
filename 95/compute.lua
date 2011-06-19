@@ -5,7 +5,6 @@ require("numeric")
 require("array")
 
 MAX = 10^6
-CHAINLOOKUP = {}
 
 function step(n)
     local divs = numeric.proper_divisors(n)
@@ -14,9 +13,6 @@ function step(n)
 end
 
 function chain(n, prevt) 
-    if CHAINLOOKUP[n] then
-        return CHAINLOOKUP[n]
-    end
     prevt = prevt or {n}
     local m = step(n)
     local found = array.index_of(prevt, m)
@@ -28,7 +24,6 @@ function chain(n, prevt)
     end
     table.insert(prevt, m)
     local res = chain(m, prevt)
-    CHAINLOOKUP[n] = res
     return res
 end
 
