@@ -32,7 +32,7 @@ function are_pythas(ta, tb)
             break
         end
         if are_orthos(seq[1], seq[2]) then
-            return true
+            return true, td
         end
     end
     return false
@@ -47,7 +47,9 @@ function problem91(n)
         if not seq then
             break
         end
-        if are_pythas(seq[1],seq[2]) then
+        local test, td = are_pythas(seq[1], seq[2])
+        if test  then
+            --print(table.concat(td,","), table.concat(seq[1],","), table.concat(seq[2],","))
             total = total + 1
         end
     end
@@ -56,4 +58,4 @@ function problem91(n)
 end
 
 assert(problem91(2) == 12)
-problem91(12)
+problem91(3)
