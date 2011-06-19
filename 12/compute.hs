@@ -8,7 +8,7 @@ divisors n divs from
         | otherwise = divisors n divs (if from == 2 then 3 else from + 2)
 
 proper_divisors :: Int -> [Int]
-proper_divisors n = [x | x <- [1..n], n `mod` x == 0, x <= n]
+proper_divisors n = [x | x <- [1..(n `div` 2)], n `mod` x == 0] ++ [n]
 
 divz n = filter (==0) $ map (mod n) [1..n]
 
