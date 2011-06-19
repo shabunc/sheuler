@@ -6,8 +6,8 @@ require("array")
 
 function test(n) 
     local count = 0
-    for a = 1, n do
-        if n % a == 0 then
+    local divs = numeric.proper_divisors(n)
+    for _, a in ipairs(divs) do
             local d = (n/a + a)
             if d % 4 == 0 then
                 if d/4 < a then
@@ -17,7 +17,6 @@ function test(n)
                     count = count + 1
                 end
             end
-        end
     end
     if count == 0 then
         return false
