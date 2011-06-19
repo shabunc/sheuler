@@ -30,7 +30,7 @@ end
 function problem95(max) 
     local maxlen, maxn = -1, -1
     for n = 1, max do
-        print(n)
+        --print(n)
         local len = chain(n)
         if len > maxlen then
             maxlen = len

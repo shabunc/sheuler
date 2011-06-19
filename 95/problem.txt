@@ -12,3 +12,12 @@ Perhaps less well known are longer chains. For example, starting with 12496, we 
 Since this chain returns to its starting point, it is called an amicable chain.
 
 Find the smallest member of the longest amicable chain with no element exceeding one million.
+
+
+ANSWER
+1   1
+220 2
+12496   5
+14316   28
+
+
