@@ -52,6 +52,15 @@ function array:every(every_func)
     return true
 end
 
+function array:any(any_func) 
+    for i, v in ipairs(self) do
+        if any_func(v, i) then
+            return true
+        end
+    end
+    return false
+end
+
 function array.zipWith(zip_func, a, b)
     local l = math.min(#a, #b)
     local res = {}
