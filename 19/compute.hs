@@ -25,7 +25,8 @@ nextday (year, month, day)
         | day < (days_in_month year month) = (year, month, day + 1)
         | day == (days_in_month year month) = (year, month + 1, 1)
 
+problem19 day from to = filter ((==6).day_of_week) $ takeWhile (/=to) $ iterate (nextday) from
 
 main :: IO()
 main =  do
-    print $ filter ((==6).day_of_week) $ takeWhile (/=(2011,7,1)) $ iterate (nextday) (1901, 1, 1)
+    print $ problem19 6 (1901,1,1) (2001,1,1)
