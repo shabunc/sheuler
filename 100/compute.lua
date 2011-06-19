@@ -1,5 +1,6 @@
 #!/usr/bin/env lua
 package.path = package.path .. ";../modules/?.lua"
+require("numeric")
 
 function is_good(n) 
     local a = math.sqrt(4*n + 1)
@@ -31,4 +32,22 @@ function brute100_2(n)
     end
 end
 
-brute100_2(1000000)
+function find(n) 
+    local b = n * (n - 1)
+    for j = 1, n-1 do
+        local a = j * (j - 1)
+        local c = b / a
+        if (c == 2) then 
+            return j
+        end
+    end
+    return false
+end
+
+for j = 1, 100000 do
+    local f = find(j)
+    if f then
+        print(j, table.concat(numeric.divisors(j), " "))
+    end
+end
+

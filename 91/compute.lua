@@ -40,22 +40,21 @@ end
 
 function problem91(n)
     local res = {}
-    local it = iterator.combinations(2, points(n))
+    local ps = points(n)
     local total = 0
-    while true do
-        local seq = it()
-        if not seq then
-            break
-        end
-        local test, td = are_pythas(seq[1], seq[2])
-        if test  then
-            --print(table.concat(td,","), table.concat(seq[1],","), table.concat(seq[2],","))
-            total = total + 1
+    for j = 1, #ps - 1 do
+        for i = (j + 1), #ps do
+            local a = ps[j]
+            local b = ps[i]
+            local test, c = are_pythas(a, b)
+            if test then
+                print(table.concat(a, ","), table.concat(b, ","), table.concat(c, ","))
+                total = total + 1
+            end
         end
     end
-    print(string.format("TOTAL %i => %i", n, total))
+    print("TOTAL", total)
     return total
 end
 
 assert(problem91(2) == 12)
-problem91(3)

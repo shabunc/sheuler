@@ -164,8 +164,8 @@ local function totient(n, divs)
 end
 
 local function proper_divisors(n) 
-    local res = {}
-    for j = 1, n - 1 do
+    local res = {1}
+    for j = 2, n - 1 do
         if n % j == 0 then
             table.insert(res, j)
         end

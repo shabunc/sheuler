@@ -1,9 +1,6 @@
 #!/usr/bin/env lua
 package.path = package.path .. ";../modules/?.lua"
 
-require("numeric")
-require("array")
-
 function pentas(n)
     return n * (3*n - 1) * 0.5, n + 1
 end
