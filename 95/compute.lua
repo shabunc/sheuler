@@ -13,9 +13,12 @@ end
 function chain(n, max) 
     local m = n
     local len = 0
+    local prev = -1
     while true do
         m = step(m)
-        print("STEP", m, n)
+        if m == prev then
+            return -1
+        end
         if m == n then
             break
         end
@@ -23,6 +26,7 @@ function chain(n, max)
             break
         end
         len = len + 1
+        prev = m
     end
     return len
 end
@@ -39,3 +43,4 @@ assert(step(220) == 284)
 assert(chain(12496, 10^6) == 4)
 
 
+chain(562, 10^3)
