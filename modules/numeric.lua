@@ -165,11 +165,12 @@ end
 
 local function proper_divisors(n) 
     local res = {1}
-    for j = 2, n - 1 do
+    for j = 2, n/2 do
         if n % j == 0 then
             table.insert(res, j)
         end
     end
+    table.insert(res, n)
     return res
 end
 
