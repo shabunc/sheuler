@@ -6,7 +6,7 @@ require("array")
 
 function test(n) 
     local count = 0
-    local divs = numeric.proper_divisors(n)
+    local divs = numeric.propers(n)
     for _, a in ipairs(divs) do
             local d = (n/a + a)
             if d % 4 == 0 then
@@ -39,4 +39,4 @@ end
 
 assert(problem136(100) == 25)
 
-print("TOTAL", problem136(10^6))
+print("TOTAL", problem136(50 * 10^6))

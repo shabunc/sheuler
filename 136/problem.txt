@@ -14,3 +14,10 @@ THEORY
 4 a * d - a^2 = n
 4d = n/a + a
 d = (n/a + a) / 4
+
+ANSWER
+2544559
+
+TODO
+опять долго
+ДООООЛГО

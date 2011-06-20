@@ -2,7 +2,6 @@
 package.path = package.path .. ";../modules/?.lua"
 
 require("numeric")
-require("array")
 
 function solcount(n) 
     local count = 0
@@ -18,7 +17,6 @@ function solcount(n)
             count = count + 1
         else
             if misses_count == misses_limit then
-                print("exceeding misses limit")
                 return -1
             end
             misses_count = misses_count + 1
@@ -30,7 +28,6 @@ end
 function problem135(max)
     local total = 0
     for n = 1, max do
-        print(n)
         if solcount(n) == 10 then
             total = total + 1
         end
