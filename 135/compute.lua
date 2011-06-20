@@ -10,12 +10,18 @@ function solcount(n)
     if #divs < 10 then
         return -1
     end
+    local misses_limit = #divs - 10
+    local misses_count = 0
     for _, a in ipairs(divs) do
         local d = (n/a + a)
-        if d % 4 == 0 then
-            if d/4 < a then
-                count = count + 1
+        if d % 4 == 0 and d/4 < a then
+            count = count + 1
+        else
+            if misses_count == misses_limit then
+                print("exceeding misses limit")
+                return -1
             end
+            misses_count = misses_count + 1
         end
     end
     return count
