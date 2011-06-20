@@ -13,7 +13,7 @@ function problem12(max, nth)
     local n = 2
     while true do
        local fn = nth(n)
-        local divs = numeric.proper_divisors(fn)
+        local divs = numeric.propers(fn)
         print(fn, #divs)
         if #divs >= max then
             break

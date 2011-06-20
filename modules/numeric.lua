@@ -174,6 +174,19 @@ local function proper_divisors(n)
     return res
 end
 
+local function propers(n)
+    local res = {1, n}
+    for j = 2, math.sqrt(n) do
+        if n % j == 0 then
+            table.insert(res, j)
+            if n/j ~= j then
+                table.insert(res, n/j)
+            end
+        end
+    end
+    return res
+end
+
 local function digits2num(t, base) 
     base = base or 10
     local res = 0
@@ -280,6 +293,7 @@ numeric.number = digits2num
 numeric.alldivisors = alldivisors
 numeric.divisors = divisors
 numeric.proper_divisors = proper_divisors
+numeric.propers = propers
 numeric.prime = prime
 numeric.num2digits = num2digits
 numeric.digits = num2digits
