@@ -6,7 +6,7 @@ require("array")
 
 function solcount(n) 
     local count = 0
-    local divs = numeric.proper_divisors(n)
+    local divs = numeric.propers(n)
     if #divs < 10 then
         return -1
     end
