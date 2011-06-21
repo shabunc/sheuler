@@ -14,16 +14,9 @@ function fraction:__tostring()
 end
 
 function fraction:reduce() 
-    local a, b = self.a, self.b
-    local ra, rb = a, b
-    local n = math.min(a, b)
-    for j = 1, math.sqrt(n) do
-        if a % j == 0 and b % j == 0 then
-            ra = a / j
-            rb = b / j
-        end
-    end
-    self.a, self.b = ra, rb
+    local hcf = numeric.HCF(self.a, self.b)
+    self.a = self.a / hcf
+    self.b = self.b / hcf
     return self
 end
 
