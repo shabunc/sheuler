@@ -31,7 +31,7 @@ function problem57(n)
     for j = 1, n do 
         fr = step(fr)
         local passed = good_one(fr)
-        print(j, fr, passed)
+        print(j, string.format("%i %i", fr.a, fr.b), passed)
         if passed then
             total = total + 1
         end
