@@ -16,18 +16,10 @@ function step_gen(data)
     local step = function(x, y) 
        local nx, ny
        if x == #data[1] then
-            if y < #data[1] then
-                nx, ny = x, y + 1
-            else
-                return false
-            end
+            nx, ny = x, y + 1
        end
        if y == #data[1] then
-            if x < #data[1] then
-                nx, ny = x  + 1, y
-            else
-                return false
-            end
+            nx, ny = x  + 1, y
        end
        if data[x + 1][y] < data[x][y + 1] then
             nx, ny = x + 1, y
@@ -40,5 +32,15 @@ function step_gen(data)
     return step
 end 
 
-step = step_gen(data)
-print(step(1,1))
+
+function problem81(data)
+    local step = step_gen(data)
+    local val, x, y = step(1, 1)
+    print(val, x, y)
+    repeat
+        val, x, y = step(x, y)
+        print(val, x, y)
+    until not val
+end
+
+problem81(data)

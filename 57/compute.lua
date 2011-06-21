@@ -16,13 +16,7 @@ function numlen(n)
 end
 
 function good_one(fr) 
-    if fr.b >= fr.a then
-        return false
-    end
-    if numlen(fr.b) >= numlen(fr.a) then
-        return false
-    end
-    return true
+    return numlen(fr.a) > numlen(fr.b)
 end
 
 function problem57(n)
