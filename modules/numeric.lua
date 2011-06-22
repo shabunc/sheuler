@@ -68,6 +68,14 @@ local prime = (function()
     end
 end)()
 
+local prime_till = function(lim) 
+    local n = 1
+    while prime(n) < lim do
+        n = n + 1
+    end
+    return prime(n - 1), (n - 1)
+end
+
 local function get_degree(n, p) 
     local deg = 0
     while n % p == 0 do
@@ -295,6 +303,7 @@ numeric.divisors = divisors
 numeric.proper_divisors = proper_divisors
 numeric.propers = propers
 numeric.prime = prime
+numeric.prime_till = prime_till
 numeric.num2digits = num2digits
 numeric.digits = num2digits
 numeric.combinations_iterator = iterator.combinations
