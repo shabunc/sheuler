@@ -71,6 +71,7 @@ end)()
 local prime_till = function(lim) 
     local n = 1
     while prime(n) < lim do
+        print(n)
         n = n + 1
     end
     return prime(n - 1), (n - 1)
