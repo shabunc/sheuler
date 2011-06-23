@@ -2,8 +2,10 @@ import Data.List
 
 reduce (a, b) = (a `div` (gcd a b), b `div` (gcd a b))
 
-step (a, b) = reduce $ (a + 2 * b, a + b)
+step (a, b) n g  = reduce $ (a + ((g n) + 1) * b, a + (g n) *b)
+
+sq (a, b) n = step (a, b) n (\a -> 1)
 
 main :: IO()
 main = do
-    print $ take 100 $  iterate (step) (1,1)
+    print $ sq (1, 1) 1
