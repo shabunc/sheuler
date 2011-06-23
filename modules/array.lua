@@ -25,6 +25,14 @@ function array:reduce(reduce_func, initial_value)
     return res
 end
 
+function array:sub(from, to)
+    local res  = array{}
+    for j = from, to do
+        table.insert(res, self[j])
+    end     
+    return res
+end
+
 function array:map(map_func)
     local res = array:new({})
     for i, v in ipairs(self) do
