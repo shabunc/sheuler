@@ -83,18 +83,22 @@ function digen(n)
 end
 
 function fimdiad(max) 
-    local t = {1, 2}  
-    local b = bignum({2}, 3)
+    local t = {}  
+    local b = bignum({0}, 3)
+    local continious = 0
     while true do
         b = b:add(bignum{1}, 3)
         local n = numeric.number(b)
-        print(n)
-        if n > max then
+        print(n, continious)
+        if continious == max then
             break
         end
         t[b] = 1
-        for m = 2, math.sqrt(n) do
+        for m = 1, math.sqrt(n) do
             if n % m == 0 then
+                if m == continious + 1 then
+                    continious = m
+                end
                 local com = n / m
                 if not t[m] or t[m] > com then
                     t[m] = com
@@ -105,23 +109,11 @@ function fimdiad(max)
             end
         end
     end
-    local res = {}
-    for j = 1, max do
-        if not t[j] then
-            break
-        end
-        table.insert(res, t[j])
-    end
-    print(table.concat(res," "))
+    res = array.sub(t, 1, max)
     print("CONTINIOUS LENGTH", #res)
-    if #res > 100 then
-        print("SUM 100", array.sub(res, 1, 100):reduce(function(a, b) return a + b end))
-    end
-    if #res > 10000 then
-        print("SUM 10000", array.sub(res, 1, 10000):reduce(function(a, b) return a + b end))
-    end
+    print(res:reduce(function(a, b) return a + b end))
     return res
 end
 
 
-fimdiad(222222222222)
+fimdiad(100)
