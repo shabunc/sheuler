@@ -2,18 +2,15 @@ import Data.List
 
 reduce (a, b) = (a `div` (gcd a b), b `div` (gcd a b))
 
-step (a, b) n g  = reduce $ (a + ((g n) + 1) * b, a + (g n) *b)
+invert (a, b) = (b, a)
+add (a, b) (c, d) = reduce (a * d + c * b, b * d)
 
-sq ((a, b), n) = (step (a, b) n (\a -> 1), n + 1)
+step (c, d) (a, b) = add (1, 1) $ invert $ add (c, d) (a, b) 
 
-exp_f n  
-    | (n - 1) `mod` 3 == 0 = 0
-    | (n - 1) `mod` 3 == 1 = 2 * ((n-2) `div` 3 + 1) - 1
-    | otherwise = 0
-
-rexp ((a, b), n) = (step (a, b) n (exp_f), n + 1)
+sq (a, b) = step (1, 1) (a, b)
 
 main :: IO()
 main = do
     --print $ take 5 $ map (fst) $ iterate (sq) ((1, 1), 1)
-    print $ take 5 $ map (fst) $ iterate (rexp) ((2, 1), 1)
+    --print $ take 5 $ map (fst) $ iterate (rexp) ((2, 1), 1)
+    print $ take 5 $ iterate (sq) (1, 1)
