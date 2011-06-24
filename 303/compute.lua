@@ -103,9 +103,9 @@ function fimdiad(max)
                 if not t[com] or t[com] > m then
                     t[com] = m
                 end
-                for j = continious + 1, m do
-                    if t[j] then 
-                        continious = j
+                while true do
+                    if t[continious + 1] then
+                        continious = continious + 1
                     else
                         break
                     end
@@ -120,4 +120,4 @@ function fimdiad(max)
 end
 
 
-fimdiad(1000)
+fimdiad(10000)
