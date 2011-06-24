@@ -90,21 +90,25 @@ function fimdiad(max)
         b = b:add(bignum{1}, 3)
         local n = numeric.number(b)
         print(n, continious)
-        if continious == max then
+        if continious >= max then
             break
         end
         t[b] = 1
         for m = 1, math.sqrt(n) do
             if n % m == 0 then
-                if m == continious + 1 then
-                    continious = m
-                end
                 local com = n / m
                 if not t[m] or t[m] > com then
                     t[m] = com
                 end
                 if not t[com] or t[com] > m then
                     t[com] = m
+                end
+                for j = continious + 1, m do
+                    if t[j] then 
+                        continious = j
+                    else
+                        break
+                    end
                 end
             end
         end
@@ -116,4 +120,4 @@ function fimdiad(max)
 end
 
 
-fimdiad(100)
+fimdiad(1000)
