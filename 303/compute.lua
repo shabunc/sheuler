@@ -86,6 +86,7 @@ function fimdiad(max)
     local t = {}  
     local b = bignum({0}, 3)
     local continious = 0
+    local max = 0
     while true do
         b = b:add(bignum{1}, 3)
         local n = numeric.number(b)
