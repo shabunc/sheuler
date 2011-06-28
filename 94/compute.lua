@@ -9,15 +9,20 @@ function is_square(a)
 end
 
 function findall(a)
-    for j = 1, 2*a + 1 do
-        local b2 = a^2 + j^2
-        local b = math.sqrt(b2)
-        if math.abs(2*a - b) == 1 then
-            print(2*a, b, 2 * (a + b))
+    for j = -1, 1, 2 do
+        local b = 2*a - j
+        local h = b^2 - a^2 
+        if is_square(h) then
+            print(2*a, b, 2*a + 2*b)
         end
     end
 end
 
-for j = 1, 20000 do
-    findall(j)
+function problem94(n) 
+    local max = (n + 1)/6
+    for a = 1, max do
+        findall(a)
+    end
 end
+
+problem94(10^9)
