@@ -23,7 +23,7 @@ end
 
 function problem94(n) 
     local max = (n + 1)/6
-    for a = 1, max do
+    for a = 0.5, max, 0.5 do
         findall(a)
     end
     print("TOTAL", TOTAL)
