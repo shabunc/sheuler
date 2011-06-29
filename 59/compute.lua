@@ -89,7 +89,8 @@ function chars(t)
     return res
 end
 
-brute()
+local message = cipher({"d", "g", "o"}, DATA)
+print(array.reduce(message, function(a, b) return a + b end))
 
 --[[
 local key = {"a"}
