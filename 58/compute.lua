@@ -26,10 +26,10 @@ function problem58(lim)
         total = total + #seq
         primes = primes + #array.filter(seq, function(p) return numeric.is_prime(p)  end)
         local ratio = primes / total
+        print((j + 1) * 2 + 1, primes, total, ratio)
         if ratio > 0 and ratio < lim then
             break
         end
-        print(j, primes, total, ratio)
     end
     print(total, primes)
 end
