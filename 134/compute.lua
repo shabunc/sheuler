@@ -3,6 +3,7 @@ package.path = package.path .. ";../modules/?.lua"
 
 require("numeric")
 require("array")
+require("bignum")
 
 function smallest(n)
     local p1 = numeric.prime(n)
@@ -11,7 +12,7 @@ function smallest(n)
     for j = 1, math.huge do
         local m = j * 10 ^ numlen + p1
         if m % p2 == 0 then
-            return m
+            return m, m / p2
         end
     end
 end
@@ -31,17 +32,17 @@ end
 
 
 function problem134(max, func)
-    local total = 0
+    local total = bignum{0}
     for j = 3,  math.huge do
         local p = numeric.prime(j)
         if p > max then
             break
         end
-        local sm = func(j)
-        print(sm, p, numeric.prime(j+1))
-        total = total + sm
+        local sm, a  = func(j)
+        print(sm, p, numeric.prime(j+1), a)
+        total = total:add(bignum(numeric.digits(sm)))
     end
-    print(string.format("TOTAL %i", total))
+    print("TOTAL", total)
     return total
 end
 
