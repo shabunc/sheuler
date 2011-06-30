@@ -43,33 +43,35 @@ end
 
 function findsome(n)
     local N = bignum(numeric.digits(n))
-    local m = n
+    local M = N
     while true do
-        m = m * n
-        if m > 10^21 then
+        M = M:mul(N)
+        if #M > 100 then
             return false
         end
-        if digsum(m) == n then
-            return m
+        local sum = M:reduce(function(a, b) return a + b end)
+        if sum == n then
+            return M
         end
     end
 end
 
 function dizzy_search()
-    local max = 25
+    local max = 70
     local res = {}
     for j = 2, math.huge do 
         local test = findsome(j)
         if test then
+            print(#res, j, test)
             table.insert(res, test)
         end
         if #res > max then
             break
         end
     end
-    table.sort(res)
+    table.sort(res, function(a, b) return bignum.compare(a, b) == -1  end)
     for _, v in ipairs(res) do
-        print(_, string.format("%i", v))
+        print(_, v)
     end
 end
 
