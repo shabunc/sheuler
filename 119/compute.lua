@@ -25,7 +25,7 @@ function isgood(n)
 end
 
 function problem119(n)
-    local count = 0
+    local count = 1
     local m = 10
     while count < n do
         if isgood(m) then
@@ -36,4 +36,4 @@ function problem119(n)
     end
 end
 
-problem119(22)
+problem119(30)
