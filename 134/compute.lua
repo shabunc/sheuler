@@ -41,10 +41,10 @@ function problem134(max, func)
         print(sm, p, numeric.prime(j+1))
         total = total + sm
     end
-    print("TOTAL", total)
+    print(string.format("TOTAL %i", total))
     return total
 end
 
 assert(smallest(8) == 1219)
 
-problem134(10^6, smallest2)
+problem134(10^6, smallest)
