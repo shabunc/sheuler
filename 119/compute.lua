@@ -19,9 +19,12 @@ function ispowerof(n, d)
     return true
 end
 
+function digsum(n)
+    return array.reduce(numeric.digits(n), function(a, b) return a + b end)
+end
+
 function isgood(n)
-    local m = array.reduce(numeric.digits(n), function(a, b) return a + b end)
-    return ispowerof(n, m)
+    return ispowerof(n, digsum(n))
 end
 
 function problem119(n)
