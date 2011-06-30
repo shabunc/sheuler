@@ -78,6 +78,22 @@ function bignum:mul(b)
     return res
 end
 
+function bignum.compare(a, b)
+    if #a > #b then
+        return 1
+    elseif #a < #b then
+        return  -1
+    end
+    for i = 1, #a do
+        if a[i] > b[i] then
+            return 1
+        elseif a[i] < b[i] then
+            return -1
+        end
+    end
+    return 0
+end
+
 function bignum:pow(n) 
     if n == 0 then
         return bignum{1}
