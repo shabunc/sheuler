@@ -30,6 +30,7 @@ function iterate(n)
 end
 
 function problem164(n)
+    local total = 0 
     local it = iterate(n)
     while true do
         local seq = it()
@@ -37,10 +38,13 @@ function problem164(n)
             break
         end
         if seq[1] ~= 0 then
+            total = total + 1
             print(table.concat(seq))
         end
     end
+    print(string.format("TOTAL %i", total))
+    return total
 end
 
 
-problem164(4)
+problem164(20)

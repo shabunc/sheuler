@@ -1,0 +1,16 @@
+By counting carefully it can be seen that a rectangular grid measuring 3 by 2 contains eighteen rectangles:
+
+
+Although there exists no rectangular grid that contains exactly two million rectangles, find the area of the grid with the nearest solution.
+
+ANSWER
+53  53  2047761 2809
+53  52  1971918 2756
+57  49  2024925 2793
+58  48  2012136 2784
+59  47  1996560 2773
+73  38  2001441 2774
+77  36  1999998 2772
+
+TODO
+пусть завершается)
