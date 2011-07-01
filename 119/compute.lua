@@ -34,36 +34,47 @@ function problem119(n)
     local m = 10
     while count < n do
         if isgood(m) then
-           print(count, m)
+           print(count, m, digsum(m))
            count = count + 1 
         end
         m = m + 1
     end
 end
 
-function findsome(n)
+function findsomegen(n)
     local N = bignum(numeric.digits(n))
     local M = N
     while true do
         M = M:mul(N)
-        if #M > 100 then
+        if #M > n then
             return false
         end
         local sum = M:reduce(function(a, b) return a + b end)
         if sum == n then
-            return M
+            coroutine.yield(M)
         end
     end
 end
 
-function dizzy_search()
-    local max = 70
+function findsome(n) 
+    return coroutine.wrap(function() 
+        return findsomegen(n)
+    end)
+end
+
+function dizzy_search(max)
     local res = {}
     for j = 2, math.huge do 
-        local test = findsome(j)
-        if test then
-            print(#res, j, test)
-            table.insert(res, test)
+        local test_it = findsome(j)
+        while true do
+            local test = test_it()
+            if not test then
+                break
+            end
+            if test then
+                table.insert(res, test)
+                --print(#res, j, test)
+            end
         end
         if #res > max then
             break
@@ -73,7 +84,12 @@ function dizzy_search()
     for _, v in ipairs(res) do
         print(_, v)
     end
+    return res[30]
 end
 
-dizzy_search()
-
+--[[
+for j = 1, 90 do
+    print(j, dizzy_search(j))
+end
+]]
+dizzy_search(50)
