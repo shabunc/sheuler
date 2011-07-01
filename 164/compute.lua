@@ -4,29 +4,27 @@ package.path = package.path .. ";../modules/?.lua"
 require("numeric")
 require("array")
 
-function generate(n, inner)
+function maxfunc(init)
+    return 9
+end
+
+function generate(n, init)
+    local inner = #init > 0
     if n == 0 then
-        return {{}}
-    end
-    local res = {}
-    for head = 0, 9 do
-        local recs = generate(n - 1, true)
-        for _, rec in ipairs(recs) do
-            table.insert(rec, 1,  head)
-            table.insert(res, rec)
-            if not inner then
-                coroutine.yield(rec)  
-            end
+        coroutine.yield(init)
+    else
+        local max = maxfunc(init)
+        for head = 0, max do
+            local deepinit = array(init)
+            table.insert(deepinit, 1, head)
+            local recs = generate(n - 1, deepinit)
         end
-    end
-    if inner then
-        return res
     end
 end
 
 function iterate(n) 
     return coroutine.wrap(function() 
-        return generate(n, false)
+        return generate(n, {})
     end)
 end
 
@@ -42,4 +40,4 @@ function problem164(n)
 end
 
 
-problem164(6)
+problem164(3)
