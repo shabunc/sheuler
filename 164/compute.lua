@@ -5,7 +5,8 @@ require("numeric")
 require("array")
 
 function maxfunc(init)
-    return 9
+    local max =  9 - (init[1] or 0) - (init[2] or 0)
+    return max
 end
 
 function generate(n, init)
@@ -35,9 +36,11 @@ function problem164(n)
         if not seq then
             break
         end
-        print(table.concat(seq))
+        if seq[1] ~= 0 then
+            print(table.concat(seq))
+        end
     end
 end
 
 
-problem164(3)
+problem164(4)
