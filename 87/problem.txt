@@ -9,3 +9,12 @@ The smallest number expressible as the sum of a prime square, prime cube, and pr
 47 = 22 + 33 + 24
 
 How many numbers below fifty million can be expressed as the sum of a prime square, prime cube, and prime fourth power?
+
+
+ANSWER
+7069 2   2   =>  49970785     =>     1097343
+
+TODO
+once again, this is not the fastest solution)))
+
+
