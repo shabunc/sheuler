@@ -51,8 +51,9 @@ function problem60(n)
         if not seq then
             break 
         end 
-        print(table.concat(seq, " "))
+        local sum = array.reduce(seq, function(a, b) return a + b end)
+        print(table.concat(seq, " "), "=>" , sum)
     end
 end
 
-problem60(4)
+problem60(3)
