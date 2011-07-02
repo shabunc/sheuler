@@ -23,16 +23,16 @@ function remarkable_to(p, tail)
     return true
 end
 
-function remarkable_generator(n, rems)
+function remarkable_generator(n, rems, max)
     if n == 0 then
         coroutine.yield(rems)
     else
-        for j = 1, (rems[1] or math.huge) do
+        for j = 1, max do
             local p = numeric.prime(j)
             if remarkable_to(p, rems) then
                 local tail = array(rems)
                 table.insert(tail, 1, p)
-                remarkable_generator(n - 1, tail)
+                remarkable_generator(n - 1, tail, j)
             end
         end
     end
@@ -40,12 +40,13 @@ end
 
 function remarkable_iterator(n)
     return coroutine.wrap(function() 
-        return remarkable_generator(n, {})
+        return remarkable_generator(n, {}, math.huge)
     end)
 end
 
 function problem60(n)
     local it = remarkable_iterator(n)
+    local min = math.huge
     while true do
         local seq = it()
         if not seq then
@@ -53,7 +54,10 @@ function problem60(n)
         end 
         local sum = array.reduce(seq, function(a, b) return a + b end)
         print(table.concat(seq, " "), "=>" , sum)
+        if sum < min then
+            min = sum
+        end
     end
 end
 
-problem60(3)
+problem60(4)
