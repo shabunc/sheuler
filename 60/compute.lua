@@ -27,7 +27,7 @@ function remarkable_generator(n, rems)
     if n == 0 then
         coroutine.yield(rems)
     else
-        for j = 1, math.huge do
+        for j = 1, (rems[1] or math.huge) do
             local p = numeric.prime(j)
             if remarkable_to(p, rems) then
                 local tail = array(rems)
@@ -51,8 +51,8 @@ function problem60(n)
         if not seq then
             break 
         end 
-        print(table.concat(seq))
+        print(table.concat(seq, " "))
     end
 end
 
-problem60(2)
+problem60(4)
