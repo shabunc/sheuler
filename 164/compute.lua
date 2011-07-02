@@ -46,5 +46,19 @@ function problem164(n)
     return total
 end
 
+function count(n, k) 
+    if n == 2 then
+        return k + 1
+    end
+end
 
-problem164(20)
+function f(n)
+    local res = 0
+    for j = 0, 9 do
+        res = res + count(n, j)
+    end
+    return res
+end
+
+problem164(2)
+print(f(2))

@@ -45,6 +45,7 @@ function contains_remarkable(seq, len)
     return false
 end
 
+--[[
 function problem60(len)
     if len == 2 then
         return {3, 7}
@@ -69,6 +70,33 @@ assert(all_remarkable({3, 7, 109, 673}) == true)
 assert(contains_remarkable({3, 7, 17, 109, 673}, 4) ~= false)
 
 problem60(5)
+]]
 
+function ugly() 
+    for a = 1, math.huge do
+        for b = 1, math.huge do
+            local pa = numeric.prime(a)
+            local pb = numeric.prime(b)
+            if all_remarkable({pa, pb}) then
+                for c = 1, math.huge do
+                    local pc = numeric.prime(c)
+                    if all_remarkable({pa, pb, pc}) then
+                        for d = 1, math.huge do
+                            local pd = numeric.prime(d)
+                            if all_remarkable({pa, pb, pc, pd}) then
+                                for e = 1, math.huge do
+                                    local pe = numeric.prime(e)
+                                    if all_remarkable({pa, pb, pc, pd, pe}) then
+                                        return pa, pb, pc, pd, pe, pa + pb + pc + pd + pe + pd
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
 
-
+print(ugly())
