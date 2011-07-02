@@ -26,6 +26,9 @@ function find_all(max)
         for i = j, 1, -1 do
             for k = i, 1, -1 do
                 local jp, ip, kp = numeric.prime(j), numeric.prime(i), numeric.prime(k)
+                if jp^2 > max - 24 then
+                    return total
+                end
                 local it = iterator.perm_lex({kp, ip, jp})
                 while true do
                     local seq = it()
@@ -36,7 +39,7 @@ function find_all(max)
                     local val = a^2 + b^3 + c^4
                     if val < max then
                         total = total + 1
-                        print(a, b, c, " => ", total)
+                        print(a, b, c, "=>", val, " => ", total)
                     end
                 end
             end
@@ -45,7 +48,5 @@ function find_all(max)
     return total
 end
 
---[[
 assert(find_all(50) == 4)
-]]
 find_all(50 * 10^6)
