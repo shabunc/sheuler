@@ -294,9 +294,23 @@ local function sign(n)
     end
 end
 
+local function concat(a, b)
+    local da = numeric.digits(a)
+    local db = numeric.digits(b)
+    local res = {}
+    for j = 1, #da do
+        table.insert(res, da[j])
+    end
+    for j = 1, #db do
+        table.insert(res, db[j])
+    end
+    return numeric.number(res)
+end
+
 numeric.is_prime = is_prime
 numeric.are_rel_primes = are_rel_primes
 numeric.HCF = HCF
+numeric.concat = concat
 numeric.digits2num = digits2num 
 numeric.number = digits2num 
 numeric.alldivisors = alldivisors
