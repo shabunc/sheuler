@@ -60,4 +60,4 @@ function problem60(n)
     end
 end
 
-problem60(4)
+problem60(5)
