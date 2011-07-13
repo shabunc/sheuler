@@ -172,17 +172,6 @@ local function totient(n, divs)
    return res, divs
 end
 
-local function proper_divisors(n) 
-    local res = {1}
-    for j = 2, n/2 do
-        if n % j == 0 then
-            table.insert(res, j)
-        end
-    end
-    table.insert(res, n)
-    return res
-end
-
 local function propers(n)
     local res = {1, n}
     for j = 2, math.sqrt(n) do
@@ -307,6 +296,10 @@ local function concat(a, b)
     return numeric.number(res)
 end
 
+local function is_square(n)
+
+end
+
 numeric.is_prime = is_prime
 numeric.are_rel_primes = are_rel_primes
 numeric.HCF = HCF
@@ -315,7 +308,6 @@ numeric.digits2num = digits2num
 numeric.number = digits2num 
 numeric.alldivisors = alldivisors
 numeric.divisors = divisors
-numeric.proper_divisors = proper_divisors
 numeric.propers = propers
 numeric.prime = prime
 numeric.prime_till = prime_till
