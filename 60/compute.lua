@@ -23,41 +23,62 @@ function remarkable_to(p, tail)
     return true
 end
 
-function remarkable_generator(n, rems, max)
+function remarkable_generator(n, rems, from)
     if n == 0 then
         coroutine.yield(rems)
     else
-        for j = 1, max do
+        for j = from, 20000 do
             local p = numeric.prime(j)
-            if remarkable_to(p, rems) then
-                local tail = array(rems)
-                table.insert(tail, 1, p)
-                remarkable_generator(n - 1, tail, j)
+            local lrems = array(rems)
+            if remarkable_to(p, lrems) then
+                table.insert(lrems, p)
+                remarkable_generator(n - 1, lrems, j + 1)
             end
         end
     end
 end
 
-function remarkable_iterator(n)
+function remarkable_iterator(n) 
     return coroutine.wrap(function() 
-        return remarkable_generator(n, {}, math.huge)
+        return remarkable_generator(n, {}, 2)
     end)
 end
 
+function gen_for_prime(n, m, rems) 
+    if n == 0 then
+        coroutine.yield(rems)
+    end 
+    for j = m, 1, -1 do
+        local p = numeric.prime(j) 
+        if remarkable_to(p, rems) then
+           local lrems = array(rems) 
+           table.insert(lrems, p)
+           gen_for_prime(n - 1, j - 1, lrems)
+        end
+    end
+end
+
+function iter_for_prime(n, m) 
+    return coroutine.wrap(function() 
+        return gen_for_prime(n, m, {})  
+    end)
+end
+
+
 function problem60(n)
-    local it = remarkable_iterator(n)
-    local min = math.huge
-    while true do
-        local seq = it()
-        if not seq then
-            break 
-        end 
-        local sum = array.reduce(seq, function(a, b) return a + b end)
-        print(table.concat(seq, " "), "=>" , sum)
-        if sum < min then
-            min = sum
+    for j = 122, math.huge do
+        print(j)
+        local it = iter_for_prime(n, j)
+        while true do
+            local seq = it()
+            if not seq then
+                break
+            end
+            print(table.concat(seq, " "), array.reduce(seq, function(a, b) return a + b end))
+            return
         end
     end
 end
 
 problem60(5)
+

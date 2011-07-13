@@ -6,8 +6,10 @@ require("array")
 
 function mul_generator(n)
     if numeric.is_prime(n) then
-        coroutine.yield(n)
-        return
+        return {n}
     end
+    local props = numeric.propers(n)
+    for j = 2, #props - 1 do 
 
+    end
 end
