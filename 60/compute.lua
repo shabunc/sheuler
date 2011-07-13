@@ -23,62 +23,43 @@ function remarkable_to(p, tail)
     return true
 end
 
-function remarkable_generator(n, rems, from)
+function remarkable_generator(n, rems, from, max)
+    if n == 1 then
+        print(table.concat(rems, " "))
+    end
     if n == 0 then
         coroutine.yield(rems)
     else
-        for j = from, 20000 do
+        for j = from, max do
             local p = numeric.prime(j)
+            --print("searching from ", p)
             local lrems = array(rems)
             if remarkable_to(p, lrems) then
                 table.insert(lrems, p)
-                remarkable_generator(n - 1, lrems, j + 1)
+                remarkable_generator(n - 1, lrems, j + 1, max)
             end
         end
     end
 end
 
-function remarkable_iterator(n) 
+function remarkable_iterator(n, max) 
     return coroutine.wrap(function() 
-        return remarkable_generator(n, {}, 2)
-    end)
-end
-
-function gen_for_prime(n, m, rems) 
-    if n == 0 then
-        coroutine.yield(rems)
-    end 
-    for j = m, 1, -1 do
-        local p = numeric.prime(j) 
-        if remarkable_to(p, rems) then
-           local lrems = array(rems) 
-           table.insert(lrems, p)
-           gen_for_prime(n - 1, j - 1, lrems)
-        end
-    end
-end
-
-function iter_for_prime(n, m) 
-    return coroutine.wrap(function() 
-        return gen_for_prime(n, m, {})  
+        return remarkable_generator(n, {}, 2, max)
     end)
 end
 
 
-function problem60(n)
-    for j = 122, math.huge do
-        print(j)
-        local it = iter_for_prime(n, j)
-        while true do
-            local seq = it()
-            if not seq then
-                break
-            end
-            print(table.concat(seq, " "), array.reduce(seq, function(a, b) return a + b end))
-            return
+function problem60(n, max)
+    local it = remarkable_iterator(n, max)
+    while true do
+        local seq = it()
+        if not seq then
+            break
         end
+        local sum = array.reduce(seq, function(a, b) return a + b end)
+        print(string.format("!!! %s => %i" ,table.concat(seq, " "), sum))
+        return
     end
 end
 
-problem60(5)
-
+problem60(5, 2000)
