@@ -12,6 +12,9 @@ require("array")
 ]]
 
 function express(op, ...)
+    if op == 'e' then
+        return select(1, ...)
+    end
     if op == '-' then
         local a = select(1, ...)
         return -a
@@ -41,3 +44,23 @@ assert(express("-", 5) == -5)
 assert(express("+", 1, 2, 3) == 6)
 assert(express("*", 1, 2, 3, 4) == 24)
 assert(express("/", 20, 5) == 4)
+
+function express_generator(nums)
+    if #nums == 1 then
+        ops = {"e", "-"}
+    end
+    if #nums == 2 then 
+        ops = {"e", "-", "+", "/"}
+    end
+    if #nums > 2 then
+        ops = {"e", "-", "+", "/", "*"}
+    end
+    for _, op in ipairs(ops) do
+        if op == "-" then
+            for j = 1, #nums do
+                local lnums = array(nums)
+                local head = lnums[j]
+            end
+        end
+    end
+end

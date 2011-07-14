@@ -5,12 +5,18 @@ require("numeric")
 require("array")
 
 
-local SMALLTREE = {
+local LILTREE = {
 {3},
 {7, 4},
 {2, 4, 6},
 {8, 5, 9, 3}
 }
+--[[
+{3}}
+{10}, {7}
+{12}, {14, 11}, {13}
+{20}, {7, 19, 16}, {23, 20, 22}, {16}
+]]
 
 
 local TREE = {
@@ -31,18 +37,43 @@ local TREE = {
 {04, 62, 98, 27, 23, 09, 70, 98, 73, 93, 38, 53, 60, 04, 23}
 }
 
-
-function sums(tree, n) 
-    if n == 1 then
-        return {{tree[1][1]}}
-    end
-    local prevs = sums(tree, n - 1)
-    local layer = tree[n]
-    for j = 1, #prevs do
-        for i = 1, #prevs[j] do
+function addthese(val, ...)
+    local max = -1
+    local res = {}
+    for _, t in ipairs{...} do
+        for _, v in ipairs(t) do
+            local s = val + v
+            if s > max then
+                max = s
+            end 
+            table.insert(res, s)
         end
     end
-    return prevs
+    return res, max
 end
 
-print(sums(tree, 2))
+function sum(n, tree)
+    local max = -1
+    local row  = tree[n]
+    if n == 1 then
+        return {{row[1]}}
+    end
+    local res = {}
+    local prevs = sum(n - 1, tree)
+    for j = 1, #row do
+        local cell, m = addthese(row[j], prevs[j - 1] or {} , prevs[j] or {})
+        if m > max then
+            max = m
+        end
+        print(table.concat(cell, " "))
+        table.insert(res, cell)
+    end
+    print("MAX", max)
+    return res
+end
+
+function problem18(tree)
+    return sum(#tree, tree)
+end
+
+problem18(TREE)
