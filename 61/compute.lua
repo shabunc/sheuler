@@ -63,35 +63,32 @@ function are_different(list)
 end
 
 
-function generator(n, res, nums, inds, figs)
+function generator(n, res, nums, figs)
     if n == 0 then
         local n = 100 * res[#res] + res[1]
         local good, ind = contains_in(n, figs)
         if good then
             table.insert(nums, n)
-            table.insert(inds, ind)
-            if are_different(inds) then
-                coroutine.yield(nums)
-            end
+            coroutine.yield(nums)
         end
         return
     end
     for j = 10, 99 do
         local good_n = true
         local lnums = array(nums)
-        local linds = array(inds)
+        local lfigs = array(figs)
         if #res > 0 then
             local n = 100 * res[#res] + j
             good_n, ind = contains_in(n, figs)
             if good_n then
                 table.insert(lnums, n)
-                table.insert(linds, ind)
+                table.remove(lfigs, ind)
             end
         end
         if good_n then
             local lres = array(res)
             table.insert(lres, j)
-            generator(n - 1, lres, lnums, linds, figs)
+            generator(n - 1, lres, lnums, lfigs)
         end
     end
 end
@@ -99,7 +96,7 @@ end
 
 function iterator(n, figs)
     return coroutine.wrap(function()
-        return generator(n, {}, {}, {}, figs)
+        return generator(n, {}, {}, figs)
     end)
 end
 
@@ -111,7 +108,7 @@ function problem61()
     local HEPTAS = collect(hepta, 10^3, 10^4)
     local OCTAS = collect(octa, 10^3, 10^4)
     local FIGS = {TRIS, SQS, PENTAS, HEXAS, HEPTAS, OCTAS}
-    local it = iterator(5, FIGS)
+    local it = iterator(6, FIGS)
     while true do
         local seq = it()
         if not seq then

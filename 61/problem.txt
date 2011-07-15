@@ -15,3 +15,11 @@ The set is cyclic, in that the last two digits of each number is the first two d
 Each polygonal type: triangle (P3,127=8128), square (P4,91=8281), and pentagonal (P5,44=2882), is represented by a different number in the set.
 This is the only set of 4-digit numbers with this property.
 Find the sum of the only ordered set of six cyclic 4-digit numbers for which each polygonal type: triangle, square, pentagonal, hexagonal, heptagonal, and octagonal, is represented by a different number in the set.
+
+ANSWER
+2882 8256 5625 2512 1281 8128
+28684
+
+TODO
+написать на хаскелле
+и на луа тоже переписать - очень уж коряво
