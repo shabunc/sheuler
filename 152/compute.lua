@@ -3,31 +3,37 @@ package.path = package.path .. ";../modules/?.lua"
 
 require("numeric")
 require("array")
-require("bigint")
+require("bignum")
 
-function sums(vector)
-    for j = 1, #vector do
-        for k = 1, #vector do
-            if j ~= k then
+function generator(n, t, from, res)
+    if n == 0 then
+        coroutine.yield(res)
+        return
+    end
+    for j = from, #t do
+        local lres = array(res)
+        table.insert(lres, t[j])
+        generator(n - 1, t, j + 1, lres) 
+    end
+end
 
+function iterator(n, t) 
+    return coroutine.wrap(function() 
+        return generator(n, t, 1, {}) 
+    end)
+end
+
+function problem152(t)
+    for n = 2, #t do
+        local it = iterator(n, t)
+        while true do
+            local seq = it()
+            if not seq then
+                break
             end
+            print(table.concat(seq," "))
         end
     end
 end
 
-function problem152(from, to)
-    local case = bigint:new({1}, 2)
-    while case:len() < (to - from) do
-        local vector = {}
-        case = case:add(bigint:new({1}, 2))
-        for i, v in ipairs(case.num) do
-            if v == 1 then
-                local big = bigint:new(numeric.num2digits(i + 1))
-                table.insert(vector, big)
-            end
-        end
-        print(vector)
-    end
-end
-
-problem152(2, 45)
+problem152({2,3,4,5,7,12,15,20,28,35})
