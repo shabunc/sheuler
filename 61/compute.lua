@@ -62,46 +62,63 @@ function are_different(list)
     return true
 end
 
-local TRIS = collect(tri, 10^3, 10^4)
-local SQS = collect(square, 10^3, 10^4)
-local PENTAS = collect(penta, 10^3, 10^4)
-local FIGS = {TRIS, SQS, PENTAS}
 
-function generator(n, res)
+function generator(n, res, nums, inds, figs)
     if n == 0 then
-        if contains_in(100 * res[#res] + res[1], FIGS) then
-            coroutine.yield(res)
+        local n = 100 * res[#res] + res[1]
+        local good, ind = contains_in(n, figs)
+        if good then
+            table.insert(nums, n)
+            table.insert(inds, ind)
+            if are_different(inds) then
+                coroutine.yield(nums)
+            end
         end
         return
     end
     for j = 10, 99 do
         local good_n = true
+        local lnums = array(nums)
+        local linds = array(inds)
         if #res > 0 then
-            good_n = contains_in(100 * res[#res] + j, FIGS)
+            local n = 100 * res[#res] + j
+            good_n, ind = contains_in(n, figs)
+            if good_n then
+                table.insert(lnums, n)
+                table.insert(linds, ind)
+            end
         end
         if good_n then
             local lres = array(res)
             table.insert(lres, j)
-            generator(n - 1, lres)
+            generator(n - 1, lres, lnums, linds, figs)
         end
     end
 end
 
 
-function iterator(n)
+function iterator(n, figs)
     return coroutine.wrap(function()
-        return generator(n, {})
+        return generator(n, {}, {}, {}, figs)
     end)
 end
 
 function problem61()
-    local it = iterator(3)
+    local TRIS = collect(tri, 10^3, 10^4)
+    local SQS = collect(square, 10^3, 10^4)
+    local PENTAS = collect(penta, 10^3, 10^4)
+    local HEXAS = collect(hexa, 10^3, 10^4)
+    local HEPTAS = collect(hepta, 10^3, 10^4)
+    local OCTAS = collect(octa, 10^3, 10^4)
+    local FIGS = {TRIS, SQS, PENTAS, HEXAS, HEPTAS, OCTAS}
+    local it = iterator(5, FIGS)
     while true do
         local seq = it()
         if not seq then
             break
         end     
         print(table.concat(seq," "))
+        print(array.reduce(seq, function(a, b) return a + b end))
     end
 end
 
