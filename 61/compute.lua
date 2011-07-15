@@ -51,6 +51,17 @@ function contains_in(el, list)
     return false
 end
 
+function are_different(list)
+    for i = 1, #list - 1 do
+        for j = i + 1, #list do
+            if list[i] == list[j] then
+                return false
+            end
+        end
+    end
+    return true
+end
+
 function problem61()
     local tris = collect(tri, 10^3, 10^4)
     local sqs = collect(square, 10^3, 10^4)
@@ -66,7 +77,9 @@ function problem61()
                 local n3 = 100 * p + t
                 local c3, i3 = contains_in(n3, figs)
                 if c1 and c2 and c3 then
-                    print(n1, n2, n3, i1, i2, i3)
+                    if are_different({i1, i2, i3}) then
+                        print(n1, n2, n3, i1, i2, i3)
+                    end
                 end
             end
         end
