@@ -62,27 +62,46 @@ function are_different(list)
     return true
 end
 
-function problem61()
-    local tris = collect(tri, 10^3, 10^4)
-    local sqs = collect(square, 10^3, 10^4)
-    local pentas = collect(penta, 10^3, 10^4)
-    local figs = {tris, sqs, pentas}
-    for t = 10, 99 do
-        for s = 10, 99 do
-            for p = 10, 99 do
-                local n1 = 100 * t + s
-                local c1, i1 = contains_in(n1, figs)
-                local n2 = 100 * s + p
-                local c2, i2 = contains_in(n2, figs)
-                local n3 = 100 * p + t
-                local c3, i3 = contains_in(n3, figs)
-                if c1 and c2 and c3 then
-                    if are_different({i1, i2, i3}) then
-                        print(n1, n2, n3, i1, i2, i3)
-                    end
-                end
-            end
+local TRIS = collect(tri, 10^3, 10^4)
+local SQS = collect(square, 10^3, 10^4)
+local PENTAS = collect(penta, 10^3, 10^4)
+local FIGS = {TRIS, SQS, PENTAS}
+
+function generator(n, res)
+    if n == 0 then
+        if contains_in(100 * res[#res] + res[1], FIGS) then
+            coroutine.yield(res)
         end
+        return
+    end
+    for j = 10, 99 do
+        local good_n = true
+        if #res > 0 then
+            good_n = contains_in(100 * res[#res] + j, FIGS)
+        end
+        if good_n then
+            local lres = array(res)
+            table.insert(lres, j)
+            generator(n - 1, lres)
+        end
+    end
+end
+
+
+function iterator(n)
+    return coroutine.wrap(function()
+        return generator(n, {})
+    end)
+end
+
+function problem61()
+    local it = iterator(3)
+    while true do
+        local seq = it()
+        if not seq then
+            break
+        end     
+        print(table.concat(seq," "))
     end
 end
 
