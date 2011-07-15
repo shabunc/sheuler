@@ -51,18 +51,6 @@ function contains_in(el, list)
     return false
 end
 
-function are_different(list)
-    for i = 1, #list - 1 do
-        for j = i + 1, #list do
-            if list[i] == list[j] then
-                return false
-            end
-        end
-    end
-    return true
-end
-
-
 function generator(n, res, nums, figs)
     if n == 0 then
         local n = 100 * res[#res] + res[1]
