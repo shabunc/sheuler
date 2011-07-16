@@ -23,32 +23,31 @@ TINYRECT = {
     {37,  331}
 }
 
-function borrow(b, a)
-    return setmetatable(b, {
-        __index = function(self, key)
-            return rawget(self, key) or a[key]
-        end
-    })
-end  
+BIGRECT = dofile("matrix.txt")
 
-function sumrect(rect)
-    local r = borrow({}, rect)
-    for row = #rect - 1, 1, -1 do
-        for j = #rect[row] - 1, 1, -1 do
-            r[row][j] = rect[row][j] + math.min(rect[row + 1][j], rect[row][j + 1]) + r[row + 1][j + 1]
-            print(row, j, r[row][j])
-        end
-    end
-    return r
-end
-
-function problem81(rect, n)
+function sumrect(rect, n, m)
     if n == #rect then
-        return rect[n][n]
+        local res = 0
+        for j = m, #rect[n] do
+            res = res + rect[n][j]
+        end
+        return res
     end
-    return rect[n][n] + math.min(rect[n + 1][n], rect[n][n + 1]) + problem81(rect, n + 1)
+    if m == #rect then
+        local res = 0
+        for j = n, #rect do
+            res = res + rect[j][m]
+        end
+        return res
+    end
+    return rect[n][m] + math.min(sumrect(rect, n + 1, m), sumrect(rect, n, m + 1))
 end
 
-print(problem81(TINYRECT, 1))
-print(problem81(LILRECT, 1))
-print(problem81(RECT, 1))
+function problem81(rect)
+    return sumrect(rect, 1, 1)
+end
+
+print(problem81(TINYRECT))
+print(problem81(LILRECT))
+print(problem81(RECT))
+print(problem81(BIGRECT))
