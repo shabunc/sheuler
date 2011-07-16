@@ -3,6 +3,7 @@ package.path = package.path .. ";../modules/?.lua"
 
 require("numeric")
 require("array")
+memoize = require("memoize")
 
 RECT = {
     {131, 673, 234, 103, 18},
@@ -26,7 +27,6 @@ TINYRECT = {
 BIGRECT = dofile("matrix.txt")
 
 function brute(rect, n, m)
-    print(n, m)
     if n == 1 then
         local res = 0
         for j = m, 1, -1 do
@@ -43,15 +43,14 @@ function brute(rect, n, m)
     end
     return rect[n][m] + math.min(brute(rect, n - 1, m), brute(rect, n, m - 1))
 end
+brute = memoize(brute)
 
 function problem81(rect)
-    local lim = 14
+    local lim = #rect
     return brute(rect, lim, lim)
 end
 
---[[
 print(problem81(TINYRECT))
 print(problem81(LILRECT))
 print(problem81(RECT))
-]]
 print(problem81(BIGRECT))

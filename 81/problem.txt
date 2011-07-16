@@ -8,3 +8,12 @@ In the 5 by 5 matrix below, the minimal path sum from the top left to the bottom
 805 732 524 37  331
 
 Find the minimal path sum, in matrix.txt (right click and 'Save Link/Target As...'), a 31K text file containing a 80 by 80 matrix, from the top left to the bottom right by only moving right and down.
+
+ANSWER
+427337
+
+TODO
+memoize по-прежнему является вещью написанной
+не мной.
+и если я на руби понимаю такую штуку,
+то на луа, как ни странно нет, хотя lua я знаю куда лучше
