@@ -38,16 +38,21 @@ local LILTREE = {
 
 function sumtree(tree)
     local t = {}
+    t[#tree] = array(tree[#tree])
     for row = #tree - 1, 1, -1 do
         t[row] = {}
         for i = 1, #tree[row] do
-            local val = tree[row][i] + math.max(tree[row + 1][i], tree[row + 1][i + 1])
-            io.write(val, " ")
+            local val = tree[row][i] + math.max(t[row + 1][i], t[row + 1][i + 1])
             t[row][i] = val
         end
-        print("")
     end
     return t
 end
 
-print(sumtree(LILTREE)[1][1]) 
+function problem67(tree)
+    return sumtree(tree)[1][1]
+end
+
+assert(problem67(LILTREE) == 23) 
+assert(problem67(TREE) == 1074)
+print(problem67(BIGTRIANGLE))

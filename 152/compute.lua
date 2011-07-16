@@ -52,7 +52,7 @@ end
 assert(sumall{2,3,4,5,7,12,15,20,28,35} == true)
 assert(sumall{2,3,4,6,7,9,10,20,28,35,36,45} == true)
 
-function sumit(t)
+function sumit(t, n, precision)
     local res = array.reduce(t, function(a, b) return a + 1/ (b * b) end)
     local maybe_good = string.format("%.4f", res) == "0.5000"
     return res, maybe_good
@@ -70,10 +70,10 @@ function problem152(t)
             if not seq then
                 break
             end
-            print(table.concat(seq))
+            print(table.concat(seq," "))
         end
     end
 end
 
 
-problem152(array.range(2, 45))
+problem152(array.range(2, 16))
