@@ -27,19 +27,11 @@ TINYRECT = {
 BIGRECT = dofile("matrix.txt")
 
 function brute(rect, n, m)
-    if n == 1 then
-        local res = 0
-        for j = m, 1, -1 do
-            res = res + rect[n][j]
-        end
-        return res
+    if n == 0 or m == 0 then
+        return math.huge
     end
-    if m == 1 then
-        local res = 0
-        for j = n, 1, -1 do
-            res = res + rect[j][m]
-        end
-        return res
+    if n == 1 and m == 1 then
+        return rect[1][1]
     end
     return rect[n][m] + math.min(brute(rect, n - 1, m), brute(rect, n, m - 1))
 end
