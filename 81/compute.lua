@@ -42,5 +42,13 @@ function sumrect(rect)
     return r
 end
 
-print(sumrect(TINYRECT)[1][1])
-print(sumrect(LILRECT)[1][1])
+function problem81(rect, n)
+    if n == #rect then
+        return rect[n][n]
+    end
+    return rect[n][n] + math.min(rect[n + 1][n], rect[n][n + 1]) + problem81(rect, n + 1)
+end
+
+print(problem81(TINYRECT, 1))
+print(problem81(LILRECT, 1))
+print(problem81(RECT, 1))
