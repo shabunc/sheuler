@@ -7,13 +7,19 @@ require("bignum")
 
 function generator(n, t, from, res)
     if n == 0 then
-        coroutine.yield(res)
+        local sum, maybe_good = sumit(res)
+        if maybe_good then
+            coroutine.yield(res, sum, maybe_good)
+        end
         return
     end
     for j = from, 1, -1 do
         local lres = array(res)
         table.insert(lres, t[j])
-        generator(n - 1, t, j - 1, lres) 
+        local sum, maybe_good = sumit(lres)
+        if sum < 0.5 then
+            generator(n - 1, t, j - 1, lres) 
+        end
     end
 end
 
@@ -52,6 +58,9 @@ function sumit(t)
     return res, maybe_good
 end
 
+print(sumit{2,3,4,5,7,12,15,20,28,35})
+print(sumit{2,3,4,6,7,9,10,20,28,35,36,45})
+
 
 function problem152(t)
     for n = 2, #t do
@@ -61,7 +70,7 @@ function problem152(t)
             if not seq then
                 break
             end
-            print(table.concat(seq," "), sumit(seq))
+            print(table.concat(seq))
         end
     end
 end
