@@ -25,29 +25,33 @@ TINYRECT = {
 
 BIGRECT = dofile("matrix.txt")
 
-function sumrect(rect, n, m)
-    if n == #rect then
+function brute(rect, n, m)
+    print(n, m)
+    if n == 1 then
         local res = 0
-        for j = m, #rect[n] do
+        for j = m, 1, -1 do
             res = res + rect[n][j]
         end
         return res
     end
-    if m == #rect then
+    if m == 1 then
         local res = 0
-        for j = n, #rect do
+        for j = n, 1, -1 do
             res = res + rect[j][m]
         end
         return res
     end
-    return rect[n][m] + math.min(sumrect(rect, n + 1, m), sumrect(rect, n, m + 1))
+    return rect[n][m] + math.min(brute(rect, n - 1, m), brute(rect, n, m - 1))
 end
 
 function problem81(rect)
-    return sumrect(rect, 1, 1)
+    local lim = 14
+    return brute(rect, lim, lim)
 end
 
+--[[
 print(problem81(TINYRECT))
 print(problem81(LILRECT))
 print(problem81(RECT))
+]]
 print(problem81(BIGRECT))
