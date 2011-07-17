@@ -23,31 +23,43 @@ function find(x)
     end)
 end
 
+function findquick(x)
+    return coroutine.wrap(function()
+        local n = (x - 1) * (x + 1)
+        for y = 1, math.sqrt(n) do
+            if n % (y * y)  == 0 then
+                coroutine.yield(n / (y * y), y)
+            end
+        end
+    end)
+end
+
 function problem66(maxD)
     local mins = {}
-    for x = 2, math.huge  do
-        print(x)
-        local it = find(x) 
+    local total = maxD - math.floor(math.sqrt(maxD))
+    local count = 0
+    for x = 2, math.huge do
+        local it = findquick(x)
         while true do
             local D, y = it()
-            if not D then
+            if not y then
                 break
             end
-            if D == maxD then
-                return x 
-                --[[
-                if not mins[D] then
+            if D <= maxD then
+                if not mins[D] or mins[D] > x then
                     mins[D] = x
-                    print(x, D, y)
-                    break
+                    count = count + 1
+                    print(string.format("%i\t%i\t%i", x, D, y), count, total)
+                    if count == total then
+                        return x
+                    end
                 end
-                ]]
             end
         end
     end
 end
 
-print(problem66(61))
+problem66(1000)
 --[[
 local res = {}
 for j = 2, 1000 do
