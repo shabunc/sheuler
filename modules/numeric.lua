@@ -297,10 +297,12 @@ local function concat(a, b)
 end
 
 local function is_square(n)
-
+    local sq = math.sqrt(n)
+    return math.floor(sq) == math.ceil(sq)
 end
 
 numeric.is_prime = is_prime
+numeric.is_square = is_square
 numeric.are_rel_primes = are_rel_primes
 numeric.HCF = HCF
 numeric.concat = concat
