@@ -59,4 +59,27 @@ function problem66(maxD)
     end
 end
 
-problem66(1000)
+function problem66y(maxD)
+    local max = -1
+    local mD = -1
+    for D = 2, maxD do
+        if not numeric.is_square(D) then
+            for y = 1, math.huge do
+                local x2 = D * y * y + 1
+                if numeric.is_square(x2) then
+                    local x = math.sqrt(x2)
+                    if x > max then
+                        max = x
+                        mD = D
+                    end
+                    print(D, x, y)
+                    break;
+                end
+            end
+        end
+    end
+    print("MAX ", max, mD)
+    return max
+end
+
+problem66y(7)
