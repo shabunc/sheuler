@@ -62,7 +62,7 @@ end
 function problem66y(maxD)
     local max = -1
     local mD = -1
-    for D = 2, maxD do
+    for D = 1, maxD do
         if not numeric.is_square(D) then
             for y = 1, math.huge do
                 local x2 = D * y * y + 1
