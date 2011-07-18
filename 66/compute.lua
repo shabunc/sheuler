@@ -46,13 +46,13 @@ function problem66(maxD)
                 break
             end
             if D <= maxD then
-                if not mins[D] or mins[D] > x then
+                if not mins[D] then
                     mins[D] = x
                     count = count + 1
-                    print(string.format("%i\t%i\t%i", x, D, y), count, total)
-                    if count == total then
-                        return x
-                    end
+                    print(string.format("%i\t%i\t%i", x, D, y), count, total, string.format("%0.2f", count/total))
+                end
+                if count == total then
+                    return x
                 end
             end
         end
@@ -60,14 +60,3 @@ function problem66(maxD)
 end
 
 problem66(1000)
---[[
-local res = {}
-for j = 2, 1000 do
-    if not numeric.is_square(j) then
-        table.insert(res, problem66(j))
-        print(j, res[#res])
-    end
-end
-table.sort(res)
-print(table.concat(res, " "))
-]]
