@@ -13,4 +13,4 @@ problem304 n = sum $ map (fib) $ primes (10^14) (10^5)
 
 main::IO()
 main = do
-    print $  primes (10^14) 10 
+    print $  map (fib) $ primes (10^14) 10 
