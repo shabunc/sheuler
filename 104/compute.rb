@@ -28,13 +28,31 @@ def fib(n)
     res
 end
 
-n = 100
-while true do
-    f = fib(n)
-    p (n)
-    if post_pan(f) and pref_pan(f) then
-        p n, f
-        break
+def divisors(n)
+    res = []
+    (1 .. n ** 0.5).each do|d|
+        if n % d == 0 then
+            res << d
+            if d != n / d then
+                res << n / d
+            end
+        end
     end
-    n = n + 1
+    res.sort
 end
+
+def problem104()
+    n = 100
+    divs = []
+    while true do
+        f = fib(n)
+        if pref_pan(f) then
+            divs = divs + divisors(n)
+            divs.sort!.uniq!
+            p n, divs
+        end
+        n = n + 1
+    end
+end
+
+problem104()
