@@ -28,15 +28,20 @@ end
 
 function genall(maxp) 
     local a, b, c = 3, 4, 5
+    local res = {}
     local it = step(a, b, c, maxp)
     while true do 
         local  a, b, c, p = it()
         if not a then
             break
         end
+        table.insert(res, p)
         print(a, b, c, "=>", p)
     end
+    table.sort(res)
+    res = array.uniq(res)
+    print("#TOTAL ", #res + 1)
 end
 
-genall(10000)
+genall(100)
 
