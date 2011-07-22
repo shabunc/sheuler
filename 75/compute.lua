@@ -4,8 +4,8 @@ package.path = package.path .. ";../modules/?.lua"
 require("numeric")
 require("array")
 
-function step(a, b, c)
-    return coroutine.wrap(function() 
+function step(a, b, c, maxp)
+    local function gen(a, b, c, maxp)
         for j = -1, 1, 2 do
             for i = -1, 1, 2 do
                 local a = a * j
@@ -13,19 +13,30 @@ function step(a, b, c)
                 local na = a + 2 * b + 2 *c
                 local nb = 2 * a + b + 2 * c
                 local nc = 2 * a + 2 * b + 3 * c
-                if na > 0 and nb > 0 and nc > 0 then
-                    coroutine.yield(na, nb, nc)
+                local p = na + nb + nc
+                if na > 0 and nb > 0 and nc > 0 and p <= maxp then
+                    coroutine.yield(na, nb, nc, p)
+                    gen(na, nb, nc, maxp)
                 end
             end
         end
+    end
+    return coroutine.wrap(function() 
+        return gen(a, b, c, maxp)
     end)
 end
 
-local it = step(5, 12, 13)
-while true do 
-    local  a, b, c = it()
-    if not a then
-        break
+function genall(maxp) 
+    local a, b, c = 3, 4, 5
+    local it = step(a, b, c, maxp)
+    while true do 
+        local  a, b, c, p = it()
+        if not a then
+            break
+        end
+        print(a, b, c, "=>", p)
     end
-    print(a, b, c)
 end
+
+genall(10000)
+
