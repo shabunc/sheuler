@@ -17,3 +17,11 @@ In contrast, some lengths of wire, like 20 cm, cannot be bent to form an integer
 Given that L is the length of the wire, for how many values of L  1,500,000 can exactly one integer sided right angle triangle be formed?
 
 Note: This problem has been changed recently, please check that you are using the right parameters.
+
+ANSWER
+TOTAL   161667
+
+TODO
+да, я научился генерить все элементарные пифагоровы тройки
+но формулу до конца я не понимаю. 
+её нужно понять.

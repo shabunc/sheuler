@@ -35,15 +35,15 @@ function genall(maxp)
         if not a then
             break
         end
-        print(a, b, c)
-        if not uniqs[p] then
-            uniqs[p] = true
+        for j = 1, math.floor(maxp / p) do
+            uniqs[j * p] = (uniqs[j * p] or 0) + 1
         end
     end
     local total = 0
     for k, v in pairs(uniqs) do
-         --print(k, " ", math.floor(maxp / k))
-         total = total + math.floor(maxp / k)
+         if v == 1 then
+             total = total  + 1
+         end
     end
     print("TOTAL ", total)
 end
