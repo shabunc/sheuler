@@ -29,24 +29,24 @@ end
 
 function get_all_fractions(max)
     local res = {}
+    --[[
     for n = max, 2, -1 do
        local ns = get_fractions(n) 
        for j = 1, #ns do
             table.insert(res, ns[j])
        end
     end
+    ]]
+    for j = 2, max do
+        for i = j - 1, 1, -1 do
+            if numeric.are_rel_primes(i, j) then
+                table.insert(res, fraction(i, j))
+            end
+        end
+    end
     table.sort(res, function(a, b)
         return a.a * b.b  < b.a * a.b
     end)
-    setmetatable(res, {
-        __tostring = function() 
-            local s = ""
-            for j = 1, #res do
-                s = s .. " " .. tostring(res[j])
-            end
-            return s
-        end
-    })
     return res
 end
 
@@ -58,5 +58,5 @@ end
 
 assert(#get_all_fractions(8) == 21)
 
-problem71(10^4)
+problem71(10^3)
 

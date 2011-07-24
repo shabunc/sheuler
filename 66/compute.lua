@@ -72,7 +72,7 @@ function problem66y(maxD)
                         max = x
                         mD = D
                     end
-                    print(D, x, y)
+                    print(D, x, y, x * x - D * y * y)
                     break;
                 end
             end
@@ -82,4 +82,4 @@ function problem66y(maxD)
     return max
 end
 
-problem66y(7)
+problem66y(62)

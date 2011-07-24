@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 
 def is_square(n)
-    sq = n ** 0.5
-    sq.floor() == sq.ceil()
+    sq = Math.sqrt(n).floor
+    sq * sq == n
 end
 
 def problem66(maxD)
@@ -15,19 +15,20 @@ def problem66(maxD)
         (1 .. 1.0/0).each do |y|
             x2 = d * y * y + 1
             if is_square(x2) then
-                x = (x2 ** 0.5).to_i
+                x = Math.sqrt(x2).to_i
                 if x > max then
                     max = x
                     md = d
                 end
                 check = x * x - d * y * y
-                puts "#{d} #{x} #{y} => #{check}"
+                check = x2 - d * y * y
+                puts "#{d} #{x} (#{x*x} #{x2}) #{y} => #{check} "
                 break
             end
         end
     end
-    print "MAX #{max} #{md}"
+    puts "MAX #{max} #{md}"
     max
 end
 
-problem66(62)
+problem66(1000)
