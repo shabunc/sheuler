@@ -5,8 +5,9 @@ def is_square(n)
     sq * sq == n
 end
 
+$max = -1
+
 def problem66(from, to)
-    max = -1
     md = -1
     (from..to).each do |d|
         if is_square(d) then
@@ -16,8 +17,8 @@ def problem66(from, to)
             x2 = d * y * y + 1
             if is_square(x2) then
                 x = Math.sqrt(x2).to_i
-                if x > max then
-                    max = x
+                if x > $max then
+                    $max = x
                     md = d
                     check = x2 - d * y * y
                     puts "#{d} #{x} (#{x*x} #{x2}) #{y} => #{check} "
