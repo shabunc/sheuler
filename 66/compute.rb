@@ -5,11 +5,12 @@ def is_square(n)
     sq * sq == n
 end
 
-$max = -1
+$max = 1766319049 
 
 def problem66(from, to)
     md = -1
     (from..to).each do |d|
+        puts d
         if is_square(d) then
             next
         end
@@ -22,21 +23,27 @@ def problem66(from, to)
                     md = d
                     check = x2 - d * y * y
                     puts "#{d} #{x} (#{x*x} #{x2}) #{y} => #{check} "
+                    STDOUT.flush
                 end
                 break
             end
         end
     end
-    puts "MAX #{max} #{md}"
-    max
+    puts "MAX #{$max} #{md}"
+    STDOUT.flush
 end
 
+problem66(600, 700)
+
+=begin
 ts = []
-(1..10).each do |j|
-    ts << Thread.new { problem66((j-1)*100, j * 100) }
+(1..20).each do |j|
+    scale = 50
+    Thread.new { problem66((j-1) * scale, j * scale) }
 end
 
 ts.each do |t| 
     t.join
 end
 
+=end
