@@ -54,5 +54,5 @@ function problem162(n)
     return total
 end
 
-problem162(5)
+problem162(16)
 

@@ -30,17 +30,25 @@ function good_pair(a, b)
     return (b - a) % 2 == 0 or (b + a) % 2 == 0
 end
 
-function scan_all(cs, c) 
-    for j = 1, #cs[c] do
-        for i = j + 1, #cs[c] do
-            local ta, tb = 2 * cs[c][j][1], 2 * cs[c][i][2]
-            local tc, td = 2 * cs[c][j][1], 2 * cs[c][i][2]
-            local x = (ta^2 + tb^2) / 2
-            local z = (tb^2 - ta^2) / 2
-            local y = (td^2 - tc^2) / 2
-            local res = x + y + z
-            print(x, y, z, "=>", res)
-            --print(math.sqrt(x + y), math.sqrt(x - y), math.sqrt(x - z), math.sqrt(x + z), math.sqrt(y + z), math.sqrt(y - z), "=> ", res)
+function scan_all(cs, k) 
+    local t = cs[k]
+    for j = 1, #t/2, 2 do
+        local c = t[j]
+        local d = t[j + 1]
+        for i = j + 2, #t/2, 2 do
+            local a = t[i]
+            local b = t[i + 1]
+            if cs[b] then
+                local x = 2 * (b^2 + a^2)
+                local y = 2 * (b^2 - a^2) 
+                local z = 2 * (d^2 - c^2)
+                --[[
+                print(math.sqrt(math.abs(x - y)), math.sqrt(y + x))
+                print(math.sqrt(math.abs(x - z)), math.sqrt(z + x))
+                ]]
+                print(math.sqrt(math.abs(y - z)), math.sqrt(y + z))
+                --print(x, y, z)
+            end
         end
     end
 end
@@ -68,17 +76,14 @@ function genall(maxp)
         local t = {a, b, c}
         table.sort(t)
         a, b, c = unpack(t)
-        a = 2 * a
-        b = 2 * b
-        c = 2 * c
         if not cs[c] then
             cs[c] = {}
         end
-        table.insert(cs[c], a, b)
-        local inter = intersect(cs[c], cs[b] or {})
-        print(#inter)
+        table.insert(cs[c], a)
+        table.insert(cs[c], b)
+        scan_all(cs, c)
     end
 end
 
-genall(60000000)
+genall(1500000000)
 
