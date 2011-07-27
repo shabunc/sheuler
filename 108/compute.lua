@@ -15,6 +15,7 @@ end
 
 function problem108(max)
     local res = {}
+    local lmax = -1
     for x = 2, math.huge do
         for y = x, 1, -1 do
             local _, n = add(1, x, 1, y)            
@@ -23,7 +24,10 @@ function problem108(max)
                     res[n] = 0
                 end
                 res[n] = res[n] + 1
-                print(n, res[n], x, y)
+                if res[n] > lmax then
+                    lmax = res[n]
+                    print(lmax)
+                end
                 if res[n] > max then
                     print("MAX n ", res[n], n)
                     return
@@ -33,4 +37,4 @@ function problem108(max)
     end
 end
 
-problem108(40)
+problem108(1000)
