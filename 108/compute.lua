@@ -16,22 +16,21 @@ end
 function problem108(max)
     local res = {}
     local lmax = -1
-    for x = 2, math.huge do
-        for y = x, 1, -1 do
-            local _, n = add(1, x, 1, y)            
-            if _ == 1 then
-                if not res[n] then
-                    res[n] = 0
-                end
-                res[n] = res[n] + 1
-                if res[n] > lmax then
-                    lmax = res[n]
-                    print(lmax)
-                end
-                if res[n] > max then
-                    print("MAX n ", res[n], n)
-                    return
-                end
+    for a = 2, math.huge do
+        local divs = numeric.propers(a)
+        for d = 2, #divs do
+            local n = (a / divs[d]) * (divs[d] - 1)
+            if not res[n] then
+                res[n] = 0
+            end
+            res[n] = res[n] + 1
+            if res[n] > lmax then
+                lmax = res[n]
+                print(lmax)
+            end
+            if res[n] > max then
+                print(string.format("MAX=%i N=%i", res[n], n))
+                return
             end
         end
     end
