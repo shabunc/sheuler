@@ -19,7 +19,8 @@ function problem108(max)
     for a = 2, math.huge do
         local divs = numeric.propers(a)
         for d = 2, #divs do
-            local n = (a / divs[d]) * (divs[d] - 1)
+            --local n = (a / divs[d]) * (divs[d] - 1)
+            local n = a - (a / divs[d]) 
             if not res[n] then
                 res[n] = 0
             end
@@ -29,11 +30,11 @@ function problem108(max)
                 print(lmax)
             end
             if res[n] > max then
-                print(string.format("MAX=%i N=%i", res[n], n))
+                print(string.format("MAX=%i N=%i #divs=%i", res[n], n, #numeric.propers(n)))
                 return
             end
         end
     end
 end
 
-problem108(1000)
+problem108(170)
