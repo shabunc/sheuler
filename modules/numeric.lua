@@ -112,7 +112,6 @@ local function divisors(n)
 end
 
 local function alldivisors(n) 
-    print("WARN!!! This method has changed, use alldivisors")
     if n == 1 then
         return setmetatable({{1, 1}}, {
                  ["__tostring"] = divisors_tostring
