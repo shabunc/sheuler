@@ -87,5 +87,23 @@ function search(n)
     return count
 end
 
-problem108alt(1000, search)
+function fromdivisors(ps, as)
+    local total = 1
+    for i, p in ipairs(ps) do
+            total = total *  p ^ as[i]
+    end
+    return total
+end
 
+function test(max)
+    local ps = {11, 13}
+    for a = 1, max do
+        for b = 1, max do
+            local n = fromdivisors(ps, {a, b})
+            print(a, b, search(n))
+        end
+        print("")
+    end 
+end
+
+test(5)
