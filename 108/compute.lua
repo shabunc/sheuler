@@ -96,13 +96,25 @@ function fromdivisors(ps, as)
 end
 
 function test(max)
-    local ps = {11, 13}
+    local ps = {2, 3, 5, 7, 11}
     for a = 1, max do
         for b = 1, max do
-            local n = fromdivisors(ps, {a, b})
-            print(a, b, search(n))
+            for c = 1, max do
+                for d = 1, max do
+                    for e = 1, max do
+                        local as = {a, b, c, d, e}
+                        local n = fromdivisors(ps, as)
+                        local sn = search(n)
+                        print(table.concat(as,"\t"), sn)
+                        if sn > 1000 then
+                            print(string.format("%i", n))
+                            return
+                        end
+                    end
+                    print("")
+                end
+            end
         end
-        print("")
     end 
 end
 
