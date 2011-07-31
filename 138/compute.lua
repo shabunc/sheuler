@@ -26,27 +26,23 @@ function step(a, b, c, maxp)
     end)
 end
 
-function genall(maxp) 
-    local a, b, c = 3, 4, 5
-    local it = step(a, b, c, maxp)
-    local total = 0
-    local sum = 0
-    while true do 
-        local  a, b, c, p = it()
-        local  t = {a, b, c}
-        table.sort(t)
-        a, b, c = unpack(t)
-        if not a then
-            break
-        end
-        if (math.abs(2 * a -  b) == 1) then
+function stackstep(maxp)
+    local stack = {{3, 4, 5}}
+    while #stack > 0 do
+        local a, b, c = unpack(table.remove(stack))
+        if a > 0 and b > 0 and c > 0 and (a + b + c) < maxp then
             print(a, b, c)
-            total = total + 1
-            sum = sum + c
+            for _, la in ipairs{-a, a} do
+                for _, lb in ipairs{-b, b} do
+                    local na = la + 2 * lb + 2 * c
+                    local nb = 2 * la + lb + 2 * c
+                    local nc = 2 * la + 2 * lb + 3 * c
+                    table.insert(stack, {na, nb, nc})
+                end
+            end
         end
     end
-    print("TOTAL ", total)
 end
 
-genall(10^9)
 
+stackstep(1000)
