@@ -15,7 +15,6 @@ def f(n)
     (1..(1.0/0)).each do |j|
         m = j * n
         digs = digits(m)
-        puts(j, m)
         if digs.all? {|x| x < 3} then
             return m, j
         end
@@ -25,8 +24,8 @@ end
 def ff(n)
     sum = 0
     (1 .. n).each do |j|
-        res = f(j)[0]
-        puts(j, res)
+        res = f(j)[1]
+        puts(j)
         sum = sum + res
     end
     sum

@@ -15,22 +15,49 @@ function f(n)
     end
 end
 
-function ff(n)
+function ff(n, ffunc)
     local sum = 0
     for j = 1, n do
-        local res = f(j)
-        print(j, res)
+        local res = ffunc(j)
         sum = sum + res
+        print(j, res, sum)
     end
     return sum
 end
 
 function diadic(n)
-    local function gen(n) 
+    local m = bignum({1}, 3)
+    local one = bignum({1}, 3)
+    local res = {1}
+    local checkfrom = n
+    while checkfrom > 1 do
+        m = m:add(one)
+        local dm = numeric.number(m, 10)
+        local divs = numeric.propers(dm)
+        for _, d in ipairs(divs) do
+            if not res[d] then
+                res[d] = dm / d
+            end
+        end
+        while res[checkfrom] do 
+            print("checkfrom ", checkfrom)
+            checkfrom = checkfrom - 1
+        end
     end
-    return coroutine.wrap(function() 
-        return gen(n, {})
-    end)
+    return setmetatable(res, {
+        __call = function(self, k)
+            return self[k]
+        end
+    })
 end
 
-print(ff(10))
+function problem302(n)
+    print("finding all diadic values")
+    local fd  = diadic(n)
+    print("done")
+    local res = ff(n, fd)
+    print("TOTAL ", res)
+    return res
+end
+
+problem302(100)
