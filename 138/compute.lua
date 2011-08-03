@@ -35,15 +35,15 @@ function genall(maxp)
         end
         local t = {a, b, c}
         a, b, c = unpack(t)
-        if (math.abs(a - 2 * b) == 1) then
-            print(string.format("%i\t%i\t%i", a, b, c))
+        if (math.abs(a - 2 * b) == 1 or math.abs(b - 2 *a) == 1) then
             total  = total + 1
             sum = sum + c
+            --print(string.format("%i\t%i\t%i => %i [%i]", a, b, c, sum, total))
         end
     end
     print("TOTAL", total)
     print(string.format("RES %i", sum))
 end
 
-genall(5 * 10^9)
+genall(10^7)
 
