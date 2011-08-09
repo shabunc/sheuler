@@ -36,7 +36,12 @@ function genall(maxp)
         local t = {a, b, c}
         table.sort(t)
         a, b, c = unpack(t)
-        if math.abs(c - 2 * a) == 1 or math.abs(c - 2 * b) == 1 then
+        if math.abs(c - 2 * a) == 1 and  b % 2 == 0 then
+            total = total + 1
+            sum = sum + (a + b + c)
+            print(a, b, c)
+        end
+        if math.abs(c - 2 * b) == 1 and  a % 2 == 0 then
             total = total + 1
             sum = sum + (a + b + c)
             print(a, b, c)
