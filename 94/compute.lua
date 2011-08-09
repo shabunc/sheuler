@@ -4,31 +4,47 @@ package.path = package.path .. ";../modules/?.lua"
 require("numeric")
 require("array")
 
-function is_square(a)
-    return a % math.sqrt(a) == 0
-end
-
-TOTAL = 0
-
-function findall(p)
-    for j = -1, 1, 2 do
-        if (p + j) % 3 == 0 then
-            local a = (p + j) / 3
-            local b = a - j
-            local h  = math.sqrt(b^2 - (0.5*a)^2)
-            if h > 0 and math.floor(h) == math.ceil(h) then
-                print(a, b, h, a + 2*b)
-                TOTAL = TOTAL + (a + 2*b)
+function stackstep(maxp)
+    return coroutine.wrap(function()
+        local stack = {{3, 4, 5}}
+        while #stack > 0 do
+            local a, b, c = unpack(table.remove(stack))
+            if a > 0 and b > 0 and c > 0 and (a + b + c) < maxp then
+                coroutine.yield(a, b, c)
+                for _, la in ipairs{-a, a} do
+                    for _, lb in ipairs{-b, b} do
+                        local na = la + 2 * lb + 2 * c
+                        local nb = 2 * la + lb + 2 * c
+                        local nc = 2 * la + 2 * lb + 3 * c
+                        table.insert(stack, {na, nb, nc})
+                    end
+                end
             end
         end
-    end
+    end)
 end
 
-function problem94(n) 
-    for p = 2, n do 
-        findall(p)
+function genall(maxp)
+    local it = stackstep(maxp)
+    local total = 0
+    local sum = 0
+    while true do
+        local a, b, c = it()
+        if not a then
+            break
+        end
+        local t = {a, b, c}
+        table.sort(t)
+        a, b, c = unpack(t)
+        if math.abs(c - 2 * a) == 1 or math.abs(c - 2 * b) == 1 then
+            total = total + 1
+            sum = sum + (a + b + c)
+            print(a, b, c)
+        end
     end
-    print("TOTAL", TOTAL)
+    print("TOTAL", total)
+    print(string.format("RES %i", sum))
 end
 
-problem94(10^9)
+genall(1000000000)
+
