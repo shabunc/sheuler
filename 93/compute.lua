@@ -51,7 +51,18 @@ function isint(n)
 end
 
 function isgood(n)
-    return isint(n) and n > 0
+    return isint(n) and n > 0 
+end
+
+function find_len(t)
+    local len = 1
+    for j = 2, #t do
+        if t[j] - t[j - 1] ~= 1 then
+            break
+        end
+        len = len + 1
+    end
+    return len
 end
 
 function getall(digs) 
@@ -80,8 +91,20 @@ function getall(digs)
     end
     table.sort(res)
     res = res:uniq()
-    print(table.concat(res, " "))
     return res
 end
 
-getall({1,2,3,4})
+function problem93()
+    local max = -1
+    for n = 1000, 9999 do
+        local digs = numeric.digits(n)
+        local seq = getall(digs)
+        local len = find_len(seq)
+        if len > max then
+            max = len
+            print(n, len)
+        end
+    end
+end
+
+problem93()
