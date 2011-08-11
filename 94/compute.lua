@@ -9,7 +9,7 @@ function stackstep(maxp)
         local stack = {{3, 4, 5}}
         while #stack > 0 do
             local a, b, c = unpack(table.remove(stack))
-            if a > 0 and b > 0 and c > 0 and (a + b + c) < maxp then
+            if a > 0 and b > 0 and c > 0 and (a +  b + c) < maxp then
                 coroutine.yield(a, b, c)
                 for _, la in ipairs{-a, a} do
                     for _, lb in ipairs{-b, b} do
@@ -36,15 +36,11 @@ function genall(maxp)
         local t = {a, b, c}
         table.sort(t)
         a, b, c = unpack(t)
-        if math.abs(c - 2 * a) == 1 and  b % 2 == 0 then
+        local p = 2 * a + b + c
+        if p < maxp and math.abs(c - 2 * a) == 1 and  b % 2 == 0 then
             total = total + 1
-            sum = sum + (a + b + c)
-            print(a, b, c)
-        end
-        if math.abs(c - 2 * b) == 1 and  a % 2 == 0 then
-            total = total + 1
-            sum = sum + (a + b + c)
-            print(a, b, c)
+            sum = sum + p
+            print(a, b, c, c - 2 * a, c - 2 * b,  p, b * a / 2)
         end
     end
     print("TOTAL", total)

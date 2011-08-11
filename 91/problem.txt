@@ -9,3 +9,13 @@ There are exactly fourteen triangles containing a right angle that can be formed
 
 
 Given that 0  x1, y1, x2, y2  50, how many right triangles can be formed?
+
+
+ANSWER
+14234
+
+TODO
+это очень некрасивое решение
+просто очень
+и дело не в эстетике, а в том, что чем дальше тем невозможней 
+будет так некрасиво решать
