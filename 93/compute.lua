@@ -1,6 +1,7 @@
 #!/usr/bin/env lua
 package.path = package.path .. ";../modules/?.lua"
 require "numeric"
+require "iterator"
 
 function operation(op, a, b) 
     if op == "*" then
@@ -28,7 +29,7 @@ function form2(ops, digs)
     return c
 end
 
-function iterator(t, n)
+function iteratorall(t, n)
     local function gen(t, len, res)
         if len == 0 then
             coroutine.yield(res)
@@ -54,20 +55,27 @@ function isgood(n)
 end
 
 function getall(digs) 
-    local it = iterator({"+","*","/","-"}, 3)
     local res = array{}
+    local dit = iterator.perm_lex(digs)
     while true do
-        local ops = it()
-        if not ops then
+        local ds = dit()
+        if not ds then
             break
-        end
-        local a = form1(ops, digs)
-        local b = form2(ops, digs)
-        if isgood(a) then
-            table.insert(res, a)
-        end
-        if isgood(b) then
-            table.insert(res, b)
+        end     
+        local oit = iteratorall({"+","-","/","*"}, 3)
+        while true do
+            local ops = oit()
+            if not ops then
+                break
+            end
+            local a = form1(ops, ds)
+            if isgood(a) then
+                table.insert(res, a)
+            end
+            local b = form2(ops, ds)
+            if isgood(b) then
+                table.insert(res, b)
+            end
         end
     end
     table.sort(res)
