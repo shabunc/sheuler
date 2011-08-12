@@ -21,7 +21,7 @@ function brute(n)
         end
         local card = array.reduce(seq, count)
         if card > 1 then
-            print(seq, card)
+            --print(seq, card)
             total = total + 1
         end
     end
@@ -29,35 +29,5 @@ function brute(n)
     return total
 end
 
-function good_seq(seq) 
-    if #seq <= 2 then
-        return true
-    end
-    for j = 2, #seq do
-        if seq[j] < seq[j-1] then
-            return false
-        end
-    end
-    return true
-end
 
-function problem76(n)
-    local total = 0
-    for j = 2, n - 1 do
-        local it = numeric.sum_iterator(n, j)
-        while true do
-            local seq = it()
-            if not seq then
-                break
-            end
-            if good_seq(seq) then
-                print(table.concat(seq," "))
-                total = total + 1
-            end
-        end
-    end
-    print("TOTAL", total)
-    return total
-end
-
-problem76(100)
+brute(5)
