@@ -10,3 +10,12 @@ For example, {81, 88, 75, 42, 87, 84, 86, 65} is not a special sum set because 6
 Using sets.txt (right click and "Save Link/Target As..."), a 4K text file with one-hundred sets containing seven to twelve elements (the two examples given above are the first two sets in the file), identify all the special sum sets, A1, A2, ..., Ak, and find the value of S(A1) + S(A2) + ... + S(Ak).
 
 NOTE: This problem is related to problems 103 and 106.
+
+
+ANSWER
+73702
+
+TODO
+faster!
+
+by the way, why you need sorting?
