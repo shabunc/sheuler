@@ -32,7 +32,11 @@ function subseq(seq, bitmask)
     return sub, cosub
 end
 
-function explore(t)
+function sum(t)
+    return array.reduce(t, function(a, b) return a + b end)
+end
+
+function is_good(t)
     table.sort(t)
     local bit = biterator(#t)
     while true do
@@ -48,9 +52,20 @@ function explore(t)
                 break
             end
             local coseq = subseq(cosub, cobitmask)
-            print(table.concat(seq, " "), table.concat(coseq, " "))
+            local sa, sb = sum(seq), sum(coseq)
+            if sa == sb then
+                if sa > 0 then
+                    return false
+                end
+            elseif #seq > #coseq and sa < sb then
+                return false
+            elseif #seq < #coseq and sa > sb then
+                return false
+            end
         end
     end
+    return true
 end
 
-explore({81, 88, 75, 42, 87, 84, 86, 65})
+assert(is_good({81, 88, 75, 42, 87, 84, 86, 65}) == false)
+assert(is_good({157, 150, 164, 119, 79, 159, 161, 139, 158}) == true)
