@@ -20,11 +20,37 @@ function biterator(n)
     end)
 end
 
-local bit = biterator(12)
-while true do
-    local seq = bit()
-    if not seq then
-        break
+function subseq(seq, bitmask)
+    local sub, cosub = {}, {}
+    for i, b in ipairs(bitmask) do
+        if b == 1 then
+            table.insert(sub, seq[i])
+        else
+            table.insert(cosub, seq[i])
+        end
     end
-    print(seq)
+    return sub, cosub
 end
+
+function explore(t)
+    table.sort(t)
+    local bit = biterator(#t)
+    while true do
+        local bitmask = bit()
+        if not bitmask then
+            break
+        end
+        local seq, cosub = subseq(t, bitmask)
+        local cobit = biterator(#cosub)
+        while true do
+            local cobitmask = cobit()
+            if not cobitmask then
+                break
+            end
+            local coseq = subseq(cosub, cobitmask)
+            print(table.concat(seq, " "), table.concat(coseq, " "))
+        end
+    end
+end
+
+explore({81, 88, 75, 42, 87, 84, 86, 65})
