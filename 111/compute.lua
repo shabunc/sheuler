@@ -4,30 +4,28 @@ package.path = package.path .. ";../modules/?.lua"
 require("numeric")
 require("array")
 
-function simple_iterator(t)
-    local function gen(t, res)
-        if #t == 0 then
-            coroutine.yield(res)
+function merge_iterator(ta, tb)
+    local function gen(ta, tb, n)
+       if n == #ta + 1 then
+            coroutine.yield(tb)
             return
-        end
-        for j = 1, #t do
-            local lt = array(t)
-            local head = table.remove(lt, j)
-            local lres = array(res)
-            table.insert(lres, head)
-            gen(lt, lres)
-        end
+       end
+       for j = 1, #tb + 1 do
+            local ltb = array(tb)
+            table.insert(ltb, j, ta[n])
+            gen(ta, ltb, n + 1)
+       end
     end
     return coroutine.wrap(function()
-        return gen(t, {})
+        return gen(ta, tb, 1)
     end)
 end
 
-local it = simple_iterator({1,1,1,2})
+local mit = merge_iterator({1,1,1},{7})
 while true do
-    local seq = it()
+    local seq = mit()
     if not seq then
         break
-    end
-    print(seq)
-end 
+    end 
+    print("=>", seq)
+end
