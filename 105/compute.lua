@@ -38,6 +38,44 @@ function sum(t)
     return array.reduce(t, function(a, b) return a + b end)
 end
 
+function insert(t, val)
+    if val < t[1] then
+        table.insert(t, 1, val)
+        return t
+    end
+    if val > t[#t] then
+        table.insert(t, val)
+    end
+    for j = 1, #t do
+        if t[j] == val then
+            return false
+        end
+    end
+end
+
+function is_good_clever(t)
+    local bit = biterator(#t)
+    local buckets = {}
+    while true do
+        local bitmask = bit()
+        if not bitmask then
+            break            
+        end
+        local card = sum(bitmask)
+        local seq = subseq(t, bitmask)
+        local val = sum(seq)
+        if not buckets[card] then
+            buckets[card] = {}
+        end
+        table.insert(buckets[card], val)
+    end
+    for _, b in ipairs(buckets) do
+        b = array.uniq(b)
+        print(_,  table.concat(b, " "))
+    end
+    return buckets
+end
+
 function is_good(t)
     table.sort(t)
     local bit = biterator(#t)
@@ -81,7 +119,11 @@ function problem105(data)
     return total
 end
 
+is_good_clever{81, 88, 75, 42, 87, 84, 86, 65} 
+        
+--[[
 assert(is_good({81, 88, 75, 42, 87, 84, 86, 65}) == false)
 assert(is_good({157, 150, 164, 119, 79, 159, 161, 139, 158}) == true)
 
 problem105(DATA)
+]]

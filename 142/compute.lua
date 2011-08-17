@@ -4,86 +4,66 @@ package.path = package.path .. ";../modules/?.lua"
 require("numeric")
 require("array")
 
-function step(a, b, c, maxp)
-    local function gen(a, b, c, maxp)
-        coroutine.yield(a, b, c, a + b + c)
-        for j = -1, 1, 2 do
-            for i = -1, 1, 2 do
-                local a = a * j
-                local b = b *  i
-                local na = a + 2 * b + 2 *c
-                local nb = 2 * a + b + 2 * c
-                local nc = 2 * a + 2 * b + 3 * c
-                local p = na + nb + nc
-                if na > 0 and nb > 0 and nc > 0 and p <= maxp then
-                    gen(na, nb, nc, maxp)
-                end
-            end
+function combit(t, n)
+    local function gen(t, n, from, res)
+        if n == 0  then
+            coroutine.yield(res)
+            return
+        end
+        for j = from, #t do
+            local lres = array(res)
+            table.insert(lres, t[j])
+            gen(t, n - 1, j + 1, lres)
         end
     end
     return coroutine.wrap(function() 
-        return gen(a, b, c, maxp)
+        return gen(t, n, 1, {})
     end)
 end
 
-function good_pair(a, b)
-    return (b - a) % 2 == 0 or (b + a) % 2 == 0
-end
-
-function scan_all(cs, k) 
-    local t = cs[k]
-    for j = 1, #t/2, 2 do
-        local c = t[j]
-        local d = t[j + 1]
-        for i = j + 2, #t/2, 2 do
-            local a = t[i]
-            local b = t[i + 1]
-            if cs[b] then
-                local x = 2 * (b^2 + a^2)
-                local y = 2 * (b^2 - a^2) 
-                local z = 2 * (d^2 - c^2)
-                --[[
-                print(math.sqrt(math.abs(x - y)), math.sqrt(y + x))
-                print(math.sqrt(math.abs(x - z)), math.sqrt(z + x))
-                ]]
-                print(math.sqrt(math.abs(y - z)), math.sqrt(y + z))
-                --print(x, y, z)
-            end
-        end
-    end
-end
-
-function intersect(ta, tb)
+function squares(max)
     local res = {}
-    for k, v in ipairs(ta) do
-       if array.index_of(tb, v) > 0 then
-            table.insert(res, v)
-       end
+    for j = 1, max do
+        table.insert(res, j * j)
     end
     return res
 end
 
-function genall(maxp) 
-    local a, b, c = 3, 4, 5
-    local it = step(a, b, c, maxp)
-    local total = 0
-    local cs = {}
-    while true do 
-        local  a, b, c, p = it()
-        if not a then
+function search(max)
+    local sqs = squares(max)
+    local abit = combit(sqs, 2) 
+    while true do
+        local seq = abit()
+        if not seq then
             break
         end
-        local t = {a, b, c}
-        table.sort(t)
-        a, b, c = unpack(t)
-        if not cs[c] then
-            cs[c] = {}
+        local a, b = seq[1], seq[2]
+        local cdit = combit(sqs, 2)
+        while true do
+            local seq = cdit()
+            if not seq then
+                break
+            end
+            local c, d = seq[1], seq[2]
+            if a ~= c and a + b == c + d then
+                local efit = combit(sqs, 2)
+                while true do
+                    local seq = efit()
+                    if not seq then
+                        break
+                    end
+                    local e, f = seq[1], seq[2]
+                    if e ~= c and f - e == d - c then
+                        print(a, b, c, d, f, e, b - a)
+                        if e + f == b - a then
+                            print("FOUND!", a, b, c, d, f, e)
+                            return
+                        end
+                    end
+                end 
+            end
         end
-        table.insert(cs[c], a)
-        table.insert(cs[c], b)
-        scan_all(cs, c)
     end
 end
 
-genall(1500000000)
-
+search(200)
