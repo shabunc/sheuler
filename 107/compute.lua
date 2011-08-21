@@ -13,6 +13,7 @@ LILGRAPH = {
     [7] = {{4, 23}, {5, 11}, {6, 27}}
 }
 
+
 function find(vertices, vertice)
     for  _, vert in ipairs(vertices) do
         if vertices == vert then
@@ -65,8 +66,7 @@ function problem107(graph)
         verts, sptree, val  = minimum(graph, verts, sptree)
         sum = sum + val
     end
-    describe(sptree)
-    print("SUM ", sum)
+    return sum
 end
 
 function tograph(m)
@@ -82,6 +82,20 @@ function tograph(m)
     return graph
 end
 
-problem107(LILGRAPH)
-problem107(tograph(NETMATRIX))
+function sumall(m) 
+    local sum = 0
+    for j = 1, #m do
+        for i = j, #m do 
+            local val = m[i][j]
+            if val ~= -1 then
+               sum = sum + val 
+            end
+        end
+    end
+    return sum
+end
+
+local sum = problem107(tograph(NETMATRIX))
+local total = sumall(NETMATRIX)
+print(total, sum, total - sum)
 
