@@ -1,6 +1,8 @@
 #!/usr/bin/env lua
 package.path = package.path .. ";../modules/?.lua"
 
+dofile("network.txt")
+
 LILGRAPH = {
     [1] = {{2, 16}, {3, 12}, {4, 21}},
     [2] = {{1, 16}, {4, 17}, {5, 20}},
@@ -67,5 +69,19 @@ function problem107(graph)
     print("SUM ", sum)
 end
 
+function tograph(m)
+    local graph = {}
+    for i, row in ipairs(m) do
+        graph[i] = {}
+        for j, val in ipairs(row) do
+            if val ~= -1 then
+                table.insert(graph[i], {j, val})
+            end
+        end
+    end
+    return graph
+end
+
 problem107(LILGRAPH)
+problem107(tograph(NETMATRIX))
 
