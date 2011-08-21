@@ -31,39 +31,23 @@ end
 
 function search(max)
     local sqs = squares(max)
-    local abit = combit(sqs, 2) 
+    local it = combit(sqs, 6) 
     while true do
-        local seq = abit()
+        local seq = it()
         if not seq then
             break
         end
-        local a, b = seq[1], seq[2]
-        local cdit = combit(sqs, 2)
-        while true do
-            local seq = cdit()
-            if not seq then
-                break
-            end
-            local c, d = seq[1], seq[2]
-            if a ~= c and a + b == c + d then
-                local efit = combit(sqs, 2)
-                while true do
-                    local seq = efit()
-                    if not seq then
-                        break
-                    end
-                    local e, f = seq[1], seq[2]
-                    if e ~= c and f - e == d - c then
-                        print(a, b, c, d, f, e, b - a)
-                        if e + f == b - a then
-                            print("FOUND!", a, b, c, d, f, e)
-                            return
-                        end
-                    end
-                end 
+        local e, f, b, d, c, a = unpack(seq)
+        if (a + b) % 2 == 0 then
+            if (c + d) % 2 == 0 then
+                if (f + e) % 2 == 0 then
+                    local x = (a + b) / 2
+                    local y = (e + f) / 2
+                    print(x, y, x + y)
+                end
             end
         end
     end
 end
 
-search(200)
+search(10)
