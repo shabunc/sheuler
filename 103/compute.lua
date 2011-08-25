@@ -1,16 +1,7 @@
 #!/usr/bin/env lua
 package.path = package.path .. ";../modules/?.lua"
 
-function square(from, till)
-    return function(state, n) 
-        if n < state then
-            n = n + 1
-            return n, n*n, 2
-        end
-    end, till, from
-end
-
-function fixed_combs(k, n)
+function fixed_subs(k, n)
     local t = {}
     for j = 1, n - k do
         t[j] = 0
@@ -47,6 +38,37 @@ function fixed_combs(k, n)
     return nextfixed, 0, t
 end
 
-for seq in fixed_combs(4, 5) do
+function next_decreasing(t, k, n)
+    local s = n
+    while s > 0 and not(t[s] and t[s] < n - k + s) do
+        s = s - 1
+    end
+    if s == 0 then
+        return
+    end
+    t[s] = t[s] + 1
+    for j = s + 1, k do
+        t[j] = t[j - 1] + 1
+    end
+    return t
+end
+
+function dec_iterator(k, n)
+    local t = {}
+    for j = 1, k do
+        t[j] = j
+    end
+    local firstone = true
+    local function gen(_, t)
+        if firstone then
+            firstone = false
+            return t
+        end
+        return next_decreasing(t, k, n)
+    end
+    return gen, 0, t
+end 
+
+for seq in dec_iterator(3,5) do
     print(table.concat(seq))
 end
