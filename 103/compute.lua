@@ -1,6 +1,8 @@
 #!/usr/bin/env lua
 package.path = package.path .. ";../modules/?.lua"
 
+require("array")
+
 function fixed_subs(k, n)
     local t = {}
     for j = 1, n - k do
@@ -69,6 +71,52 @@ function dec_iterator(k, n)
     return gen, 0, t
 end 
 
-for seq in dec_iterator(3,5) do
-    print(table.concat(seq))
+function get_sub(t, sub)
+    local res = {}
+    for j = 1, #sub do
+        if sub[j] == 1 then
+            table.insert(res, t[j])
+        end 
+    end
+    return res
 end
+
+function is_good(t)
+    local lookup = {}
+    local min = math.huge
+    for j = #t, 1, -1 do
+        local lmin = math.huge
+        for sub in fixed_subs(j, #t) do
+            local seq = get_sub(t, sub)
+            local sum = array.reduce(seq, function(a, b) return a + b end)
+            if lookup[sum] then
+                return false
+            end
+            lookup[sum] = 1
+            if lmin > sum then
+                lmin = sum
+            end
+            if lmin > min then
+                return false
+            end
+        end
+        min = lmin
+    end
+    return true
+end
+
+function problem103(k)
+    local min = math.huge
+    for seq in dec_iterator(k, 50) do
+        if is_good(seq) then
+            local sum = array.reduce(seq, function(a, b) return a + b end)
+            if sum < min then
+                min = sum
+                local res = array.reduce(seq, function(a, b) return a .. tostring(b) end, "")
+                print(res)
+            end
+        end
+    end
+end
+
+problem103(7)
