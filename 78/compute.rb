@@ -57,4 +57,4 @@ def problem78(div)
     end
 end
 
-problem78(100000)
+problem78(1000000)
