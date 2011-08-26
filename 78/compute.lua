@@ -34,4 +34,4 @@ function P(n)
 end 
 P = memoize(P)
 
-print(P(1000))
+print(P(100))
