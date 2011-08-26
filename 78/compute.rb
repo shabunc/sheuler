@@ -1,4 +1,16 @@
 #!/usr/bin/env ruby
+#
+def memoize(name) 
+    cache = {}
+    (class << self; self; end).send(:define_method, name) do |*args|
+        unless cache.has_key? args 
+            cache[args] = super *args
+        end
+        cache[args]
+    end
+    cache
+end
+
 
 def penta1(q)
     q * (3 * q - 1) / 2
@@ -31,5 +43,18 @@ def part(n)
         j = j + 1
     end
 end
+memoize(:part)
 
-puts(part(10))
+def problem78(div)
+    j = 1
+    while true do
+        pt = part(j)
+        if pt % div == 0 then
+            puts j, pt
+            return
+        end
+        j = j + 1
+    end
+end
+
+problem78(100000)
