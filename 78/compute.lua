@@ -2,43 +2,36 @@
 package.path = package.path .. ";../modules/?.lua"
 
 require("bignum")
+memoize = require("memoize")
 
-local CACHE = {}
-
-function pile_count(n, inner) 
-    if n == 0 then
-        return bignum{1}
-    end
-    local res = bignum{0}
-    for j = n, 1, -1 do
-        local m = math.min(n - j, j)
-        local rec = CACHE[m] or pile_count(m, true)
-        CACHE[m] = rec
-        res = res:add(rec)
-    end
-    return res
+function penta1(q)
+    return q * (3 * q - 1) / 2
 end
 
-function has_n_zeros(t, n)
-    for j = #t, #t - n + 1, -1 do
-        if t[j] ~= 0 then
-            return false
+function penta2(q)
+    return q * (3 * q + 1) / 2
+end
+
+function P(n)
+    if n < 0 then 
+        return 0 
+    end
+    if n == 0 or n == 1 then
+        return 1
+    end
+    local sum = 0
+    for j = 1, math.huge do
+        local k1, k2 = penta1(j), penta2(j)
+        local pair = P(n - k1) + P(n - k2)
+        if pair == 0 then
+            return sum
         end
-    end
-    return true
-end
-
-function problem78(n)
-    local j = 1
-    while true do
-        local res = pile_count(j)
-        print(res)
-        if has_n_zeros(res, n)  then
-            print("FOUND!", j, res)
-            break
+        if j % 2 == 0 then
+            pair = -pair
         end
-        j = j + 1
+        sum = sum + pair
     end
-end
+end 
+P = memoize(P)
 
-problem78(6)
+print(P(1000))

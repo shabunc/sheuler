@@ -3,6 +3,7 @@ package.path = package.path .. ";../modules/?.lua"
 
 require("numeric")
 require("array")
+memoize = require("memoize")
 
 function brute(n)
     local total = 0
@@ -29,5 +30,23 @@ function brute(n)
     return total
 end
 
+function R(n, k)
+    if k == 0 then
+        return 1
+    end
+    if k > n then
+        return R(n, n)
+    end
+    local res = 0
+    for j = 1, k do
+        res = res + R(n - j, j)
+    end
+    return res
+end
+R = memoize(R)
 
-brute(5)
+function P(n)
+    return R(n, n)
+end
+
+print(P(100))
