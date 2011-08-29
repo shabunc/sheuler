@@ -2,52 +2,20 @@
 package.path = package.path .. ";../modules/?.lua"
 require("numeric")
 
-function is_good(n) 
-    local a = math.sqrt(4*n + 1)
-    return a == math.floor(a), (a/2 + 0.5)
-end
-
-function brute100(n)
-    for j = 2, n, 2 do
-        local a = j
-        local b = 2*a 
-        local good_a, _a = is_good(a)
-        local good_b, _b = is_good(b)
-        if good_a and good_b then
-            print(a, _a, b, _b, _a/_b)
-        end
-    end
-end
-
-function brute100_2(n)
-    for j = 1, n, 2 do
-        for i = math.ceil(j/0.71), n, 2 do
-            local a = j * (j - 1)
-            local b = i * (i - 1)
-            local c = b / a
-            if c == 2 then
-                print(j, i)
+function problem100(max)
+    local vals  = {}
+    for j = 1, math.huge do
+        local val = j * (j - 1)
+        vals[val] = j
+        if vals[val / 2] then
+            print(j, vals[val / 2])
+            if j > max then
+                break
             end
         end
     end
 end
 
-function find(n) 
-    local b = n * (n - 1)
-    for j = 1, n-1 do
-        local a = j * (j - 1)
-        local c = b / a
-        if (c == 2) then 
-            return j
-        end
-    end
-    return false
+for j = 1, 10 ^ 12 do
+    print(j)
 end
-
-for j = 1, 100000 do
-    local f = find(j)
-    if f then
-        print(j, table.concat(numeric.divisors(j), " "))
-    end
-end
-
