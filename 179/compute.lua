@@ -21,4 +21,33 @@ function problem179(max)
     return count
 end
 
-problem179(10 ^ 7)
+function fast_problem179(max)
+    local divs = {}
+    for j = 2, max - 1 do
+        print(j)
+        local m = 1
+        while true do
+            local n = m * j
+            if n > max then
+                break
+            end
+            if not divs[n] then
+                divs[n] = 0
+            end     
+            divs[n] = divs[n] + 1
+            m = m + 1
+        end
+    end
+    local count = 0
+    for j = 2, max - 1 do
+        if divs[j] == divs[j + 1] then
+            count = count + 1
+        end
+    end 
+    print("TOTAL", count)
+    return count
+end
+
+local N = 10 ^ 7
+--problem179(N)
+fast_problem179(N)
