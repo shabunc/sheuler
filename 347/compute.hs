@@ -15,7 +15,7 @@ hamming p q = p*q : merge (map (p *) ham) (map (q *) ham)
 m p q n 
     | p >= q = 0
     | (p * q) > n = 0
-    | otherwise = last $ takeWhile (< n) $ hamming p q
+    | otherwise = last $ takeWhile (<= n) $ hamming p q
 
 is_prime :: Integer -> Bool
 is_prime n = null (filter ((==0). mod n) [2..floor(fromIntegral n ** 0.5)]) 
@@ -28,6 +28,8 @@ primes n = filter is_prime [2 .. n]
 
 main :: IO()
 main = do
-    print $ sum $ map (\a -> m (a!!0) (a!!1) 100) $ combs 2 prim
-                where prim = primes 100
+    print $ sum $ map (\a -> m (a!!0) (a!!1) n) $ combs 2 prim
+                where 
+                    n = 10000000
+                    prim = primes n
 
