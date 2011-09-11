@@ -24,12 +24,19 @@ combs 0 _ = [[]]
 combs k [] = []
 combs k (x:xs) = map (x:) (combs (k - 1) xs) ++ combs k xs
 
-primes n = filter is_prime [2 .. n]
+prime n = sieve xs []  
+            where
+                xs = [2..n]
+                sieve [] primes = primes
+                sieve xs@(p:xs') primes 
+                    | p * p > n = primes ++ xs
+                    | otherwise = sieve filtered (primes ++ [p]) where filtered = filter ((/=0). flip mod p) xs'
+
 
 main :: IO()
 main = do
     print $ sum $ map (\a -> m (a!!0) (a!!1) n) $ combs 2 prim
                 where 
-                    n = 10000000
-                    prim = primes n
+                    n = 106
+                    prim = prime n
 
