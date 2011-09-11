@@ -6,6 +6,29 @@ function log(a, b)
     return math.log(a) / math.log(b)
 end
 
+local PRIME = {}
+
+function primes(n)
+    local sieve = {}
+    for j = 2, n do
+        table.insert(sieve, j)
+    end
+    local res = {}
+    local pindex = 1
+    while sieve[pindex] and sieve[pindex] * sieve[pindex] <= n do
+        local p = sieve[pindex]
+        local lsieve = {}
+        for j = 1, #sieve do
+            if j <= pindex or sieve[j] % p ~= 0 then
+                table.insert(lsieve, sieve[j])
+            end
+        end
+        sieve = lsieve
+        pindex = pindex + 1
+    end
+    return sieve
+end
+
 function hammax(n, p, q)
     local i = math.floor(n / p)
     local j = math.floor(n / q)
@@ -34,4 +57,6 @@ function hammax(n, p, q)
 end
 
 --print(hammax(100, 2, 3))
-print(hammax(100, 3, 5))
+--print(hammax(10000000, 3, 5))
+print(#primes(1000000))
+
