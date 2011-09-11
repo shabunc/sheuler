@@ -9,8 +9,8 @@ end
 
 function primes(n)
     return coroutine.wrap(function() 
-        local sieve = {}
-        for j = 2, n do
+        local sieve = {2}
+        for j = 3, n, 2 do
             table.insert(sieve, j)
         end
         local count = 1
@@ -34,9 +34,6 @@ function primes(n)
 end
 
 function hammax(n, p, q)
-    if p * q > n then
-        return 0
-    end 
     local i = math.floor(n / p)
     local j = math.floor(n / q)
     while true do
@@ -74,13 +71,19 @@ function problem347(max)
             break
         end
         pr[n] = p
-        print(p)
         for j = 1, n - 1 do
+            if pr[j] * p > max then
+                break
+            end
             local sum = hammax(max, pr[j], pr[n])
             total = total + sum
+            print(pr[j], p, sum, total)
         end
     end
     print("TOTAL", total)
+    return total
 end
 
-problem347(100)
+assert(problem347(100) == 2262)
+problem347(10000000)
+
