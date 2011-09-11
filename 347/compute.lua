@@ -6,30 +6,37 @@ function log(a, b)
     return math.log(a) / math.log(b)
 end
 
-local PRIME = {}
 
 function primes(n)
-    local sieve = {}
-    for j = 2, n do
-        table.insert(sieve, j)
-    end
-    local res = {}
-    local pindex = 1
-    while sieve[pindex] and sieve[pindex] * sieve[pindex] <= n do
-        local p = sieve[pindex]
-        local lsieve = {}
-        for j = 1, #sieve do
-            if j <= pindex or sieve[j] % p ~= 0 then
-                table.insert(lsieve, sieve[j])
-            end
+    return coroutine.wrap(function() 
+        local sieve = {}
+        for j = 2, n do
+            table.insert(sieve, j)
         end
-        sieve = lsieve
-        pindex = pindex + 1
-    end
-    return sieve
+        local count = 1
+        while sieve[1] and sieve[1] * sieve[1] <= n do
+            local p = table.remove(sieve, 1)
+            coroutine.yield(p, count)
+            local j = 1
+            while j <= #sieve do
+                if sieve[j] % p == 0 then
+                    table.remove(sieve, j)
+                else
+                    j = j + 1
+                end
+            end
+            count = count + 1
+        end
+        for j = 1, #sieve do
+            coroutine.yield(sieve[j], j + count - 1)
+        end
+    end)
 end
 
 function hammax(n, p, q)
+    if p * q > n then
+        return 0
+    end 
     local i = math.floor(n / p)
     local j = math.floor(n / q)
     while true do
@@ -56,7 +63,24 @@ function hammax(n, p, q)
     end
 end
 
---print(hammax(100, 2, 3))
---print(hammax(10000000, 3, 5))
-print(#primes(1000000))
+function problem347(max)
+    local it = primes(max)
+    local res = {}
+    local pr = {}
+    local total = 0
+    while true do
+        local p, n = it()
+        if not p then
+            break
+        end
+        pr[n] = p
+        print(p)
+        for j = 1, n - 1 do
+            local sum = hammax(max, pr[j], pr[n])
+            total = total + sum
+        end
+    end
+    print("TOTAL", total)
+end
 
+problem347(100)
