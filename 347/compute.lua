@@ -7,28 +7,34 @@ function log(a, b)
 end
 
 
+
 function primes(n)
     return coroutine.wrap(function() 
         local sieve = {2}
         for j = 3, n, 2 do
             table.insert(sieve, j)
         end
-        local count = 1
-        while sieve[1] and sieve[1] * sieve[1] <= n do
-            local p = table.remove(sieve, 1)
-            coroutine.yield(p, count)
-            local j = 1
-            while j <= #sieve do
+        local pindex = 1
+        while true do
+            while sieve[pindex] == 0 do
+                pindex = pindex + 1
+            end
+            local p  = sieve[pindex]
+            if not p or p * p > n then
+                for j = pindex, #sieve do
+                    if sieve[j] > 0 then
+                        coroutine.yield(sieve[j])
+                    end
+                end
+                return
+            end
+            coroutine.yield(p)
+            for j = pindex + 1, #sieve do
                 if sieve[j] % p == 0 then
-                    table.remove(sieve, j)
-                else
-                    j = j + 1
+                    sieve[j] = 0
                 end
             end
-            count = count + 1
-        end
-        for j = 1, #sieve do
-            coroutine.yield(sieve[j], j + count - 1)
+            pindex = pindex + 1
         end
     end)
 end
@@ -65,25 +71,25 @@ function problem347(max)
     local res = {}
     local pr = {}
     local total = 0
+    local n = 1
     while true do
-        local p, n = it()
+        local p = it()
         if not p then
             break
         end
         pr[n] = p
         for j = 1, n - 1 do
-            if pr[j] * p > max then
-                break
+            if pr[j] * p <= max then
+                print(p, pr[j])
+                local sum = hammax(max, pr[j], p)
+                total = total + sum
             end
-            local sum = hammax(max, pr[j], pr[n])
-            total = total + sum
-            print(pr[j], p, sum, total)
         end
+        n = n + 1
     end
-    print("TOTAL", total)
+    print("TOTAL", string.format("%i", total))
     return total
 end
 
 assert(problem347(100) == 2262)
 problem347(10000000)
-
