@@ -103,11 +103,11 @@ function divs(n)
                 count = count + 1
             end
             if count > 0 then
-                coroutine.yield(j, count, n)
+                coroutine.yield(j, count)
             end
         end
         if n > 1 then
-            coroutine.yield(n, 1, n)
+            coroutine.yield(n, 1)
         end
     end
     local it = coroutine.wrap(function() return gen() end)
@@ -124,6 +124,7 @@ function sum(t)
     return res
 end
 
+
 function hams(max)
     local sieve = {}
     local found = {}
@@ -131,7 +132,7 @@ function hams(max)
         if sieve[n] ~= false then
             local as = {}
             local ps = {}
-            for p, a, m in divs(n) do
+            for p, a in divs(n) do
                 table.insert(as, a)
                 table.insert(ps, p)
                 if #as > 2 then
