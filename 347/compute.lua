@@ -94,12 +94,61 @@ function problem347(max)
     return total
 end
 
-function problem(max)
-    for j = max, 6, -1 do
-        local divs = numeric.divisors(j)
-        print(j, #divs)
+function divs(n) 
+    local function gen()
+        for j = 2, math.sqrt(n) do
+            local count  = 0 
+            while n % j == 0 do
+                n = n / j
+                count = count + 1
+            end
+            if count > 0 then
+                coroutine.yield(j, count, n)
+            end
+        end
+        if n > 1 then
+            coroutine.yield(n, 1, n)
+        end
+    end
+    local it = coroutine.wrap(function() return gen() end)
+    return function() 
+        return it()
     end
 end
 
---assert(problem347(100) == 2262)
-problem(100000)
+function sum(t)
+    local res = 0
+    for j = 1, #t do
+        res = res + t[j]
+    end
+    return res
+end
+
+function hams(max)
+    local sieve = {}
+    local found = {}
+    for n = max, 6, -1 do
+        if sieve[n] ~= false then
+            local as = {}
+            local ps = {}
+            for p, a, m in divs(n) do
+                table.insert(as, a)
+                table.insert(ps, p)
+                if #as > 2 then
+                    break
+                end 
+            end
+            if #as == 2 then
+                print(n)
+            end
+        end
+    end
+    return found
+end
+
+function problemo(max)
+    local res = sum(hams(max))
+    return res
+end
+
+problemo(100)
