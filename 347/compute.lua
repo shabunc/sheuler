@@ -1,5 +1,6 @@
 #!/usr/bin/env lua
 package.path = package.path .. ";../modules/?.lua"
+require("numeric")
 require("array")
 
 function log(a, b)
@@ -80,9 +81,11 @@ function problem347(max)
         pr[n] = p
         for j = 1, n - 1 do
             if pr[j] * p <= max then
-                print(p, pr[j])
                 local sum = hammax(max, pr[j], p)
                 total = total + sum
+                print(p, pr[j], string.format("%i", total))
+            else
+                break
             end
         end
         n = n + 1
@@ -91,5 +94,12 @@ function problem347(max)
     return total
 end
 
-assert(problem347(100) == 2262)
-problem347(10000000)
+function problem(max)
+    for j = max, 6, -1 do
+        local divs = numeric.divisors(j)
+        print(j, #divs)
+    end
+end
+
+--assert(problem347(100) == 2262)
+problem(100000)
