@@ -85,7 +85,7 @@ function problem347(max)
                 local sum = hammax(max, pr[j], p)
                 total = total + sum
                 --print(p, pr[j], sum, string.format("%i", total))
-                print(p, pr[j], sum)
+                --print(p, pr[j], sum)
             else
                 break
             end
@@ -117,6 +117,7 @@ function divs(n)
         return it()
     end
 end
+
 
 function sum(t)
     local res = bignum{0}
@@ -163,7 +164,7 @@ function hams(max)
     local filtered = {}
     for n = max, 6, -1 do
         if sieve[n] ~= false then
-            print(n)
+            --print(n)
             local ps = {}
             local as = {}
             for p, a in divs(n) do
@@ -197,9 +198,41 @@ end
 
 function problemo(max)
     local found = hams(max)
-    print(sum(found))
-    return found
+    return sum(found)
 end
 
+function S(n)
+    if n < 6 then 
+        return 0
+    end
+    local ps = {}
+    local as = {}
+    local wrong_for_sure = false
+    for p, a in divs(n) do
+        table.insert(ps, p)
+        table.insert(as, a)
+        if #ps > 2 then
+            wrong_for_sure = true
+            break
+        end 
+    end
+    if not wrong_for_sure and #ps == 2 then
+        local dec
+        if as[1] == 1 and as[2] == 1 then
+            dec = 0 
+        elseif as[1] == 1 and as[2] ~= 1 then
+            dec = n / ps[2]
+        elseif as[1] ~=1 and as[2] == 1 then
+            dec = n / ps[1]
+        else 
+            dec = math.max(n / ps[1], n / ps[2])
+        end
+        return S(n - 1) + n - dec
+    else
+        return S(n - 1)
+    end
+end
 
-problemo(10000000)
+for j = 1, 20 do
+    print(j, S(j), problemo(j))
+end
