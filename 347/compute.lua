@@ -83,14 +83,15 @@ function problem347(max)
             if pr[j] * p <= max then
                 local sum = hammax(max, pr[j], p)
                 total = total + sum
-                print(p, pr[j], string.format("%i", total))
+                --print(p, pr[j], sum, string.format("%i", total))
+                print(p, pr[j], sum)
             else
                 break
             end
         end
         n = n + 1
     end
-    print("TOTAL", string.format("%i", total))
+    --print("TOTAL", string.format("%i", total))
     return total
 end
 
@@ -130,17 +131,26 @@ function hams(max)
     local found = {}
     for n = max, 6, -1 do
         if sieve[n] ~= false then
-            local as = {}
+            local parts = 0
             local ps = {}
+            local as = {}
             for p, a in divs(n) do
-                table.insert(as, a)
+                parts = parts + 1
                 table.insert(ps, p)
-                if #as > 2 then
-                    break
-                end 
+                table.insert(as, a)
             end
-            if #as == 2 then
-                print(n)
+            if parts == 2 then
+                --print(n, table.concat(ps, " "), table.concat(as, " "))
+                print(ps[2], ps[1], n)
+                table.insert(found, n)
+            end
+            for j = 1, math.sqrt(n) do
+                if n % j == 0 then
+                    sieve[j] = false
+                    if n / j ~= j then
+                        sieve[n / j] = false
+                    end
+                end
             end
         end
     end
@@ -152,4 +162,31 @@ function problemo(max)
     return res
 end
 
-problemo(100)
+function st(template)
+    local t = {}
+    for j = 1, #template do
+        table.insert(t, template[j])
+    end
+    return function() 
+        local k = #t
+        while k > 0 and t[k] == 0 do
+            k = k - 1
+        end
+        if k == 0 then
+            return
+        end
+        t[k] = t[k] - 1
+        for j = #t, k + 1, - 1 do
+            t[j] = template[j]
+        end
+        return t
+    end
+end
+
+for j in st({2, 5}) do
+    print(table.concat(j))
+end
+
+--print(problemo(100))
+
+--problem347(100)
