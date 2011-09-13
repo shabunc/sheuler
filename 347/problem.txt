@@ -7,3 +7,8 @@ Also M(2,73,100)=0 because there does not exist a positive integer  100 that is 
 Let S(N) be the sum of all M(p,q,N). S(100)=2262.
 
 Find S(10 000 000).
+
+11109800204052
+
+TODO
+far away from 1 minute

@@ -2,6 +2,7 @@
 package.path = package.path .. ";../modules/?.lua"
 require("numeric")
 require("array")
+require("bignum")
 
 function log(a, b)
     return math.log(a) / math.log(b)
@@ -118,13 +119,21 @@ function divs(n)
 end
 
 function sum(t)
-    local res = 0
+    local res = bignum{0}
     for j = 1, #t do
-        res = res + t[j]
+        res = res:add(bignum(numeric.digits(t[j])))
     end
     return res
 end
 
+
+function num(ps, as)
+    local res = 1
+    for j = 1, #ps do
+        res = res * ps[j]^as[j]
+    end
+    return res
+end
 
 function dec(template)
     local t = {}
@@ -143,23 +152,18 @@ function dec(template)
         for j = #t, k + 1, - 1 do
             t[j] = template[j]
         end
+        local parts = 0
         return t
     end
-end
-
-function num(ps, as)
-    local res = 1
-    for j = 1, #ps do
-        res = res * ps[j]^as[j]
-    end
-    return res
 end
 
 function hams(max)
     local sieve = {}
     local found = {}
+    local filtered = {}
     for n = max, 6, -1 do
         if sieve[n] ~= false then
+            print(n)
             local ps = {}
             local as = {}
             for p, a in divs(n) do
@@ -167,24 +171,35 @@ function hams(max)
                 table.insert(as, a)
             end
             if #ps == 2 then
-                --print(n, table.concat(ps, " "), table.concat(as, " "))
-                table.insert(found, n)
+                local key = ps[2] .. " " ..  ps[1]
+                if not filtered[key] then
+                    --print(ps[2], ps[1], n)
+                    table.insert(found, n)
+                    filtered[key] = true
+                end
             end
             for a in dec(as) do
-                local m = num(ps, a)
-                sieve[m] = false
+                local parts = #a
+                for j = 1, #a do
+                    if a[j] == 0 then
+                        parts = parts - 1
+                    end
+                end
+                if parts ~= 2 then
+                    local m = num(ps, a)
+                    sieve[m] = false
+                end
             end
         end
     end
-    print(table.concat(found, "\n"))
     return found
 end
 
 function problemo(max)
-    local res = sum(hams(max))
-    return res
+    local found = hams(max)
+    print(sum(found))
+    return found
 end
 
 
-print(problemo(100))
-
+problemo(10000000)
