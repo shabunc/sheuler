@@ -126,43 +126,7 @@ function sum(t)
 end
 
 
-function hams(max)
-    local sieve = {}
-    local found = {}
-    for n = max, 6, -1 do
-        if sieve[n] ~= false then
-            local parts = 0
-            local ps = {}
-            local as = {}
-            for p, a in divs(n) do
-                parts = parts + 1
-                table.insert(ps, p)
-                table.insert(as, a)
-            end
-            if parts == 2 then
-                --print(n, table.concat(ps, " "), table.concat(as, " "))
-                print(ps[2], ps[1], n)
-                table.insert(found, n)
-            end
-            for j = 1, math.sqrt(n) do
-                if n % j == 0 then
-                    sieve[j] = false
-                    if n / j ~= j then
-                        sieve[n / j] = false
-                    end
-                end
-            end
-        end
-    end
-    return found
-end
-
-function problemo(max)
-    local res = sum(hams(max))
-    return res
-end
-
-function st(template)
+function dec(template)
     local t = {}
     for j = 1, #template do
         table.insert(t, template[j])
@@ -183,10 +147,44 @@ function st(template)
     end
 end
 
-for j in st({2, 5}) do
-    print(table.concat(j))
+function num(ps, as)
+    local res = 1
+    for j = 1, #ps do
+        res = res * ps[j]^as[j]
+    end
+    return res
 end
 
---print(problemo(100))
+function hams(max)
+    local sieve = {}
+    local found = {}
+    for n = max, 6, -1 do
+        if sieve[n] ~= false then
+            local ps = {}
+            local as = {}
+            for p, a in divs(n) do
+                table.insert(ps, p)
+                table.insert(as, a)
+            end
+            if #ps == 2 then
+                --print(n, table.concat(ps, " "), table.concat(as, " "))
+                table.insert(found, n)
+            end
+            for a in dec(as) do
+                local m = num(ps, a)
+                sieve[m] = false
+            end
+        end
+    end
+    print(table.concat(found, "\n"))
+    return found
+end
 
---problem347(100)
+function problemo(max)
+    local res = sum(hams(max))
+    return res
+end
+
+
+print(problemo(100))
+
