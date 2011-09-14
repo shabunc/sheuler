@@ -221,11 +221,11 @@ function S(n)
         if as[1] == 1 and as[2] == 1 then
             dec = 0 
         elseif as[1] == 1 and as[2] ~= 1 then
-            dec = n / ps[2]
+            dec = math.max(n / ps[2])
         elseif as[1] ~=1 and as[2] == 1 then
             dec = n / ps[1]
         else 
-            dec = math.max(n / ps[1], n / ps[2])
+            dec = math.max(n / ps[1], (n / ps[1]) * ps[2])
         end
         return S(n - 1) + n - dec
     else
