@@ -14,11 +14,14 @@ end
 tribonacci = memoize(tribonacci)
 
 function OA(n) 
+    return tribonacci(n + 4)
+    --[[
     --actually, this is tribonacci as well
     if n == 1 then
         return 2
     end
     return 2 * OA(n - 1) - tribonacci(n) 
+    ]]
 end
 
 --[[
