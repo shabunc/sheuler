@@ -35,12 +35,16 @@ class Problem277 {
            nextStep();
            s += step;
         }
+        System.out.println(s);
         return s;
     }
 
     public static void main(String[] args) {
-        Problem277 st = new Problem277(104064);
-        System.out.println(st.getSequence(10));
+        runTests();
+    }
+
+    public static void runTests() {
+        assert (new Problem277(231)).getSequence(10).equals("DdDddUUdDD");
     }
 
 }
