@@ -25,8 +25,6 @@ class Problem277 {
             val = (2 * val - 1) / 3;
             step = step.d;
         }
-        System.out.print(val);
-        System.out.println(step);
     }
 
     public String getSequence(int len) {
@@ -35,16 +33,28 @@ class Problem277 {
            nextStep();
            s += step;
         }
-        System.out.println(s);
         return s;
     }
 
     public static void main(String[] args) {
-        runTests();
+        runAsserts();
+        findFirst("UDDDUdddDDUDDddDdDddDDUDDdUUDd");
     }
 
-    public static void runTests() {
+    public static void runAsserts() {
         assert (new Problem277(231)).getSequence(10).equals("DdDddUUdDD");
+    }
+
+    public static void findFirst(String checkSequence) {
+        long i = (long) Math.pow(10, 15);
+        do {
+            Problem277 p = new Problem277(i);
+            System.out.println(i);
+            if (p.getSequence(checkSequence.length()).equals(checkSequence)) {
+                break;
+            }
+            i++;
+        } while (true);
     }
 
 }
