@@ -46,14 +46,21 @@ class Problem277 {
     }
 
     public static void findFirst(String checkSequence) {
-        long i = (long) Math.pow(10, 15);
+        long i = 1057347015759427L;
+        int step = 0;
         do {
             Problem277 p = new Problem277(i);
-            System.out.println(i);
+            System.out.printf("%d %s \n", i, p.getSequence(30));
+            if (step > 100) {
+                break;
+            }
+            /*
             if (p.getSequence(checkSequence.length()).equals(checkSequence)) {
                 break;
             }
-            i++;
+            */
+            i = i + 68630377364883L;
+            step++;
         } while (true);
     }
 
