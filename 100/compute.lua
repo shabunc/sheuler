@@ -44,4 +44,23 @@ function problem100f(min)
     end
 end
 
-problem100f(1e12)
+function problem100fresh(max)
+    local found = {}
+    for j = 1, math.huge do
+        local sq = j * j
+        local a = (j  +  1) / 2
+        if (sq - 1) % 4 == 0 then
+            local k = (sq - 1) / 4
+            found[k] = a
+            if found [k / 2] then
+                print(a, found[k / 2])
+                if a > max then
+                    return
+                end
+            end
+        end
+    end
+end
+
+problem100fresh(1e11)
+
