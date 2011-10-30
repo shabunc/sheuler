@@ -2,6 +2,7 @@
 package.path = package.path .. ";../modules/?.lua"
 
 require("numeric")
+require("iterator")
 require("array")
 
 dofile("data.lua")
@@ -46,18 +47,19 @@ function apply_perm(matrix, perm)
 end
 
 function problem345(matrix) 
-    local it = {}
+    local range = {}
     local max = -1
     for j = 1, #matrix do
-       table.insert(it, j) 
+       table.insert(range, j) 
     end
+    local it = iterator.perm_lex(range)
     while true do
-       it = nextperm(it)
-       if not it then
+       local seq =  it()
+       if not seq then
           break
        end
-       local seq = apply_perm(matrix, it)
-       local sum = array.reduce(seq, function(a, b) return a + b end)
+       local cseq = apply_perm(matrix, seq)
+       local sum = array.reduce(cseq, function(a, b) return a + b end)
        if sum > max then
             max = sum
         end
