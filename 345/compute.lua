@@ -37,3 +37,32 @@ function nextperm(a)
     return res
 end
 
+function apply_perm(matrix, perm) 
+    local res = {}
+    for j = 1, #perm do
+        table.insert(res, matrix[j][perm[j]]) 
+    end
+    return res
+end
+
+function problem345(matrix) 
+    local it = {}
+    local max = -1
+    for j = 1, #matrix do
+       table.insert(it, j) 
+    end
+    while true do
+       it = nextperm(it)
+       if not it then
+          break
+       end
+       local seq = apply_perm(matrix, it)
+       local sum = array.reduce(seq, function(a, b) return a + b end)
+       if sum > max then
+            max = sum
+        end
+       print(sum, max)
+    end
+end
+
+problem345(LILMATRIX)
