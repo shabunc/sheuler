@@ -13,11 +13,10 @@ class Compute100 {
                 found.put(k, a);
                 if (found.containsKey(k / 2)) {
                     while (true) {
-                        Map.Entry<Long, Long> firstEntry = found.firstEntry();
-                        if (firstEntry.getKey() == (k / 2)) {
-                            break;
-                        } else {
+                        if (found.firstEntry().getKey() <= (k / 2)) {
                             found.pollFirstEntry();
+                        } else {
+                            break;
                         }
                     }
                     System.out.println(a);
