@@ -62,7 +62,7 @@ function problem345(matrix)
        local cseq = apply_perm(matrix, seq)
        local sum = array.reduce(cseq, function(a, b) return a + b end)
        if sum > max then
-            --print(table.concat(seq," "), sum)
+            print(table.concat(seq," "), sum)
             max = sum
         end
     end
@@ -150,12 +150,12 @@ function solve(m)
     local it = ids(#m)
     local max = -1
     while true do
+        --print(table.concat(it, " "))
         local sm = slice(pm, it)
         if is_good(sm) then
             local sum = array(sm):reduce(function(a, b) return a + b[1] end)
+            print(sum, max)
             if sum > max then
-                print(sm)
-                print(sum)
                 max = sum
             end
         end
@@ -166,4 +166,4 @@ function solve(m)
     end
 end
 
-solve(LILMATRIX)
+problem345(BIGMATRIX)

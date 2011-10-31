@@ -62,5 +62,18 @@ function problem100fresh(max)
     end
 end
 
-problem100fresh(1e11)
 
+
+function problem100guess(max)
+    a, b = 3, 4
+    while true do
+        a, b = 3 * a + 2 * b - 2, 4 * a + 3 * b - 3
+        print(a, b)
+        if b > max then
+            break
+        end
+    end
+end
+
+problem100guess(1000000000000)
+--problem100fresh(1e11)
