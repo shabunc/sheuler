@@ -40,6 +40,15 @@ function remove(t, i, j)
     return remrow(remcol(t, j), i)
 end
 
+
+function uid(t)
+    local res = ""
+    for j = 1, #t do
+        res = res .. table.concat(t[j], " ") .. " X "
+    end
+    return res
+end
+
 function ranks(m)
     local res = {}
     local n = #m
@@ -51,8 +60,16 @@ function ranks(m)
     return res
 end
 
+local CACHE = {}
+
 function msum(t) 
+    local key = uid(t)
+    if CACHE[key] then
+        print(key)
+        return CACHE[key]
+    end
     if #t == 1 then
+        CACHE[key] = t[1][1]
         return t[1][1]
     end
     local rnk = ranks(t)
@@ -66,7 +83,9 @@ function msum(t)
             max = res[j]
         end
     end
+    CACHE[key] = max
    return max
 end
 
 print(msum(LILMATRIX))
+--print(msum(BIGMATRIX))
