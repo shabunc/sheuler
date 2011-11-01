@@ -1,0 +1,89 @@
+#!/usr/bin/env lua
+package.path = package.path .. ";../modules/?.lua"
+
+require("numeric")
+require("array")
+require("bignum")
+
+function f(n) 
+    for j = 1, math.huge do 
+        local m = j * n
+        local digs = numeric.digits(m)
+        if array.every(digs, function(d) return d <3 end) then
+            return m, j
+        end
+    end
+end
+
+function ff(n, ffunc)
+    local sum = 0
+    for j = 1, n do
+        local res = ffunc(j)
+        sum = sum + res
+        print(j, res, sum)
+    end
+    return sum
+end
+
+function diadic(n)
+    local m = bignum({1}, 3)
+    local one = bignum({1}, 3)
+    local res = {1}
+    local checkfrom = n
+    while checkfrom > 1 do
+        m = m:add(one)
+        local dm = numeric.number(m, 10)
+        local divs = numeric.propers(dm)
+        for _, d in ipairs(divs) do
+            if not res[d] then
+                res[d] = dm / d
+            end
+        end
+        while res[checkfrom] do 
+            print("checkfrom ", checkfrom)
+            checkfrom = checkfrom - 1
+        end
+    end
+    return setmetatable(res, {
+        __call = function(self, k)
+            return self[k]
+        end
+    })
+end
+
+function stupid(n)
+    local res = {}
+    for a = 1, math.huge do
+        for b = a, 1, -1 do
+            local m = a * b
+            local digs = numeric.digits(m)
+            if array.every(digs, function(d) return d < 3 end) then
+                if not res[a] then
+                    res[a] = m
+                end
+                if not res[b] = then
+                    res[b] = m
+                end
+            end
+        end
+        while res[checkfrom] do
+            print("checkfrom", checkfrom)
+            checkfrom = checkfrom - 1
+        end
+        if checkfrom == 1 then
+            print("DONE")
+            return res
+        end
+    end
+end
+
+function problem302(n)
+    print("finding all diadic values")
+    local fd  = diadic(n)
+    print("done")
+    local res = ff(n, fd)
+    print(string.format("TOTAL ", res))
+    return res
+end
+
+problem302(10000)
