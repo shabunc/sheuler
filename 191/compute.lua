@@ -2,14 +2,13 @@
 package.path = package.path .. ";../modules/?.lua"
 memoize = require("memoize")
 
-function tribonacci(n)
+function trinobacci(n)
     if n == 1 or n == 2 then
         return 0
     end
     if n == 3 then
         return 1
     end
-    return tribonacci(n - 1) + tribonacci(n - 2) + tribonacci(n - 3)
 end
 tribonacci = memoize(tribonacci)
 
@@ -22,6 +21,17 @@ function OA(n)
     end
     return 2 * OA(n - 1) - tribonacci(n) 
     ]]
+=======
+    return trinobacci(n - 1) + trinobacci(n - 2) + trinobacci(n - 3)
+end
+trinobacci = memoize(trinobacci)
+
+function OA(n) 
+    if n == 1 then
+        return 2
+    end
+    return 2 * OA(n - 1) - trinobacci(n) 
+>>>>>>> a4420e1c17f851e14656ade58751ed26bf35fc0e
 end
 
 --[[
