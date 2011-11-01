@@ -13,8 +13,28 @@ ranks xs = [(remove i j xs, xs !! i !! j) | i <- [0 .. n], j <- [0 .. n]] where 
 msum [[x]] = x
 msum xs = maximum $ map (\a -> (msum $ fst a) + (snd a)) $ ranks xs
 
+bitstrings 0 = [[]]
+bitstrings n = [b : bs | b <- [True, False], bs <- bitstrings (n - 1)]
+
+data State = E | S | M | N
+                deriving (Show, Eq)
+
+step E False = E
+step E True = S
+step S False = M
+step S True = S
+step M False = M
+step M True = N
+step N False = N
+step N True = N
+
+pick q  = filter ((== q) . fst) . map (\a -> (foldl step E a, a))
+
+
 
 main :: IO()
 main = do
-    print $ msum tiny
-    --print $ ranks bigxs
+    print $ pick E $ bitstrings 3
+    print $ pick S $ bitstrings 4
+    print $ pick M $ bitstrings 3
+    print $ pick M $ bitstrings 4

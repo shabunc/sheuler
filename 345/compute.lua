@@ -53,19 +53,16 @@ function ranks(m)
     local res = {}
     local n = #m
     for i = 1, n do
-        for j = 1, n do
-            table.insert(res, {remove(m, i, j), m[i][j]})
-        end
+            table.insert(res, {remove(m, i, 1), m[i][1]})
     end
     return res
 end
 
 local CACHE = {}
 
-function msum(t) 
+function msum(t, inner) 
     local key = uid(t)
     if CACHE[key] then
-        print(key)
         return CACHE[key]
     end
     if #t == 1 then
@@ -75,7 +72,7 @@ function msum(t)
     local rnk = ranks(t)
     local res = {}
     for j = 1, #rnk do
-        table.insert(res, msum(rnk[j][1]) + rnk[j][2])
+        table.insert(res, msum(rnk[j][1], true) + rnk[j][2])
     end
     local max = res[1]
     for j = 2, #res do
@@ -84,8 +81,9 @@ function msum(t)
         end
     end
     CACHE[key] = max
+    print(max)
    return max
 end
 
-print(msum(LILMATRIX))
---print(msum(BIGMATRIX))
+assert((msum(LILMATRIX) == 3315))
+print(msum(BIGMATRIX))
